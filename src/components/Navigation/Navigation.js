@@ -1,36 +1,21 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { FirebaseContext } from '../Firebase/FirebaseProvider';
 
-import * as ROUTES from '../../constants/routes';
-import { FirebaseConsumer } from '../Firebase/FirebaseProvider';
-
-const Navigation = () => (
-    <div>
-        <FirebaseConsumer>
-            {context => {
-                console.log('====================================');
-                console.log(context.userIn);
-                console.log('====================================');
-                return context.userIn ? <NavigationAuth doSignOut={context.doSignOut} /> : <NavigationNonAuth />;
-            }}
-        </FirebaseConsumer>
-    </div>
-);
+const Navigation = () => {
+    const context = useContext(FirebaseContext);
+    return <div>{context.isLoggedIn ? <NavigationAuth doSignOut={context.doSignOut} /> : <NavigationNonAuth />}</div>;
+};
 
 function NavigationAuth(props: { doSignOut: Function }) {
     return (
         <ul>
             <li>
-                <Link to={ROUTES.LANDING}>Landing</Link>
+                <Link to="/dashboard">Dashboard</Link>
             </li>
+
             <li>
-                <Link to={ROUTES.HOME}>Home</Link>
-            </li>
-            <li>
-                <Link to={ROUTES.ACCOUNT}>Account</Link>
-            </li>
-            <li>
-                <Link to={ROUTES.ADMIN}>Admin</Link>
+                <Link to="/account">Account</Link>
             </li>
             <li>
                 <button type="button" onClick={props.doSignOut}>
@@ -44,10 +29,10 @@ function NavigationAuth(props: { doSignOut: Function }) {
 const NavigationNonAuth = () => (
     <ul>
         <li>
-            <Link to={ROUTES.LANDING}>Landing</Link>
+            <Link to="/login">Login</Link>
         </li>
         <li>
-            <Link to={ROUTES.LOGIN}>Login</Link>
+            <Link to="/signup">Sign up</Link>
         </li>
     </ul>
 );
