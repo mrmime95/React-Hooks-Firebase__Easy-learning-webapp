@@ -1,0 +1,73 @@
+$color-gray-dark: #8b939b;
+$color-gray-light: #c8c9ce;
+$color-gray-secondary: #eff1f3;
+$color-gray-label: #758396;
+$color-red-main: #e3163a;
+$color-green: #7cc253;
+$color-inactive: #ccc;
+
+$color-placeholder: #999;
+
+$color-text-main: #212529;
+$color-text-main-focused: #495057;
+
+$color-text-secondary: #444;
+
+$color-active: #00a0d0;
+
+$border-color-combo-options: #aaa;
+$color-combo-option-active: #d0f4ff;
+$color-combo-option-hover: $color-active;
+$background-color-combo-option-hover: $color-active;
+
+$background-color-navbar: #272c33;
+
+$color-menu-icon: $color-gray-dark;
+$color-menu-text: $color-gray-light;
+$color-menu-hover: #ffffff;
+$color-menu-active: $color-gray-secondary;
+
+$color-user-menu-text: $color-text-secondary;
+$color-user-menu-button-text: $color-text-main;
+$color-user-menu-button-text-focus: #16181b;
+
+$border-bottom-color-grid: #111;
+$background-color-grid-header: #00a0d0;
+
+$border-top-color-grid-row: #ddd;
+$color-grid-row-hover: #e4e7eb;
+
+$color-grid-column-active: #2c3e50;
+$color-grid-column-active-hover: #006584;
+$color-grid-column-deactivated: $color-placeholder;
+
+$color-grid-column-type: #00a0d0;
+$color-grid-column-label: #758396;
+
+$color-user-menu-button-background-active: #007bff;
+$color-user-menu-button-background-focus: #f8f9fa;
+
+$color-menu-header: $color-active;
+
+$background-color-button: $color-active;
+$color-button: #ffffff;
+
+$background-color-button: $color-menu-header;
+$color-button: #ffffff;
+
+$navbar-width-closed: 70px;
+$navbar-width-open: 220px;
+
+$breakpoint-medium: 700px; //576px;
+$breakpoint-large: 992px;
+
+$border-color-tab-bar: #dee2e6;
+$color-tab-item: $color-gray-label;
+$color-tab-item-active: $color-active;
+
+$color-page-sub-header: $color-active;
+
+$form-input-height: 35px;
+li {
+    list-style-type: none;
+}

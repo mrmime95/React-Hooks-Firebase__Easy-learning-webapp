@@ -1,0 +1,61 @@
+@import '../../utils.scss';
+
+$header-height: 50px;
+$navbar-height: $header-height;
+.app {
+    min-height: 100vh;
+    background: $color-gray-secondary;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .header {
+        height: $header-height;
+    }
+
+    .left-panel {
+        .logo {
+            height: $header-height;
+        }
+    }
+
+    .main {
+        padding: 15px 15px 30px;
+    }
+
+    @include breakpoint-medium() {
+        $header-height: 80px;
+        flex-direction: row;
+        .header {
+            height: $header-height;
+        }
+        .left-panel {
+            .logo {
+                height: $header-height;
+            }
+        }
+        .right-panel {
+            width: 100%;
+        }
+
+        .main {
+            padding: 30px;
+        }
+    }
+
+    @include breakpoint-large() {
+        .main {
+            padding: 30px 70px;
+        }
+    }
+}
+.link {
+    font-size: 11px;
+    text-decoration: underline;
+    color: #007bff;
+    cursor: pointer;
+    &:hover {
+        color: #007baa;
+    }
+}

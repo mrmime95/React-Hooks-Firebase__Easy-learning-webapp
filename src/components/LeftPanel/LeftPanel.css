@@ -1,0 +1,95 @@
+li {
+  list-style-type: none; }
+
+button:focus {
+  outline: none; }
+
+.left-panel {
+  width: 100%;
+  background: #272c33;
+  transition: all 0.55s ease-in;
+  height: auto; }
+  .left-panel .logo {
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center; }
+  .left-panel .menu-button {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.55s ease-in;
+    z-index: 1; }
+    .left-panel .menu-button.open {
+      opacity: 1; }
+    .left-panel .menu-button .icon {
+      width: 20px;
+      height: 30px; }
+  .left-panel .menu {
+    position: absolute;
+    background: #272c33;
+    left: 0;
+    width: -webkit-fill-available;
+    margin: 0;
+    transform: translateY(-120%);
+    transition: transform 0.55s ease-in; }
+    .left-panel .menu .menu-item .text {
+      visibility: visible;
+      height: auto;
+      width: auto;
+      opacity: 1;
+      padding-top: 7px;
+      padding-left: 15px;
+      transition: opacity 0.5s, visibility 0s, height 0s, width 0s linear; }
+  .left-panel.open {
+    height: auto; }
+    .left-panel.open .menu {
+      top: 50px;
+      transform: translateY(0); }
+  .left-panel .icon.rotate-90-mobile {
+    transform: rotate(90deg); }
+  @media only screen and (min-width: 700px) {
+    .left-panel {
+      width: 100px;
+      position: relative; }
+      .left-panel .icon.rotate-90-mobile {
+        transform: rotate(0deg); }
+      .left-panel .menu-button {
+        right: -25px;
+        top: 20px; }
+      .left-panel .menu {
+        position: unset;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0;
+        margin: 0;
+        transform: translateY(0); }
+        .left-panel .menu .menu-item {
+          margin: auto;
+          transition: all 0.5s linear; }
+          .left-panel .menu .menu-item .text {
+            visibility: hidden;
+            opacity: 0;
+            padding: 0;
+            transition: height 0s, width 0s, visibility 0s, opacity 0.5s linear;
+            height: 0;
+            width: 0; }
+      .left-panel.open {
+        width: 300px; }
+        .left-panel.open .menu .menu-item {
+          margin: 0;
+          padding-left: 30%;
+          transition: all 0.5s linear; }
+          .left-panel.open .menu .menu-item .text {
+            visibility: visible;
+            height: auto;
+            width: auto;
+            opacity: 1;
+            padding-top: 7px;
+            padding-left: 15px;
+            transition: opacity 0.5s, visibility 0s, height 0s, width 0s linear; } }

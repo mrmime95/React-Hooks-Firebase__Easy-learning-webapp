@@ -1,34 +1,53 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import Navigation from '../Navigation/Navigation';
+import React from 'react';
+import { BrowserRouter, Switch, Redirect } from 'react-router-dom';
 import FirebaseProvider from '../Firebase/FirebaseProvider';
-import * as ROUTES from '../../constants/routes';
+import GuardRoute from '../GuardRoute/GuardRoute';
+import Root from '../Root/Root';
+import Navigation from '../Navigation/Navigation';
+import navigationConfig from '../LeftPanel/navigationConfig';
+import LeftPanel from '../LeftPanel/LeftPanel';
+import Header from '../Header/Header';
 
 import SignUp from '../SignUp/SignUp';
 import Login from '../Login/Login';
 
 import './App.css';
 
-class App extends Component {
-    render() {
-        return (
+function App() {
+    return (
+        <BrowserRouter>
             <FirebaseProvider>
-                <Router>
-                    <div>
-                        <Navigation />
-                        <hr />
-                        <Route exact path={ROUTES.LANDING} component={() => <div>Landing Page</div>} />
-                        <Route path={ROUTES.SIGN_UP} component={SignUp} />
-                        <Route path={ROUTES.LOGIN} component={Login} />
-                        <Route path={ROUTES.PASSWORD_FORGET} component={() => <div>Forget Password</div>} />
-                        <Route path={ROUTES.HOME} component={() => <div>Home</div>} />
-                        <Route path={ROUTES.ACCOUNT} component={() => <div>Account</div>} />
-                        <Route path={ROUTES.ADMIN} component={() => <div>Admin</div>} />
+                <div className="app">
+                    <LeftPanel menu={navigationConfig} />
+                    <div className="right-panel">
+                        <Header />
+                        <div className="main">
+                            <Root>
+                                <React.Fragment>
+                                    <Switch>
+                                        <GuardRoute type="public" path="/login" component={Login} />
+                                        <GuardRoute type="public" path="/signup" component={SignUp} />
+                                        {Object.keys(navigationConfig).map((key, index) => {
+                                            const route = navigationConfig[key].route;
+                                            return (
+                                                <GuardRoute
+                                                    type="private"
+                                                    path={route.path}
+                                                    component={route.Component}
+                                                    key={index}
+                                                />
+                                            );
+                                        })}
+                                        <Redirect from="/" to={navigationConfig.dashboard.route.path} />
+                                    </Switch>
+                                </React.Fragment>
+                            </Root>
+                        </div>
                     </div>
-                </Router>
+                </div>
             </FirebaseProvider>
-        );
-    }
+        </BrowserRouter>
+    );
 }
 
 export default App;

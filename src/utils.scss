@@ -1,0 +1,25 @@
+@import './consts.scss';
+button:focus {
+    outline: none;
+}
+@mixin font-lato() {
+    font-family: 'Lato', sans-serif;
+}
+
+@mixin breakpoint-medium() {
+    @include breakpoint(#{$breakpoint-medium}) {
+        @content;
+    }
+}
+
+@mixin breakpoint-large() {
+    @include breakpoint(#{$breakpoint-large}) {
+        @content;
+    }
+}
+
+@mixin breakpoint($width) {
+    @media only screen and (min-width: $width) {
+        @content;
+    }
+}

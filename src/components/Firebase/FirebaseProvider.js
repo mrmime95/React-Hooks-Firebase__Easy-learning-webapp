@@ -1,29 +1,13 @@
 import React, { Component } from 'react';
-import app from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/database';
-
-const FirebaseContext = React.createContext();
+import { auth, db } from './setup';
+export const FirebaseContext = React.createContext();
 export const FirebaseConsumer = FirebaseContext.Consumer;
 
-const config = {
-    apiKey: process.env.REACT_APP_API_KEY,
-    authDomain: process.env.REACT_APP_AUTH_DOMAIN,
-    databaseURL: process.env.REACT_APP_DATABASE_URL,
-    projectId: process.env.REACT_APP_PROJECT_ID,
-    storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
-    messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
-};
-
 export default class FirebaseProvider extends Component {
-    constructor() {
-        super();
-        app.initializeApp(config);
-        this.auth = app.auth();
-        this.db = app.database();
-    }
     state = {
-        userIn: null,
+        authReady: false,
+        isLoggedIn: false,
+        user: null,
     };
 
     componentDidMount() {
@@ -31,40 +15,33 @@ export default class FirebaseProvider extends Component {
     }
 
     authUser = () => {
-        this.auth.onAuthStateChanged(user => {
-            if (user) {
-                this.setState({ userIn: user });
+        auth.onAuthStateChanged(user => {
+            if (user && !user.isAnonymous) {
+                const { uid, email, displayName } = user;
+                this.setState({
+                    authReady: true,
+                    isLoggedIn: true,
+                    user: {
+                        id: uid,
+                        email,
+                        displayName,
+                    },
+                });
             } else {
-                this.setState({ userIn: null });
+                this.setState({ authReady: true, isLoggedIn: false, user: null });
             }
         });
     };
 
     doCreateUserWithEmailAndPassword = (email, password) => {
-        return this.auth.createUserWithEmailAndPassword(email, password);
+        return auth.createUserWithEmailAndPassword(email, password);
     };
 
     doSignInWithEmailAndPassword = (email, password) => {
-        return this.auth.signInWithEmailAndPassword(email, password);
+        return auth.signInWithEmailAndPassword(email, password);
     };
     doSignOut = () => {
-        return this.auth.signOut();
-    };
-
-    doPasswordReset = email => {
-        return this.auth.sendPasswordResetEmail(email);
-    };
-
-    doPasswordUpdate = password => {
-        return this.auth.currentUser.updatePassword(password);
-    };
-
-    user = uid => {
-        return this.db.ref(`users/${uid}`);
-    };
-
-    users = () => {
-        return this.db.ref('users');
+        return auth.signOut();
     };
 
     render() {
@@ -75,10 +52,6 @@ export default class FirebaseProvider extends Component {
                     doCreateUserWithEmailAndPassword: this.doCreateUserWithEmailAndPassword,
                     doSignInWithEmailAndPassword: this.doSignInWithEmailAndPassword,
                     doSignOut: this.doSignOut,
-                    doPasswordReset: this.doPasswordReset,
-                    doPasswordUpdate: this.doPasswordUpdate,
-                    user: this.user,
-                    users: this.users,
                     authUser: this.authUser,
                 }}
             >

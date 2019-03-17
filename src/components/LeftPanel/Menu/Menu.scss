@@ -1,0 +1,57 @@
+@import '../../../utils.scss';
+.menu {
+    .menu-item {
+        padding: 15px 0;
+        position: relative;
+        a {
+            color: $color-menu-text;
+            text-decoration: none; // line-height: 20px;
+            display: flex;
+            .icon {
+                width: 20px;
+                height: 20px;
+                flex: 0 0 20px;
+                color: $color-menu-icon;
+                display: inline-block;
+            }
+            .text {
+                font-size: 11px;
+                text-transform: uppercase;
+                display: inline-block;
+            }
+            .tooltip {
+                z-index: 1;
+                display: none;
+                position: absolute;
+                top: 10px;
+                left: 35px;
+                opacity: 0;
+                visibility: hidden;
+                background-color: #fff;
+                font-size: 11px;
+                line-height: 30px;
+                color: #444;
+                text-transform: uppercase;
+                padding: 5px 10px;
+                box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
+                transition: all 0.35s ease;
+            }
+            &:hover {
+                color: $color-menu-hover;
+                .icon {
+                    color: $color-menu-hover;
+                }
+                .tooltip {
+                    opacity: 1;
+                    visibility: visible;
+                }
+            }
+            &.active {
+                color: $color-menu-active;
+                .icon {
+                    color: $color-menu-active;
+                }
+            }
+        }
+    }
+}
