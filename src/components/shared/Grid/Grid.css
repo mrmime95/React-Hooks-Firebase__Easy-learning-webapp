@@ -1,0 +1,28 @@
+li {
+  list-style-type: none; }
+
+button:focus {
+  outline: none; }
+
+.grid p {
+  margin: 0; }
+
+.grid .grid-header {
+  background-color: #00a0d0;
+  height: 5px;
+  text-transform: uppercase; }
+  .grid .grid-header .grid-header-label {
+    display: none; }
+
+@media only screen and (min-width: 992px) {
+  .grid .grid-header {
+    display: flex;
+    color: #fff;
+    height: auto; }
+    .grid .grid-header .grid-header-label {
+      padding: 5px 15px;
+      font-size: 12px;
+      font-weight: 300;
+      font-family: 'Lato', sans-serif;
+      line-height: 1.5;
+      display: block; } }

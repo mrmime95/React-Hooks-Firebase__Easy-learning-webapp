@@ -1,0 +1,28 @@
+@import '../../../../utils.scss';
+
+.column {
+    width: 100%;
+    color: $color-grid-column-active;
+    line-height: 1.5;
+    padding: 0 15px;
+    .column {
+        padding: 0;
+    }
+    &.with-label {
+        display: flex;
+        .label {
+            width: 33%;
+            font-size: 11px;
+            color: $color-grid-column-label;
+            text-transform: uppercase;
+            font-weight: normal;
+            font-family: Lato;
+            line-height: 1.5;
+        }
+    }
+    @include breakpoint-large() {
+        .label {
+            display: none;
+        }
+    }
+}

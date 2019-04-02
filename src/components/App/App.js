@@ -3,7 +3,6 @@ import { BrowserRouter, Switch, Redirect } from 'react-router-dom';
 import FirebaseProvider from '../Firebase/FirebaseProvider';
 import GuardRoute from '../GuardRoute/GuardRoute';
 import Root from '../Root/Root';
-import Navigation from '../Navigation/Navigation';
 import navigationConfig from '../LeftPanel/navigationConfig';
 import LeftPanel from '../LeftPanel/LeftPanel';
 import Header from '../Header/Header';

@@ -1,0 +1,29 @@
+@import '../../../../utils.scss';
+
+.grid-row {
+    background-color: #fff;
+    display: flex;
+    justify-content: space-between;
+    color: unset;
+    text-decoration: unset;
+    transition: all 0.35s ease;
+    padding: 8px 10px;
+    cursor: pointer;
+    &:nth-child(1n + 2) {
+        border-top: 1px solid $border-top-color-grid-row;
+    }
+    &:last-child {
+        border-bottom: 1px solid $border-bottom-color-grid;
+    }
+    &:hover {
+        background-color: $color-grid-row-hover;
+        .column.with-label {
+            color: $color-grid-column-active-hover;
+        }
+    }
+    flex-wrap: wrap;
+
+    @include breakpoint-large() {
+        flex-wrap: unset;
+    }
+}

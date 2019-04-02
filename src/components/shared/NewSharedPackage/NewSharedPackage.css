@@ -1,0 +1,50 @@
+.new-shared-package {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 50px; }
+  .new-shared-package .content {
+    border: 1px solid #b2b2b2;
+    background-color: white;
+    border-radius: 5px;
+    width: calc(100% - 60px);
+    box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
+    padding: 15px; }
+    .new-shared-package .content .name {
+      font-size: 20px;
+      font-weight: 100;
+      margin-bottom: 0;
+      font-family: 'Lato', sans-serif; }
+    .new-shared-package .content .package-title {
+      display: flex;
+      justify-content: center; }
+      .new-shared-package .content .package-title h2 {
+        font-size: 25px;
+        font-weight: 100;
+        font-family: 'Lato', sans-serif; }
+      .new-shared-package .content .package-title .package {
+        width: 30px;
+        height: 30px;
+        margin-right: 15px; }
+    .new-shared-package .content .words {
+      padding: 0 40px; }
+      .new-shared-package .content .words .line {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid #ccc;
+        padding: 15px 20px 0;
+        cursor: pointer; }
+        .new-shared-package .content .words .line:hover {
+          background-color: #ccc; }
+        .new-shared-package .content .words .line .word {
+          margin: 0; }
+        .new-shared-package .content .words .line .correct {
+          color: green;
+          width: 20px;
+          height: 20px; }
+          .new-shared-package .content .words .line .correct.incorrect {
+            color: red; }
+          .new-shared-package .content .words .line .correct.unknown {
+            color: #a5a500; }
+    .new-shared-package .content .buttons {
+      display: flex;
+      justify-content: flex-end; }

@@ -1,0 +1,29 @@
+@import '../../../utils.scss';
+.grid {
+    p {
+        margin: 0;
+    }
+    .grid-header {
+        background-color: $background-color-grid-header;
+        height: 5px;
+        text-transform: uppercase;
+        .grid-header-label {
+            display: none;
+        }
+    }
+    @include breakpoint-large() {
+        .grid-header {
+            display: flex;
+            color: #fff;
+            height: auto;
+            .grid-header-label {
+                padding: 5px 15px;
+                font-size: 12px;
+                font-weight: 300;
+                font-family: 'Lato', sans-serif;
+                line-height: 1.5;
+                display: block;
+            }
+        }
+    }
+}

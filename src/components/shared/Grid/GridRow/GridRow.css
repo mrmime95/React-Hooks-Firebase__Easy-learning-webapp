@@ -1,0 +1,27 @@
+li {
+  list-style-type: none; }
+
+button:focus {
+  outline: none; }
+
+.grid-row {
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  color: unset;
+  text-decoration: unset;
+  transition: all 0.35s ease;
+  padding: 8px 10px;
+  cursor: pointer;
+  flex-wrap: wrap; }
+  .grid-row:nth-child(1n + 2) {
+    border-top: 1px solid #ddd; }
+  .grid-row:last-child {
+    border-bottom: 1px solid #111; }
+  .grid-row:hover {
+    background-color: #e4e7eb; }
+    .grid-row:hover .column.with-label {
+      color: #006584; }
+  @media only screen and (min-width: 992px) {
+    .grid-row {
+      flex-wrap: unset; } }

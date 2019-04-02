@@ -5,8 +5,30 @@ $color-gray-label: #758396;
 $color-red-main: #e3163a;
 $color-green: #7cc253;
 $color-inactive: #ccc;
+$color-hover: #eee;
+$color-link: #2c3e50;
+$color-link-hover: #006584;
+$color-pink: #f6a0af;
 
+$color-user: #00a0d0;
+$color-admin: #e3163a;
+$color-aproover: #7cc253;
+
+$background-color-auth-page-header-div: rgba(49, 171, 92, 0.9);
+$action-color-auth-page-layout: #333;
+
+$color-password-type: #2c3e50;
+
+$color-information-message-error: #e3163a;
+$color-information-message-warning: #ff7733;
+$color-information-message-info: #333;
+
+$color-password-link-hover: #006584;
 $color-placeholder: #999;
+
+$background-color-information-message-error: rgba(227, 22, 58, 0.2);
+$background-color-information-message-warning: rgba(255, 119, 51, 0.2);
+$background-color-information-message-info: rgba(0, 160, 208, 0.2);
 
 $color-text-main: #212529;
 $color-text-main-focused: #495057;
@@ -14,6 +36,7 @@ $color-text-main-focused: #495057;
 $color-text-secondary: #444;
 
 $color-active: #00a0d0;
+$color-linear-gradient-active: #00bef7;
 
 $border-color-combo-options: #aaa;
 $color-combo-option-active: #d0f4ff;
@@ -32,7 +55,7 @@ $color-user-menu-button-text: $color-text-main;
 $color-user-menu-button-text-focus: #16181b;
 
 $border-bottom-color-grid: #111;
-$background-color-grid-header: #00a0d0;
+$background-color-grid-header: $color-active;
 
 $border-top-color-grid-row: #ddd;
 $color-grid-row-hover: #e4e7eb;
@@ -41,7 +64,7 @@ $color-grid-column-active: #2c3e50;
 $color-grid-column-active-hover: #006584;
 $color-grid-column-deactivated: $color-placeholder;
 
-$color-grid-column-type: #00a0d0;
+$color-grid-column-type: $color-active;
 $color-grid-column-label: #758396;
 
 $color-user-menu-button-background-active: #007bff;
@@ -55,10 +78,16 @@ $color-button: #ffffff;
 $background-color-button: $color-menu-header;
 $color-button: #ffffff;
 
+$background-color-status-badge: #ff7733;
+$background-color-status-badge-linear-gradient: #ff9966;
+
+$background-color-successfull-status-badge-linear-gradient: #a8d78d;
+
 $navbar-width-closed: 70px;
 $navbar-width-open: 220px;
 
-$breakpoint-medium: 700px; //576px;
+$breakpoint-small: 576px;
+$breakpoint-medium: 700px;
 $breakpoint-large: 992px;
 
 $border-color-tab-bar: #dee2e6;
@@ -68,6 +97,7 @@ $color-tab-item-active: $color-active;
 $color-page-sub-header: $color-active;
 
 $form-input-height: 35px;
+
 li {
     list-style-type: none;
 }

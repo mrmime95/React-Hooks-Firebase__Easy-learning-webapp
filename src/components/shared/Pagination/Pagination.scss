@@ -1,0 +1,107 @@
+@import '../../../utils.scss';
+.pagination {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px 0 15px;
+    justify-content: space-around;
+    p {
+        margin: 0;
+    }
+
+    @include breakpoint-medium() {
+        justify-content: unset;
+    }
+    .page-info {
+        width: 100%;
+        color: #333;
+        font-size: 12px;
+        margin: auto;
+        text-align: center;
+        padding-top: 5px;
+        @include breakpoint-medium() {
+            padding: 0;
+            width: 175px;
+            text-align: left;
+            &.no-pages {
+                width: 100%;
+            }
+        }
+    }
+    .paging {
+        width: 100%;
+        text-align: center;
+        padding: 15px 0 0;
+        .dots,
+        button {
+            min-width: 33px;
+            height: 33px;
+            padding: 6px 12px;
+            margin: 0 0 0 2px;
+            text-align: center;
+            color: #333;
+            border: 0;
+            background: transparent;
+            box-sizing: border-box;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        button {
+            cursor: pointer;
+            &:active {
+                outline: none;
+                background-color: #2b2b2b;
+                border-radius: 50%;
+                transition: all 0.35s ease;
+            }
+
+            &.nav-button {
+                transition: all 0.35s ease;
+
+                &:hover {
+                    color: #00a0d0;
+                }
+                &:disabled,
+                &[disabled] {
+                    color: #ced3da;
+                    cursor: default;
+                    background: transparent;
+                }
+            }
+            &.number-button {
+                &:hover {
+                    color: #00a0d0;
+                }
+                &.active {
+                    color: #fff;
+                    border: 1px solid #00a0d0;
+                    background-color: #00a0d0;
+                    border-radius: 50%;
+                }
+            }
+        }
+        @include breakpoint-medium() {
+            padding: 0;
+            width: calc(100% - 175px);
+            text-align: right;
+        }
+    }
+    .page-size {
+        width: 100%;
+        text-align: center;
+        label {
+            font-size: 12px;
+            color: #000;
+            font-family: inherit;
+            .combo {
+                display: inline-block;
+                margin: 15px 5px 8px;
+            }
+        }
+        @include breakpoint-medium() {
+            text-align: left;
+            label .combo {
+                margin: 5px;
+            }
+        }
+    }
+}

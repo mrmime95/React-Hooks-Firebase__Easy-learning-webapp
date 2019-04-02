@@ -9,6 +9,8 @@ $navbar-height: $header-height;
     display: flex;
     flex-direction: column;
     height: 100%;
+    color: #2c3e50;
+    line-height: 1.5;
 
     .header {
         height: $header-height;

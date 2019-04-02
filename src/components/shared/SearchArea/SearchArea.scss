@@ -1,0 +1,108 @@
+@import '../../../utils.scss';
+
+.search-area {
+    .search-container {
+        display: flex;
+        flex-wrap: wrap;
+
+        .search-field {
+            flex: 0 0 100%;
+        }
+
+        .filter-toggle {
+            flex: 0 0 16.66667%;
+            max-width: 16.66667%;
+        }
+
+        .sorting-combo {
+            flex: 0 0 83.333333%;
+        }
+
+        .filter-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            height: $form-input-height;
+            padding: 0 12px 0 0;
+
+            .filter-icon {
+                width: 25px;
+                height: 25px;
+            }
+            .badge {
+                right: -10px;
+            }
+        }
+    }
+
+    .filter-container {
+        transition: height 0.5s ease-in, opacity 0.3s 0.2s ease-in, visibility 0.3s 0.2s ease-in;
+        &.show {
+            opacity: 1;
+            visibility: visible;
+            height: 100px;
+        }
+
+        &.hide {
+            opacity: 0;
+            visibility: hidden;
+            overflow: hidden;
+            height: 0;
+        }
+    }
+
+    @include breakpoint-medium() {
+        .filter-container > div {
+            display: flex;
+
+            .form-item {
+                flex: 0 0 33.33333%;
+            }
+        }
+
+        .filter-container {
+            .form-item {
+                flex: 0 0 50%;
+            }
+
+            &.show {
+                height: 50px;
+            }
+        }
+    }
+
+    @media (min-width: 768px) {
+        .search-container {
+            .search-field {
+                flex: 0 0 50%;
+            }
+
+            .filter-toggle {
+                flex: 0 0 8.33333%;
+                max-width: 8.33333%;
+            }
+
+            .sorting-combo {
+                flex: 0 0 41.66667%;
+            }
+        }
+    }
+
+    @include breakpoint-large() {
+        .search-container {
+            .search-field {
+                flex: 0 0 66.66667%;
+            }
+
+            .sorting-combo {
+                flex: 0 0 25%;
+            }
+        }
+
+        .filter-container {
+            .form-item {
+                flex: 0 0 33.333333%;
+            }
+        }
+    }
+}
