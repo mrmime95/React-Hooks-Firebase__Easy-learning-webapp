@@ -6,32 +6,15 @@ button:focus {
 
 .subject {
   display: flex;
-  height: -webkit-fill-available; }
+  height: -webkit-fill-available;
+  justify-content: space-between; }
   .subject .folders {
     width: 25%;
     border: 1px solid black;
     border-radius: 10px;
     overflow: scroll; }
-    .subject .folders .list-subject {
-      padding: 5px 20px; }
-      .subject .folders .list-subject .title {
-        cursor: pointer; }
-        .subject .folders .list-subject .title:hover {
-          background-color: #ccc; }
-        .subject .folders .list-subject .title .text {
-          padding-left: 10px; }
-      .subject .folders .list-subject .packages {
-        display: none;
-        padding: 5px 20px; }
-        .subject .folders .list-subject .packages .pack {
-          cursor: pointer; }
-          .subject .folders .list-subject .packages .pack:hover {
-            background-color: #ccc; }
-          .subject .folders .list-subject .packages .pack .text {
-            padding-left: 10px; }
-      .subject .folders .list-subject.open .packages {
-        display: block; }
   .subject .cards {
-    width: 75%;
+    width: 74%;
     border: 1px solid black;
-    border-radius: 10px; }
+    border-radius: 10px;
+    overflow: scroll; }

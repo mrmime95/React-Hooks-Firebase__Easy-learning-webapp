@@ -1,20 +1,24 @@
 import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+
 import './ListView.css';
 
 export default function ListView(props: {
-    data: [{ title: string, id: number, packages: [{ title: string, id: number, path: string }] }],
+    data: [{ title: string, id: number, packages: [{ title: string, id: number }] }],
+    baseRoute: string,
 }) {
     return (
         <div className="list">
-            {props.data.map(subject => {
-                return <ListSubject subject={subject} key={Math.random()} />;
+            {props.data.map((subject, index) => {
+                return <ListSubject baseRoute={props.baseRoute} subject={subject} key={`listSubject${index}`} />;
             })}
         </div>
     );
 }
 
 function ListSubject(props: {
-    subject: { title: string, id: number, packages: [{ title: string, id: number, path: string }] },
+    subject: { title: string, id: number, packages: [{ title: string, id: number }] },
+    baseRoute: string,
 }) {
     const [state, setState] = useState({
         open: false,
@@ -31,28 +35,29 @@ function ListSubject(props: {
                 <span className="text">{props.subject.title}</span>
             </div>
             <div className="packages">
-                {props.subject.packages.map((pack, i) => {
-                    return <ListPackage pack={pack} key={Math.random()} />;
+                {props.subject.packages.map((pack, index) => {
+                    return <ListPackage baseRoute={props.baseRoute} pack={pack} key={`ListPackage${index}`} />;
                 })}
             </div>
         </div>
     );
 }
 
-function ListPackage(props: { pack: { title: string, id: number, path: string } }) {
+function ListPackage(props: { baseRoute: string, pack: { title: string, id: number } }) {
     const [state, setState] = useState({
         open: false,
     });
+
     return (
-        <div
+        <Link
+            to={`${props.baseRoute}/${props.pack.id}`}
             className="pack"
-            key={Math.random()}
-            onClick={() => {
+            onClick={e => {
                 setState({ ...state, open: !state.open });
             }}
         >
             {state.open ? <i className="far fa-eye" /> : <i className="fas fa-archive" />}
             <span className="text">{props.pack.title}</span>
-        </div>
+        </Link>
     );
 }

@@ -8,23 +8,30 @@ export default function FlipCard(props: {
     front: React$node,
     back: React$node,
 }) {
-    console.log('====================================');
-    console.log(props.front.imagePath);
-    console.log('====================================');
     return (
         <div className={`flip-card ${props.workWithHover && 'work-with-hover'}`}>
             <div className={`content ${props.showBack && 'show-back'}`}>
                 <div className={props.inverse ? 'back' : 'front'}>
-                    <h1 className="title">{props.front.word}</h1>
-                    {props.front.imagePath && (
-                        <img className="image" src={props.front.imagePath} alt={props.front.word} />
+                    {props.front.image && (
+                        <div className="image-container">
+                            <img className="image" src={props.front.image} alt={props.front.word} />
+                        </div>
                     )}
-                    <p className="example">{props.front.example}</p>
+                    <div className="text-container">
+                        <h1 className="title">{props.front.word}</h1>
+                        <p className="example">{props.front.example}</p>
+                    </div>
                 </div>
                 <div className={props.inverse ? 'front' : 'back'}>
-                    <h1>{props.back.word}</h1>
-                    {props.back.image && <img src={props.back.image} alt={props.back.word} />}
-                    <p>{props.back.example}</p>
+                    {props.back.image && (
+                        <div className="image-container">
+                            <img className="image" src={props.back.image} alt={props.back.word} />
+                        </div>
+                    )}
+                    <div className="text-container">
+                        <h1>{props.back.word}</h1>
+                        <p>{props.back.example}</p>
+                    </div>
                 </div>
             </div>
         </div>

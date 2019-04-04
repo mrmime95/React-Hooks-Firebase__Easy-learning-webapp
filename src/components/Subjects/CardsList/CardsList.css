@@ -1,0 +1,14 @@
+li {
+  list-style-type: none; }
+
+button:focus {
+  outline: none; }
+
+.cards-list {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  flex-wrap: wrap; }
+  .cards-list .flip-card {
+    width: calc(100% / 3 - 30px);
+    margin: 20px 15px; }

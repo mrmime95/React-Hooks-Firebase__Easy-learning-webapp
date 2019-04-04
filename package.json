@@ -16,6 +16,7 @@
         "react-router-dom": "^4.4.0",
         "react-scripts": "2.1.8",
         "react-tooltip": "^3.10.0",
+        "react-transition-group": "^2.8.0",
         "react-use-form-state": "^0.9.0",
         "recompose": "^0.30.0"
     },

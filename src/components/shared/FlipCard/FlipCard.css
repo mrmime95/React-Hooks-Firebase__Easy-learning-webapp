@@ -16,7 +16,17 @@
       position: absolute;
       width: 100%;
       height: 100%;
-      backface-visibility: hidden; }
+      backface-visibility: hidden;
+      display: flex;
+      flex-direction: column; }
+      .flip-card .content .front .image-container,
+      .flip-card .content .back .image-container {
+        width: 100%;
+        height: 50%; }
+        .flip-card .content .front .image-container .image,
+        .flip-card .content .back .image-container .image {
+          width: 100%;
+          height: 100%; }
     .flip-card .content .front {
       background-color: #bbb;
       color: black;

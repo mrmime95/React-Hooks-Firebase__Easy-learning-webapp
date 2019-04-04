@@ -3,46 +3,17 @@
 .subject {
     display: flex;
     height: -webkit-fill-available;
+    justify-content: space-between;
     .folders {
         width: 25%;
         border: 1px solid black;
         border-radius: 10px;
         overflow: scroll;
-        .list-subject {
-            padding: 5px 20px;
-            .title {
-                cursor: pointer;
-                &:hover {
-                    background-color: #ccc;
-                }
-                .text {
-                    padding-left: 10px;
-                }
-            }
-            .packages {
-                display: none;
-                padding: 5px 20px;
-                .pack {
-                    cursor: pointer;
-                    &:hover {
-                        background-color: #ccc;
-                    }
-                    .text {
-                        padding-left: 10px;
-                    }
-                }
-            }
-
-            &.open {
-                .packages {
-                    display: block;
-                }
-            }
-        }
     }
     .cards {
-        width: 75%;
+        width: 74%;
         border: 1px solid black;
         border-radius: 10px;
+        overflow: scroll;
     }
 }

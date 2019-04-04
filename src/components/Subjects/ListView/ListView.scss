@@ -1,0 +1,46 @@
+@import '../../../utils.scss';
+.list {
+    .list-subject {
+        padding: 5px 20px;
+        i {
+            width: 18px;
+            height: 18px;
+        }
+        .title {
+            cursor: pointer;
+            &:hover {
+                background-color: #ccc;
+            }
+            .text {
+                padding-left: 10px;
+            }
+        }
+        .packages {
+            transform: scaleY(0);
+            transition: transform 0.1s ease-in;
+            padding: 0 20px;
+            height: 0;
+            .pack {
+                display: block;
+                cursor: pointer;
+                &:hover {
+                    background-color: #ccc;
+                }
+                .text {
+                    padding-left: 10px;
+                }
+            }
+        }
+
+        &.open {
+            .packages {
+                overflow: hidden;
+                transition: transform 0.1s ease-out;
+                height: auto;
+                transform: scaleY(1);
+                transform-origin: top;
+                padding: 5px 20px;
+            }
+        }
+    }
+}
