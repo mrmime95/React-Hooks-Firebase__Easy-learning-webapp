@@ -1,18 +1,39 @@
 @import '../../../utils.scss';
 .list {
     .list-subject {
-        padding: 5px 20px;
-        i {
-            width: 18px;
-            height: 18px;
-        }
+        padding: 0px 20px;
         .title {
             cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             &:hover {
                 background-color: #ccc;
+                .subject-options {
+                    display: flex;
+                }
             }
             .text {
                 padding-left: 10px;
+                width: calc(100% - 48px);
+                i {
+                    width: 18px;
+                    height: 18px;
+                }
+            }
+            .subject-options {
+                display: none;
+                height: 100%;
+                align-items: center;
+                button {
+                    font-size: 15px;
+                    padding: 0;
+                    height: 100%;
+                    width: 24px;
+                    &:focus {
+                        box-shadow: unset;
+                    }
+                }
             }
         }
         .packages {

@@ -2,18 +2,49 @@
 
 .subject {
     display: flex;
-    height: -webkit-fill-available;
+    min-height: calc(100vh - 140px);
+    max-height: calc(100vh - 140px);
     justify-content: space-between;
+
     .folders {
         width: 25%;
-        border: 1px solid black;
-        border-radius: 10px;
-        overflow: scroll;
+        position: relative;
+        .list {
+            border: 1px solid black;
+            border-radius: 0 0 0 10px;
+            overflow: scroll;
+            height: 100%;
+        }
+        .new-subject {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+        }
     }
     .cards {
         width: 74%;
-        border: 1px solid black;
-        border-radius: 10px;
-        overflow: scroll;
+        position: relative;
+        .cards-list {
+            border: 1px solid black;
+            border-radius: 0 0 10px 0;
+            overflow: scroll;
+            width: 100%;
+            min-height: 100%;
+            max-height: 100%;
+            background-color: white;
+        }
+        .new-card {
+            position: absolute;
+            top: 0;
+            right: 0;
+            transform: translate(50%, -50%);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+        }
     }
 }

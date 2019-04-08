@@ -395,11 +395,12 @@ const packages = [
 export default function CardsList(props: { match: RouterMatch, location: RouterLocation }) {
     return (
         <div className="cards-list">
-            {packages
-                .find(pack => pack.id.toString() === props.match.params.id.toString())
-                .cards.map((card, index) => {
-                    return <FlipCard workWithHover front={card.front} back={card.back} key={`Flipcard${index}`} />;
-                })}
+            {props.match.params.id &&
+                packages
+                    .find(pack => pack.id.toString() === props.match.params.id.toString())
+                    .cards.map((card, index) => {
+                        return <FlipCard workWithHover front={card.front} back={card.back} key={`Flipcard${index}`} />;
+                    })}
         </div>
     );
 }

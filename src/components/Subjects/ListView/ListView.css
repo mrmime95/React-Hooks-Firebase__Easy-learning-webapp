@@ -5,16 +5,33 @@ button:focus {
   outline: none; }
 
 .list .list-subject {
-  padding: 5px 20px; }
-  .list .list-subject i {
-    width: 18px;
-    height: 18px; }
+  padding: 0px 20px; }
   .list .list-subject .title {
-    cursor: pointer; }
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center; }
     .list .list-subject .title:hover {
       background-color: #ccc; }
+      .list .list-subject .title:hover .subject-options {
+        display: flex; }
     .list .list-subject .title .text {
-      padding-left: 10px; }
+      padding-left: 10px;
+      width: calc(100% - 48px); }
+      .list .list-subject .title .text i {
+        width: 18px;
+        height: 18px; }
+    .list .list-subject .title .subject-options {
+      display: none;
+      height: 100%;
+      align-items: center; }
+      .list .list-subject .title .subject-options button {
+        font-size: 15px;
+        padding: 0;
+        height: 100%;
+        width: 24px; }
+        .list .list-subject .title .subject-options button:focus {
+          box-shadow: unset; }
   .list .list-subject .packages {
     transform: scaleY(0);
     transition: transform 0.1s ease-in;
