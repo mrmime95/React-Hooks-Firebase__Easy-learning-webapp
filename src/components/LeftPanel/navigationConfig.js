@@ -7,12 +7,14 @@ import {
     Person as PersonIcon,
     Organization as OrganizationIcon,
     FileDirectory,
+    Play,
 } from '@githubprimer/octicons-react';
 
 import Dashboard from '../Dashboard/Dashboard';
 import Users from '../Users/Users';
 import CreateCard from '../CreateCard/CreateCard';
 import Subjects from '../Subjects/Subjects';
+import Game from '../Game/Game';
 
 const EmptyRouteComponent = title => props => <div>{title}</div>;
 
@@ -42,6 +44,11 @@ const navigationConfig = {
         title: 'Create card',
         route: componentRoute('/create-card', CreateCard),
         Icon: OrganizationIcon,
+    },
+    playAndLearn: {
+        title: 'Play and learn',
+        route: componentRoute('/play-and-learn', Game),
+        Icon: Play,
     },
 };
 

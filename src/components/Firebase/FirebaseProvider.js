@@ -44,6 +44,34 @@ export default class FirebaseProvider extends Component {
         return auth.signOut();
     };
 
+    createNewUser = (
+        uid: string,
+        values: {
+            firstName: string,
+            lastName: string,
+            username: string,
+            email: string,
+            birthDate: string,
+        }
+    ) => {
+        db.doc(`users/${uid}`)
+            .set({
+                firstName: values.firstName,
+                lastName: values.lastName,
+                username: values.username,
+                email: values.email,
+                birthDate: values.birthDate,
+            })
+            .then(() => {
+                console.log('User Saved');
+            })
+            .catch(error => {
+                console.log('Got error: ', error);
+            });
+    };
+
+    createNewSubject = () => {};
+
     render() {
         return (
             <FirebaseContext.Provider
@@ -53,6 +81,7 @@ export default class FirebaseProvider extends Component {
                     doSignInWithEmailAndPassword: this.doSignInWithEmailAndPassword,
                     doSignOut: this.doSignOut,
                     authUser: this.authUser,
+                    createNewUser: this.createNewUser,
                 }}
             >
                 {this.props.children}

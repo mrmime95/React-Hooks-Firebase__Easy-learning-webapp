@@ -1,0 +1,10 @@
+li {
+  list-style-type: none; }
+
+button:focus {
+  outline: none; }
+
+.search-area .checkbox-container {
+  display: flex; }
+  .search-area .checkbox-container .checkbox-field {
+    padding: 0 20px 0; }

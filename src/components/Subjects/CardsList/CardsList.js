@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import FlipCard from '../../shared/FlipCard/FlipCard';
+import Modal from '../../shared/Modal/Modal';
 import './CardsList.css';
 const packages = [
     {
@@ -155,12 +156,12 @@ const packages = [
         cards: [
             {
                 front: {
-                    word: 'fasz',
+                    word: 'bika',
                     image: 'https://gkbcattle.com/wp-content/uploads/2017/02/DDD-One-Source-103A4-720x504.jpg',
                     example: 'A konyhaban szoktam enni',
                 },
                 back: {
-                    word: 'dick',
+                    word: 'bull',
                     image:
                         'https://static1.squarespace.com/static/52af6c0ee4b0324b1f660d6c/t/5b8c6cbc4d7a9cd1f8ebb270/1535927063254/DDD+Shotgun+Rider+150B+-+6x4+150.jpg',
                     example: 'I am eating at the kitchen',
@@ -168,12 +169,12 @@ const packages = [
             },
             {
                 front: {
-                    word: 'fasz',
+                    word: 'bika',
                     image: 'https://gkbcattle.com/wp-content/uploads/2017/02/DDD-One-Source-103A4-720x504.jpg',
                     example: 'A konyhaban szoktam enni',
                 },
                 back: {
-                    word: 'dick',
+                    word: 'bull',
                     image:
                         'https://static1.squarespace.com/static/52af6c0ee4b0324b1f660d6c/t/5b8c6cbc4d7a9cd1f8ebb270/1535927063254/DDD+Shotgun+Rider+150B+-+6x4+150.jpg',
                     example: 'I am eating at the kitchen',
@@ -181,12 +182,12 @@ const packages = [
             },
             {
                 front: {
-                    word: 'fasz',
+                    word: 'bika',
                     image: 'https://gkbcattle.com/wp-content/uploads/2017/02/DDD-One-Source-103A4-720x504.jpg',
                     example: 'A konyhaban szoktam enni',
                 },
                 back: {
-                    word: 'dick',
+                    word: 'bull',
                     image:
                         'https://static1.squarespace.com/static/52af6c0ee4b0324b1f660d6c/t/5b8c6cbc4d7a9cd1f8ebb270/1535927063254/DDD+Shotgun+Rider+150B+-+6x4+150.jpg',
                     example: 'I am eating at the kitchen',
@@ -194,12 +195,12 @@ const packages = [
             },
             {
                 front: {
-                    word: 'fasz',
+                    word: 'bika',
                     image: 'https://gkbcattle.com/wp-content/uploads/2017/02/DDD-One-Source-103A4-720x504.jpg',
                     example: 'A konyhaban szoktam enni',
                 },
                 back: {
-                    word: 'dick',
+                    word: 'bull',
                     image:
                         'https://static1.squarespace.com/static/52af6c0ee4b0324b1f660d6c/t/5b8c6cbc4d7a9cd1f8ebb270/1535927063254/DDD+Shotgun+Rider+150B+-+6x4+150.jpg',
                     example: 'I am eating at the kitchen',
@@ -207,12 +208,12 @@ const packages = [
             },
             {
                 front: {
-                    word: 'fasz',
+                    word: 'bika',
                     image: 'https://gkbcattle.com/wp-content/uploads/2017/02/DDD-One-Source-103A4-720x504.jpg',
                     example: 'A konyhaban szoktam enni',
                 },
                 back: {
-                    word: 'dick',
+                    word: 'bull',
                     image:
                         'https://static1.squarespace.com/static/52af6c0ee4b0324b1f660d6c/t/5b8c6cbc4d7a9cd1f8ebb270/1535927063254/DDD+Shotgun+Rider+150B+-+6x4+150.jpg',
                     example: 'I am eating at the kitchen',
@@ -220,12 +221,12 @@ const packages = [
             },
             {
                 front: {
-                    word: 'fasz',
+                    word: 'bika',
                     image: 'https://gkbcattle.com/wp-content/uploads/2017/02/DDD-One-Source-103A4-720x504.jpg',
                     example: 'A konyhaban szoktam enni',
                 },
                 back: {
-                    word: 'dick',
+                    word: 'bull',
                     image:
                         'https://static1.squarespace.com/static/52af6c0ee4b0324b1f660d6c/t/5b8c6cbc4d7a9cd1f8ebb270/1535927063254/DDD+Shotgun+Rider+150B+-+6x4+150.jpg',
                     example: 'I am eating at the kitchen',
@@ -393,14 +394,42 @@ const packages = [
 ];
 
 export default function CardsList(props: { match: RouterMatch, location: RouterLocation }) {
+    const [state, setState] = useState({
+        newCardModalOpen: false,
+    });
     return (
         <div className="cards-list">
-            {props.match.params.id &&
-                packages
-                    .find(pack => pack.id.toString() === props.match.params.id.toString())
-                    .cards.map((card, index) => {
-                        return <FlipCard workWithHover front={card.front} back={card.back} key={`Flipcard${index}`} />;
-                    })}
+            {props.match.params.id && (
+                <React.Fragment>
+                    {' '}
+                    <button
+                        className="new-card btn btn-success"
+                        onClick={() => setState({ ...state, newCardModalOpen: true })}
+                    >
+                        <i className="fas fa-plus" />
+                    </button>
+                    <Modal isOpen={state.newCardModalOpen} handleClickOutside={closeModal}>
+                        <div>New subject</div>
+                        <form>
+                            <input />
+                            <button>tab navigation</button>
+                            <button>stays</button>
+                            <button>inside</button>
+                            <button>the modal</button>
+                        </form>
+                    </Modal>
+                    {packages
+                        .find(pack => pack.id.toString() === props.match.params.id.toString())
+                        .cards.map((card, index) => {
+                            return (
+                                <FlipCard workWithHover front={card.front} back={card.back} key={`Flipcard${index}`} />
+                            );
+                        })}
+                </React.Fragment>
+            )}
         </div>
     );
+    function closeModal() {
+        setState({ ...state, newCardModalOpen: false });
+    }
 }

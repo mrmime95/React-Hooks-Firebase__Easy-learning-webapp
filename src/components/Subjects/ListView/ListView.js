@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import Modal from '../../shared/Modal/Modal';
+import ReactTooltip from 'react-tooltip';
 import './ListView.css';
 
 export default function ListView(props: {
@@ -33,6 +34,8 @@ function ListSubject(props: {
         open: false,
         newPackageModalOpen: false,
         setSubjectNameModalOpen: false,
+        uploadModalOpen: false,
+        publicPackage: false,
     });
     return (
         <div className={`list-subject ${state.open && 'open'}`}>
@@ -50,10 +53,7 @@ function ListSubject(props: {
                     <button className="btn btn-dark" onClick={() => setState({ ...state, newPackageModalOpen: true })}>
                         <i className="fas fa-plus" />
                     </button>
-                    <button
-                        className="btn btn-dark"
-                        onClick={() => setState({ ...state, setSubjectNameModalOpen: true })}
-                    >
+                    <button className="btn btn-dark" data-for={`moreOptions${props.subject.id}`} data-tip>
                         <i className="fas fa-ellipsis-h" />
                     </button>
                 </div>
@@ -63,17 +63,47 @@ function ListSubject(props: {
                     return <ListPackage baseRoute={props.baseRoute} pack={pack} key={`ListPackage${index}`} />;
                 })}
             </div>
-            <Modal isOpen={state.newPackageModalOpen} handleClickOutside={closeModal}>
+
+            <Modal isOpen={state.newPackageModalOpen} handleClickOutside={closeModal} className="one-line-modal">
                 <div>New package</div>
-                <form>
-                    <input />
-                    <button>tab navigation</button>
-                    <button>stays</button>
-                    <button>inside</button>
-                    <button>the modal</button>
+                <form className="modal-form">
+                    <div className="form-group">
+                        <input type="text" className="form-control" placeholder="New package" />
+                    </div>
+                    <div className="checkbox">
+                        <input className="form-check-input" type="checkbox" value="" id="public" />
+                        <label className="form-check-label" htmlFor="public">
+                            Public
+                        </label>
+                    </div>
+                    <div className="modal-buttons">
+                        <button type="submit" className="btn btn-primary">
+                            Submit
+                        </button>
+                        <button type="button" className="btn btn-secondary" onClick={closeModal}>
+                            Cancel
+                        </button>
+                    </div>
                 </form>
             </Modal>
-            <Modal isOpen={state.setSubjectNameModalOpen} handleClickOutside={closeModal}>
+            <Modal isOpen={state.setSubjectNameModalOpen} handleClickOutside={closeModal} className="one-line-modal">
+                <div>Set subject name</div>
+                <form className="modal-form">
+                    <div className="form-group">
+                        <input type="text" className="form-control" placeholder="Set subject name" />
+                    </div>
+                    <div className="modal-buttons">
+                        <button type="submit" className="btn btn-primary">
+                            Submit
+                        </button>
+                        <button type="button" className="btn btn-secondary" onClick={closeModal}>
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </Modal>
+
+            <Modal isOpen={state.uploadModalOpen} handleClickOutside={closeModal}>
                 <div>Set subject name</div>
                 <form>
                     <input />
@@ -86,7 +116,13 @@ function ListSubject(props: {
         </div>
     );
     function closeModal() {
-        setState({ ...state, newPackageModalOpen: false, setSubjectNameModalOpen: false });
+        setState({
+            ...state,
+            newPackageModalOpen: false,
+            setSubjectNameModalOpen: false,
+            uploadModalOpen: false,
+            publicPackage: false,
+        });
     }
 }
 

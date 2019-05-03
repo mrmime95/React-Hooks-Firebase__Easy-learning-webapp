@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-
+import Form from '../shared/Form/Form';
 import { FirebaseContext } from '../Firebase/FirebaseProvider';
 import { Redirect, withRouter } from 'react-router-dom';
 
@@ -8,46 +8,143 @@ export default withRouter(function SignUp(props: { history: any }) {
     if (fireContext.userIn) {
         return <Redirect to="/" />;
     }
-    const [state, setState] = useState({ username: '', email: '', passwordOne: '', passwordTwo: '', error: null });
-
-    const { username, email, passwordOne, passwordTwo, error } = state;
-
-    const onChange = event => {
-        setState({ ...state, [event.target.name]: event.target.value });
-    };
-    const onSubmit = event => {
-        fireContext
-            .doCreateUserWithEmailAndPassword(email, passwordOne)
-            .then(() => {
-                alert('signing in');
-            })
-            .catch(error => {
-                alert(error);
-            });
-
-        event.preventDefault();
-    };
-
     return (
-        <form onSubmit={onSubmit}>
-            <input name="username" value={username} onChange={onChange} type="text" placeholder="Full Name" />
-            <input name="email" value={email} onChange={onChange} type="text" placeholder="Email Address" />
-            <input name="passwordOne" value={passwordOne} onChange={onChange} type="password" placeholder="Password" />
-            <input
-                name="passwordTwo"
-                value={passwordTwo}
-                onChange={onChange}
-                type="password"
-                placeholder="Confirm Password"
-            />
-            <button
-                disabled={passwordOne !== passwordTwo || passwordOne === '' || email === '' || username === ''}
-                type="submit"
-            >
-                Sign UpSign Up
-            </button>
-
-            {error && <p>{error.message}</p>}
-        </form>
+        <Form
+            initialValues={{
+                firstName: '',
+                lastName: '',
+                email: '',
+                password1: '',
+                password2: '',
+                birthDate: '',
+            }}
+        >
+            {({ handleChange, handleBlur, values, setFieldValue, setFieldTouched, errors, touched }, FormRow) => {
+                return (
+                    <React.Fragment>
+                        <h2>Registration</h2>
+                        <div className="form-group">
+                            <label htmlFor="firstName" className="col-sm-3 control-label">
+                                First Name*
+                            </label>
+                            <div className="col-sm-9">
+                                <input
+                                    type="text"
+                                    id="firstName"
+                                    name="firstName"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    placeholder="First Name"
+                                    className="form-control"
+                                    autoFocus
+                                />
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="lastName" className="col-sm-3 control-label">
+                                Last Name*
+                            </label>
+                            <div className="col-sm-9">
+                                <input
+                                    type="text"
+                                    id="lastName"
+                                    name="lastName"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    placeholder="Last Name"
+                                    className="form-control"
+                                    autoFocus
+                                />
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="email" className="col-sm-3 control-label">
+                                Email*
+                            </label>
+                            <div className="col-sm-9">
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    placeholder="Email"
+                                    className="form-control"
+                                />
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="password1" className="col-sm-3 control-label">
+                                Password*
+                            </label>
+                            <div className="col-sm-9">
+                                <input
+                                    type="password"
+                                    id="password1"
+                                    name="password1"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    placeholder="Password"
+                                    className="form-control"
+                                />
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="password2" className="col-sm-3 control-label">
+                                Confirm Password*
+                            </label>
+                            <div className="col-sm-9">
+                                <input
+                                    type="password"
+                                    id="password2"
+                                    name="password2"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    placeholder="Password"
+                                    className="form-control"
+                                />
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="birthDate" className="col-sm-3 control-label">
+                                Date of Birth*
+                            </label>
+                            <div className="col-sm-9">
+                                <input
+                                    type="date"
+                                    id="birthDate"
+                                    name="birthDate"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    className="form-control"
+                                />
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <div className="col-sm-9 col-sm-offset-3">
+                                <span className="help-block">*Required fields</span>
+                            </div>
+                        </div>
+                        <button
+                            className="btn btn-primary btn-block"
+                            type="button"
+                            onClick={() => {
+                                fireContext
+                                    .doCreateUserWithEmailAndPassword(values.email, values.password1)
+                                    .then(credential => {
+                                        alert('signing in');
+                                        fireContext.createNewUser(credential.user.uid, values);
+                                    })
+                                    .catch(error => {
+                                        alert(error);
+                                    });
+                            }}
+                        >
+                            Register
+                        </button>
+                    </React.Fragment>
+                );
+            }}
+        </Form>
     );
 });

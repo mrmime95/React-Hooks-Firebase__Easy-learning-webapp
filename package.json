@@ -4,6 +4,7 @@
     "private": true,
     "dependencies": {
         "@githubprimer/octicons-react": "^8.5.0",
+        "@react-firebase/database": "^0.3.10",
         "bootstrap": "^4.3.1",
         "firebase": "^5.9.0",
         "firebase-admin": "^7.1.0",
@@ -15,10 +16,12 @@
         "react-dropzone": "^10.0.6",
         "react-router-dom": "^4.4.0",
         "react-scripts": "2.1.8",
+        "react-select": "^2.4.2",
         "react-tooltip": "^3.10.0",
         "react-transition-group": "^2.8.0",
         "react-use-form-state": "^0.9.0",
-        "recompose": "^0.30.0"
+        "recompose": "^0.30.0",
+        "shallowequal": "^1.1.0"
     },
     "scripts": {
         "test": "react-scripts test",

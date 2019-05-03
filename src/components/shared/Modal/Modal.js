@@ -5,26 +5,22 @@ import './Modal.css';
 
 const Modal = React.forwardRef(
     (props: { isOpen: boolean, className: string, children: React$node, handleClickOutside?: () => void }, ref) => {
-        return (
-            <CreateModal>
+        if (props.isOpen) {
+            return ReactDOM.createPortal(
                 <div className={`modal-container ${props.isOpen && 'open'} ${props.className}`}>
-                    {props.isOpen && (
-                        <ClickedOutsideChecker
-                            onOutsideClick={props.handleClickOutside ? props.handleClickOutside : () => {}}
-                        >
-                            <div className="modal-content" ref={ref}>
-                                {props.children}
-                            </div>
-                        </ClickedOutsideChecker>
-                    )}
-                </div>
-            </CreateModal>
-        );
+                    <ClickedOutsideChecker
+                        onOutsideClick={props.handleClickOutside ? props.handleClickOutside : () => {}}
+                    >
+                        <div className="modal-content" ref={ref}>
+                            {props.children}
+                        </div>
+                    </ClickedOutsideChecker>
+                </div>,
+                document.getElementById('modal-root')
+            );
+        }
+        return null;
     }
 );
-
-function CreateModal({ children }) {
-    return ReactDOM.createPortal(<div>{children}</div>, document.getElementById('modal-root'));
-}
 
 export default Modal;

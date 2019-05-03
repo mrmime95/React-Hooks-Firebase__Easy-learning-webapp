@@ -15,6 +15,22 @@ button:focus {
   z-index: 10; }
   .modal-container.open {
     display: block; }
+  .modal-container.one-line-modal .modal-content {
+    padding: 20px; }
+    .modal-container.one-line-modal .modal-content .modal-form {
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap; }
+      .modal-container.one-line-modal .modal-content .modal-form .form-group {
+        width: 200px;
+        margin: 0 20px 0 0; }
+      .modal-container.one-line-modal .modal-content .modal-form .checkbox {
+        padding: 0 20px; }
+      .modal-container.one-line-modal .modal-content .modal-form .modal-buttons {
+        display: flex;
+        justify-content: space-between;
+        width: 160px; }
   .modal-container .modal-content {
     position: absolute;
     top: 50%;

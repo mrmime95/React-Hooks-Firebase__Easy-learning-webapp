@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { FirebaseContext } from '../Firebase/FirebaseProvider';
-import FlipCard from '../shared/FlipCard/FlipCard';
 import ListView from './ListView/ListView';
 import './Subjects.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import Form from '../shared/Form/Form';
 import Modal from '../shared/Modal/Modal';
 
 import CardsList from './CardsList/CardsList';
@@ -51,18 +50,15 @@ export default function Subjects(props) {
     return (
         <div className="subject">
             <div className="folders">
-                <button className="new-subject btn btn-success">
+                <button
+                    className="new-subject btn btn-success"
+                    onClick={() => setState({ ...state, newSubjectModalOpen: true })}
+                >
                     <i className="fas fa-plus" />
                 </button>
                 <ListView data={data} baseRoute={props.match.url} />
             </div>
             <div className="cards">
-                <button
-                    className="new-card btn btn-success"
-                    onClick={() => setState({ ...state, newSubjectModalOpen: true })}
-                >
-                    <i className="fas fa-plus" />
-                </button>
                 <Router>
                     <Switch location={props.location}>
                         <Route path={`${props.match.path}/:id`} component={CardsList} />
@@ -70,15 +66,42 @@ export default function Subjects(props) {
                     </Switch>
                 </Router>
             </div>
-            <Modal isOpen={state.newSubjectModalOpen} handleClickOutside={closeModal}>
-                <div>New subject</div>
-                <form>
-                    <input />
-                    <button>tab navigation</button>
-                    <button>stays</button>
-                    <button>inside</button>
-                    <button>the modal</button>
-                </form>
+            <Modal isOpen={state.newSubjectModalOpen} handleClickOutside={closeModal} className="one-line-modal">
+                <div className="modal-title">New subject</div>
+                <Form
+                    initialValues={{
+                        subject: '',
+                    }}
+                >
+                    {(
+                        { handleChange, handleBlur, values, setFieldValue, setFieldTouched, errors, touched },
+                        FormRow
+                    ) => {
+                        return (
+                            <div className="modal-form">
+                                <div className="form-group">
+                                    <input
+                                        name="subject"
+                                        value={values.subject}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="New subject"
+                                    />
+                                </div>
+                                <div className="modal-buttons">
+                                    <button type="submit" className="btn btn-primary" onClick={() => {}}>
+                                        Submit
+                                    </button>
+                                    <button type="button" className="btn btn-secondary" onClick={closeModal}>
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        );
+                    }}
+                </Form>
             </Modal>
         </div>
     );
