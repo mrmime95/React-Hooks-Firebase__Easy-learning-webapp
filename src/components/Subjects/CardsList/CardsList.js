@@ -1,155 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import FlipCard from '../../shared/FlipCard/FlipCard';
 import Modal from '../../shared/Modal/Modal';
+import Form from '../../shared/Form/Form';
 import './CardsList.css';
 const packages = [
-    {
-        title: 'konyha',
-        id: 0,
-        cards: [
-            {
-                front: {
-                    word: 'konyha',
-                    image:
-                        'https://wickes.scene7.com/is/image/travisperkins/2018-Wickes-Ohio-Cream-IMG-Main-RESP?wid=824&hei=618&fit=crop',
-                    example: 'A konyhaban szoktam enni',
-                },
-                back: {
-                    word: 'kitchen',
-                    image:
-                        'https://www.bunnings.com.au/-/media/au/diy-advice-house/articles/kitchen/kitchen%20ideas/why-you-should-buy-a-flat-pack-kitchen/01_22_inspirationhouse_kitchen_3_header.jpg',
-                    example: 'I am eating at the kitchen',
-                },
-            },
-            {
-                front: {
-                    word: 'konyha',
-                    image:
-                        'https://wickes.scene7.com/is/image/travisperkins/2018-Wickes-Ohio-Cream-IMG-Main-RESP?wid=824&hei=618&fit=crop',
-                    example: 'A konyhaban szoktam enni',
-                },
-                back: {
-                    word: 'kitchen',
-                    image:
-                        'https://www.bunnings.com.au/-/media/au/diy-advice-house/articles/kitchen/kitchen%20ideas/why-you-should-buy-a-flat-pack-kitchen/01_22_inspirationhouse_kitchen_3_header.jpg',
-                    example: 'I am eating at the kitchen',
-                },
-            },
-
-            {
-                front: {
-                    word: 'konyha',
-                    image:
-                        'https://wickes.scene7.com/is/image/travisperkins/2018-Wickes-Ohio-Cream-IMG-Main-RESP?wid=824&hei=618&fit=crop',
-                    example: 'A konyhaban szoktam enni',
-                },
-                back: {
-                    word: 'kitchen',
-                    image:
-                        'https://www.bunnings.com.au/-/media/au/diy-advice-house/articles/kitchen/kitchen%20ideas/why-you-should-buy-a-flat-pack-kitchen/01_22_inspirationhouse_kitchen_3_header.jpg',
-                    example: 'I am eating at the kitchen',
-                },
-            },
-            {
-                front: {
-                    word: 'konyha',
-                    image:
-                        'https://wickes.scene7.com/is/image/travisperkins/2018-Wickes-Ohio-Cream-IMG-Main-RESP?wid=824&hei=618&fit=crop',
-                    example: 'A konyhaban szoktam enni',
-                },
-                back: {
-                    word: 'kitchen',
-                    image:
-                        'https://www.bunnings.com.au/-/media/au/diy-advice-house/articles/kitchen/kitchen%20ideas/why-you-should-buy-a-flat-pack-kitchen/01_22_inspirationhouse_kitchen_3_header.jpg',
-                    example: 'I am eating at the kitchen',
-                },
-            },
-            {
-                front: {
-                    word: 'konyha',
-                    image:
-                        'https://wickes.scene7.com/is/image/travisperkins/2018-Wickes-Ohio-Cream-IMG-Main-RESP?wid=824&hei=618&fit=crop',
-                    example: 'A konyhaban szoktam enni',
-                },
-                back: {
-                    word: 'kitchen',
-                    image:
-                        'https://www.bunnings.com.au/-/media/au/diy-advice-house/articles/kitchen/kitchen%20ideas/why-you-should-buy-a-flat-pack-kitchen/01_22_inspirationhouse_kitchen_3_header.jpg',
-                    example: 'I am eating at the kitchen',
-                },
-            },
-            {
-                front: {
-                    word: 'konyha',
-                    image:
-                        'https://wickes.scene7.com/is/image/travisperkins/2018-Wickes-Ohio-Cream-IMG-Main-RESP?wid=824&hei=618&fit=crop',
-                    example: 'A konyhaban szoktam enni',
-                },
-                back: {
-                    word: 'kitchen',
-                    image:
-                        'https://www.bunnings.com.au/-/media/au/diy-advice-house/articles/kitchen/kitchen%20ideas/why-you-should-buy-a-flat-pack-kitchen/01_22_inspirationhouse_kitchen_3_header.jpg',
-                    example: 'I am eating at the kitchen',
-                },
-            },
-            {
-                front: {
-                    word: 'konyha',
-                    image:
-                        'https://wickes.scene7.com/is/image/travisperkins/2018-Wickes-Ohio-Cream-IMG-Main-RESP?wid=824&hei=618&fit=crop',
-                    example: 'A konyhaban szoktam enni',
-                },
-                back: {
-                    word: 'kitchen',
-                    image:
-                        'https://www.bunnings.com.au/-/media/au/diy-advice-house/articles/kitchen/kitchen%20ideas/why-you-should-buy-a-flat-pack-kitchen/01_22_inspirationhouse_kitchen_3_header.jpg',
-                    example: 'I am eating at the kitchen',
-                },
-            },
-            {
-                front: {
-                    word: 'konyha',
-                    image:
-                        'https://wickes.scene7.com/is/image/travisperkins/2018-Wickes-Ohio-Cream-IMG-Main-RESP?wid=824&hei=618&fit=crop',
-                    example: 'A konyhaban szoktam enni',
-                },
-                back: {
-                    word: 'kitchen',
-                    image:
-                        'https://www.bunnings.com.au/-/media/au/diy-advice-house/articles/kitchen/kitchen%20ideas/why-you-should-buy-a-flat-pack-kitchen/01_22_inspirationhouse_kitchen_3_header.jpg',
-                    example: 'I am eating at the kitchen',
-                },
-            },
-            {
-                front: {
-                    word: 'konyha',
-                    image:
-                        'https://wickes.scene7.com/is/image/travisperkins/2018-Wickes-Ohio-Cream-IMG-Main-RESP?wid=824&hei=618&fit=crop',
-                    example: 'A konyhaban szoktam enni',
-                },
-                back: {
-                    word: 'kitchen',
-                    image:
-                        'https://www.bunnings.com.au/-/media/au/diy-advice-house/articles/kitchen/kitchen%20ideas/why-you-should-buy-a-flat-pack-kitchen/01_22_inspirationhouse_kitchen_3_header.jpg',
-                    example: 'I am eating at the kitchen',
-                },
-            },
-            {
-                front: {
-                    word: 'konyha',
-                    image:
-                        'https://wickes.scene7.com/is/image/travisperkins/2018-Wickes-Ohio-Cream-IMG-Main-RESP?wid=824&hei=618&fit=crop',
-                    example: 'A konyhaban szoktam enni',
-                },
-                back: {
-                    word: 'kitchen',
-                    image:
-                        'https://www.bunnings.com.au/-/media/au/diy-advice-house/articles/kitchen/kitchen%20ideas/why-you-should-buy-a-flat-pack-kitchen/01_22_inspirationhouse_kitchen_3_header.jpg',
-                    example: 'I am eating at the kitchen',
-                },
-            },
-        ],
-    },
     {
         title: 'dd',
         id: 1,
@@ -234,163 +88,6 @@ const packages = [
             },
         ],
     },
-    {
-        title: 'gg',
-        id: 2,
-        cards: [
-            {
-                front: {
-                    word: 'itt nincs kep',
-                    example: 'A konyhaban szoktam enni',
-                },
-                back: {
-                    word: 'there is not picture',
-                    example: 'I am eating at the kitchen',
-                },
-            },
-            {
-                front: {
-                    word: 'itt nincs kep',
-                    example: 'A konyhaban szoktam enni',
-                },
-                back: {
-                    word: 'there is not picture',
-                    example: 'I am eating at the kitchen',
-                },
-            },
-            {
-                front: {
-                    word: 'itt nincs kep',
-                    example: 'A konyhaban szoktam enni',
-                },
-                back: {
-                    word: 'there is not picture',
-                    example: 'I am eating at the kitchen',
-                },
-            },
-
-            {
-                front: {
-                    word: 'itt nincs kep',
-                    example: 'A konyhaban szoktam enni',
-                },
-                back: {
-                    word: 'there is not picture',
-                    example: 'I am eating at the kitchen',
-                },
-            },
-        ],
-    },
-    {
-        title: 'kontttttyha',
-        id: 3,
-        cards: [
-            {
-                front: {
-                    word: 'itt nincs kep es szoveg',
-                },
-                back: {
-                    word: 'there isnot picture and example',
-                },
-            },
-            {
-                front: {
-                    word: 'itt nincs kep es szoveg',
-                },
-                back: {
-                    word: 'there isnot picture and example',
-                },
-            },
-            {
-                front: {
-                    word: 'itt nincs kep es szoveg',
-                },
-                back: {
-                    word: 'there isnot picture and example',
-                },
-            },
-
-            {
-                front: {
-                    word: 'itt nincs kep es szoveg',
-                },
-                back: {
-                    word: 'there isnot picture and example',
-                },
-            },
-            {
-                front: {
-                    word: 'itt nincs kep es szoveg',
-                },
-                back: {
-                    word: 'there isnot picture and example',
-                },
-            },
-            {
-                front: {
-                    word: 'itt nincs kep es szoveg',
-                },
-                back: {
-                    word: 'there isnot picture and example',
-                },
-            },
-        ],
-    },
-    {
-        title: 'kontttttyha',
-        id: 4,
-        cards: [
-            {
-                front: {
-                    word: 'itt nincs kep es szoveg',
-                },
-                back: {
-                    word: 'there isnot picture and example',
-                },
-            },
-            {
-                front: {
-                    word: 'itt nincs kep es szoveg',
-                },
-                back: {
-                    word: 'there isnot picture and example',
-                },
-            },
-            {
-                front: {
-                    word: 'itt nincs kep es szoveg',
-                },
-                back: {
-                    word: 'there isnot picture and example',
-                },
-            },
-
-            {
-                front: {
-                    word: 'itt nincs kep es szoveg',
-                },
-                back: {
-                    word: 'there isnot picture and example',
-                },
-            },
-            {
-                front: {
-                    word: 'itt nincs kep es szoveg',
-                },
-                back: {
-                    word: 'there isnot picture and example',
-                },
-            },
-            {
-                front: {
-                    word: 'itt nincs kep es szoveg',
-                },
-                back: {
-                    word: 'there isnot picture and example',
-                },
-            },
-        ],
-    },
 ];
 
 export default function CardsList(props: { match: RouterMatch, location: RouterLocation }) {
@@ -401,25 +98,55 @@ export default function CardsList(props: { match: RouterMatch, location: RouterL
         <div className="cards-list">
             {props.match.params.id && (
                 <React.Fragment>
-                    {' '}
                     <button
                         className="new-card btn btn-success"
                         onClick={() => setState({ ...state, newCardModalOpen: true })}
                     >
                         <i className="fas fa-plus" />
                     </button>
-                    <Modal isOpen={state.newCardModalOpen} handleClickOutside={closeModal}>
-                        <div>New subject</div>
-                        <form>
-                            <input />
-                            <button>tab navigation</button>
-                            <button>stays</button>
-                            <button>inside</button>
-                            <button>the modal</button>
-                        </form>
+                    <Modal isOpen={state.newCardModalOpen} handleClickOutside={closeModal} className="one-line-modal">
+                        <div className="modal-title">New subject</div>
+                        <Form
+                            initialValues={{
+                                subject: '',
+                            }}
+                            onSubmit={values => {
+                                console.log('New cardSubmiting');
+                                closeModal();
+                            }}
+                        >
+                            {(
+                                { handleChange, handleBlur, values, setFieldValue, setFieldTouched, errors, touched },
+                                FormRow
+                            ) => {
+                                return (
+                                    <div className="modal-form">
+                                        <div className="form-group">
+                                            <input
+                                                name="subject"
+                                                value={values.subject}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                type="text"
+                                                className="form-control"
+                                                placeholder="New subject"
+                                            />
+                                        </div>
+                                        <div className="modal-buttons">
+                                            <button type="submit" className="btn btn-primary">
+                                                Submit
+                                            </button>
+                                            <button type="button" className="btn btn-secondary" onClick={closeModal}>
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    </div>
+                                );
+                            }}
+                        </Form>
                     </Modal>
                     {packages
-                        .find(pack => pack.id.toString() === props.match.params.id.toString())
+                        .find(pack => pack.id.toString() === '1')
                         .cards.map((card, index) => {
                             return (
                                 <FlipCard workWithHover front={card.front} back={card.back} key={`Flipcard${index}`} />

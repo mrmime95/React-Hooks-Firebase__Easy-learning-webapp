@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './Checkbox.css';
 import Octicon, { Check } from '@githubprimer/octicons-react';
 export default function Checkbox({ className, label, name, handleChange, handleBlur, checked }) {

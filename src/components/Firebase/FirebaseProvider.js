@@ -49,7 +49,6 @@ export default class FirebaseProvider extends Component {
         values: {
             firstName: string,
             lastName: string,
-            username: string,
             email: string,
             birthDate: string,
         }
@@ -58,9 +57,8 @@ export default class FirebaseProvider extends Component {
             .set({
                 firstName: values.firstName,
                 lastName: values.lastName,
-                username: values.username,
                 email: values.email,
-                birthDate: values.birthDate,
+                birthDate: values.birthDate ? values.birthDate : null,
             })
             .then(() => {
                 console.log('User Saved');
@@ -70,7 +68,42 @@ export default class FirebaseProvider extends Component {
             });
     };
 
-    createNewSubject = () => {};
+    createNewSubject = (subjectName: string) => {
+        db.collection('subjects')
+            .add({
+                subjectName: subjectName,
+                userId: this.state.user.id,
+            })
+            .then(() => {
+                console.log('subject saved');
+            })
+            .catch(error => {
+                console.log('Got error: ', error);
+            });
+    };
+    createNewPackage = (subjectId: string, values: { packageName: string, public: boolean }) => {
+        db.collection('packages')
+            .add({
+                packageName: values.packageName,
+                public: values.public,
+                subjectId,
+            })
+            .then(() => {
+                console.log('package saved');
+            })
+            .catch(error => {
+                console.log('Got error: ', error);
+            });
+    };
+
+    getSubjectsByCurrentUser = () => {
+        const ref = db.collection('subjects');
+        return ref.where('userId', '==', this.state.user.id).get();
+    };
+    getPackagesBySubjectId = (subjectId: string) => {
+        const ref = db.collection('packages');
+        return ref.where('subjectId', '==', subjectId).get();
+    };
 
     render() {
         return (
@@ -82,6 +115,10 @@ export default class FirebaseProvider extends Component {
                     doSignOut: this.doSignOut,
                     authUser: this.authUser,
                     createNewUser: this.createNewUser,
+                    createNewSubject: this.createNewSubject,
+                    createNewPackage: this.createNewPackage,
+                    getSubjectsByCurrentUser: this.getSubjectsByCurrentUser,
+                    getPackagesBySubjectId: this.getPackagesBySubjectId,
                 }}
             >
                 {this.props.children}

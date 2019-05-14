@@ -1,0 +1,100 @@
+@import '../../../utils.scss';
+
+.tooltip-container {
+    position: relative;
+    .tooltip {
+        opacity: 0;
+        visibility: hidden;
+        position: absolute;
+        font-family: Lato;
+        background-color: #fff;
+        z-index: 2;
+        font-size: 11px;
+        line-height: 1.2;
+        color: $color-text-secondary;
+        text-transform: uppercase;
+        padding: 10px;
+        box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
+        transition: all 0.35s ease;
+        white-space: nowrap;
+        &.top,
+        &.top-right {
+            top: 0;
+            bottom: auto;
+            right: 0;
+            left: auto;
+        }
+        &.top-left {
+            top: 0;
+            bottom: auto;
+            right: auto;
+            left: 0;
+        }
+        &.bottom,
+        &.bottom-right {
+            top: auto;
+            bottom: 0;
+            right: 0;
+            left: auto;
+        }
+        &.bottom-left {
+            top: auto;
+            bottom: 0;
+            right: auto;
+            left: 0;
+        }
+        &.right,
+        &.right-top {
+            top: 0;
+            bottom: auto;
+            right: 0;
+            left: auto;
+        }
+        &.right-bottom {
+            top: auto;
+            bottom: 0;
+            right: 0;
+            left: auto;
+        }
+        &.left,
+        &.left-top {
+            top: 0;
+            bottom: auto;
+            right: auto;
+            left: 0;
+        }
+        &.left-bottom {
+            top: auto;
+            bottom: 0;
+            right: auto;
+            left: 0;
+        }
+    }
+    &:hover,
+    &:focus {
+        .tooltip {
+            opacity: 1;
+            visibility: visible;
+            &.top,
+            &.top-right,
+            &.top-left {
+                transform: translateY(-100%);
+            }
+            &.bottom,
+            &.bottom-right,
+            &.bottom-left {
+                transform: translateY(100%);
+            }
+            &.right,
+            &.right-top,
+            &.right-bottom {
+                transform: translateX(100%);
+            }
+            &.left,
+            &.left-top,
+            &.left-bottom {
+                transform: translateX(-100%);
+            }
+        }
+    }
+}

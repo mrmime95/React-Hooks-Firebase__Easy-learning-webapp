@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import Modal from '../../shared/Modal/Modal';
-import ReactTooltip from 'react-tooltip';
+import { SubjectsContext } from '../SubjectsProvider/SubjectsProvider';
+import Form from '../../shared/Form/Form';
 import './ListView.css';
 
 export default function ListView(props: {
@@ -11,16 +12,20 @@ export default function ListView(props: {
 }) {
     return (
         <div className="list">
-            {props.data.map((subject, index) => {
-                return (
-                    <ListSubject
-                        baseRoute={props.baseRoute}
-                        opened={props.opened}
-                        subject={subject}
-                        key={`listSubject${index}`}
-                    />
-                );
-            })}
+            {props.data ? (
+                props.data.map((subject, index) => {
+                    return (
+                        <ListSubject
+                            baseRoute={props.baseRoute}
+                            opened={props.opened}
+                            subject={subject}
+                            key={`listSubject${index}`}
+                        />
+                    );
+                })
+            ) : (
+                <div>Loading...</div>
+            )}
         </div>
     );
 }
@@ -37,12 +42,16 @@ function ListSubject(props: {
         uploadModalOpen: false,
         publicPackage: false,
     });
+    const context = useContext(SubjectsContext);
     return (
         <div className={`list-subject ${state.open && 'open'}`}>
             <div className="title">
                 <div
                     className="text"
                     onClick={() => {
+                        if (!state.open && !props.subject.packages) {
+                            context.getPackagesBySubjectId(props.subject.id);
+                        }
                         setState({ ...state, open: !state.open });
                     }}
                 >
@@ -59,32 +68,70 @@ function ListSubject(props: {
                 </div>
             </div>
             <div className="packages">
-                {props.subject.packages.map((pack, index) => {
-                    return <ListPackage baseRoute={props.baseRoute} pack={pack} key={`ListPackage${index}`} />;
-                })}
+                {context.packages[props.subject.id] ? (
+                    context.packages[props.subject.id].map((pack, index) => {
+                        return <ListPackage baseRoute={props.baseRoute} pack={pack} key={`ListPackage${index}`} />;
+                    })
+                ) : (
+                    <div>Loading...</div>
+                )}
             </div>
 
             <Modal isOpen={state.newPackageModalOpen} handleClickOutside={closeModal} className="one-line-modal">
-                <div>New package</div>
-                <form className="modal-form">
-                    <div className="form-group">
-                        <input type="text" className="form-control" placeholder="New package" />
-                    </div>
-                    <div className="checkbox">
-                        <input className="form-check-input" type="checkbox" value="" id="public" />
-                        <label className="form-check-label" htmlFor="public">
-                            Public
-                        </label>
-                    </div>
-                    <div className="modal-buttons">
-                        <button type="submit" className="btn btn-primary">
-                            Submit
-                        </button>
-                        <button type="button" className="btn btn-secondary" onClick={closeModal}>
-                            Cancel
-                        </button>
-                    </div>
-                </form>
+                <div className="modal-title">New package</div>
+                <Form
+                    initialValues={{
+                        packageName: '',
+                        public: false,
+                    }}
+                    onSubmit={values => {
+                        context.createNewPackageForSubject(props.subject.id, values);
+                        closeModal();
+                    }}
+                >
+                    {(
+                        { handleChange, handleBlur, values, setFieldValue, setFieldTouched, errors, touched },
+                        FormRow
+                    ) => {
+                        return (
+                            <div className="modal-form">
+                                <div className="form-group">
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="New package"
+                                        name="packageName"
+                                        value={values.packageName}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                </div>
+                                <div className="checkbox">
+                                    <input
+                                        className="form-check-input"
+                                        type="checkbox"
+                                        value={values.public}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        id="public"
+                                        name="public"
+                                    />
+                                    <label className="form-check-label" htmlFor="public">
+                                        Public
+                                    </label>
+                                </div>
+                                <div className="modal-buttons">
+                                    <button type="submit" className="btn btn-primary">
+                                        Submit
+                                    </button>
+                                    <button type="button" className="btn btn-secondary" onClick={closeModal}>
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        );
+                    }}
+                </Form>
             </Modal>
             <Modal isOpen={state.setSubjectNameModalOpen} handleClickOutside={closeModal} className="one-line-modal">
                 <div>Set subject name</div>

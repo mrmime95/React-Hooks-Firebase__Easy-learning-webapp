@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import Form from '../shared/Form/Form';
 import { FirebaseContext } from '../Firebase/FirebaseProvider';
 import { Redirect, withRouter } from 'react-router-dom';

@@ -1,51 +1,23 @@
-import React, { useState } from 'react';
-import { FirebaseContext } from '../Firebase/FirebaseProvider';
+import React, { useState, useContext } from 'react';
 import ListView from './ListView/ListView';
 import './Subjects.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Form from '../shared/Form/Form';
 import Modal from '../shared/Modal/Modal';
+import SubjectsProvider, { SubjectsContext } from './SubjectsProvider/SubjectsProvider';
 
 import CardsList from './CardsList/CardsList';
 
-const data = [
-    {
-        title: 'angol',
-        id: 0,
-        packages: [
-            { title: 'konyha', id: 0 },
-            { title: 'dd', id: 1 },
-            { title: 'gg', id: 2 },
-            { title: 'kontttttyha', id: 3 },
-            { title: 'tt', id: 4 },
-        ],
-    },
-    {
-        title: 'matek',
-        id: 1,
-        packages: [
-            { title: 'konyha', id: 0 },
-            { title: 'dd', id: 1 },
-            { title: 'gg', id: 2 },
-            { title: 'kontttttyha', id: 3 },
-            { title: 'tt', id: 4 },
-        ],
-    },
-
-    {
-        title: 'roman',
-        id: 2,
-        packages: [{ title: 'konyha', id: 0 }],
-    },
-
-    {
-        title: 'nemet',
-        id: 3,
-        packages: [{ title: 'kontttttyha', id: 3 }, { title: 'tt', id: 4 }],
-    },
-];
-
 export default function Subjects(props) {
+    return (
+        <SubjectsProvider>
+            <SubjectsContent {...props} />
+        </SubjectsProvider>
+    );
+}
+
+function SubjectsContent(props) {
+    const context = useContext(SubjectsContext);
     const [state, setState] = useState({ newSubjectModalOpen: false });
     return (
         <div className="subject">
@@ -56,7 +28,7 @@ export default function Subjects(props) {
                 >
                     <i className="fas fa-plus" />
                 </button>
-                <ListView data={data} baseRoute={props.match.url} />
+                <ListView data={context.subjects} baseRoute={props.match.url} />
             </div>
             <div className="cards">
                 <Router>
@@ -71,6 +43,10 @@ export default function Subjects(props) {
                 <Form
                     initialValues={{
                         subject: '',
+                    }}
+                    onSubmit={values => {
+                        context.createNewSubject(values.subject);
+                        closeModal();
                     }}
                 >
                     {(
@@ -91,7 +67,7 @@ export default function Subjects(props) {
                                     />
                                 </div>
                                 <div className="modal-buttons">
-                                    <button type="submit" className="btn btn-primary" onClick={() => {}}>
+                                    <button type="submit" className="btn btn-primary">
                                         Submit
                                     </button>
                                     <button type="button" className="btn btn-secondary" onClick={closeModal}>
