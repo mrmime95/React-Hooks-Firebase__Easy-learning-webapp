@@ -31,12 +31,7 @@ function SubjectsContent(props) {
                 <ListView data={context.subjects} baseRoute={props.match.url} />
             </div>
             <div className="cards">
-                <Router>
-                    <Switch location={props.location}>
-                        <Route path={`${props.match.path}/:id`} component={CardsList} />
-                        <Route path={`${props.match.path}`} component={CardsList} />
-                    </Switch>
-                </Router>
+                <CardsList />
             </div>
             <Modal isOpen={state.newSubjectModalOpen} handleClickOutside={closeModal} className="one-line-modal">
                 <div className="modal-title">New subject</div>
@@ -46,6 +41,7 @@ function SubjectsContent(props) {
                     }}
                     onSubmit={values => {
                         context.createNewSubject(values.subject);
+                        context.getSubjectsByCurrentUser();
                         closeModal();
                     }}
                 >

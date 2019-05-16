@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import FlipCard from '../../shared/FlipCard/FlipCard';
 import Modal from '../../shared/Modal/Modal';
 import Form from '../../shared/Form/Form';
+import { SubjectsContext } from '../SubjectsProvider/SubjectsProvider';
 import './CardsList.css';
 const packages = [
     {
@@ -90,13 +91,15 @@ const packages = [
     },
 ];
 
-export default function CardsList(props: { match: RouterMatch, location: RouterLocation }) {
+export default function CardsList() {
     const [state, setState] = useState({
         newCardModalOpen: false,
     });
+    const context = useContext(SubjectsContext);
+    console.log(context.cardsOfPackage);
     return (
         <div className="cards-list">
-            {props.match.params.id && (
+            {context.selectedPackageId !== '' && (
                 <React.Fragment>
                     <button
                         className="new-card btn btn-success"
@@ -104,11 +107,22 @@ export default function CardsList(props: { match: RouterMatch, location: RouterL
                     >
                         <i className="fas fa-plus" />
                     </button>
-                    <Modal isOpen={state.newCardModalOpen} handleClickOutside={closeModal} className="one-line-modal">
-                        <div className="modal-title">New subject</div>
+                    <Modal isOpen={state.newCardModalOpen} handleClickOutside={closeModal} className="big-modal">
+                        <div className="modal-title">New card</div>
                         <Form
                             initialValues={{
-                                subject: '',
+                                front: {
+                                    image: '',
+                                    imageUrl: '',
+                                    word: '',
+                                    example: '',
+                                },
+                                back: {
+                                    image: '',
+                                    imageUrl: '',
+                                    word: '',
+                                    example: '',
+                                },
                             }}
                             onSubmit={values => {
                                 console.log('New cardSubmiting');
@@ -121,16 +135,110 @@ export default function CardsList(props: { match: RouterMatch, location: RouterL
                             ) => {
                                 return (
                                     <div className="modal-form">
-                                        <div className="form-group">
-                                            <input
-                                                name="subject"
-                                                value={values.subject}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                type="text"
-                                                className="form-control"
-                                                placeholder="New subject"
-                                            />
+                                        <div className="adder front">
+                                            <div className="inputs">
+                                                <div className="adder-image">
+                                                    <div className="form-group">
+                                                        <input
+                                                            name="front.image"
+                                                            value={values.front.image}
+                                                            onChange={handleChange}
+                                                            onBlur={handleBlur}
+                                                            type="file"
+                                                            className="form-control"
+                                                            placeholder="Upload a picture"
+                                                        />
+                                                    </div>
+                                                    /
+                                                    <div className="form-group">
+                                                        <input
+                                                            name="front.imageUrl"
+                                                            value={values.front.imageUrl}
+                                                            onChange={handleChange}
+                                                            onBlur={handleBlur}
+                                                            type="text"
+                                                            className="form-control"
+                                                            placeholder="Or add an Url"
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="form-group">
+                                                    <input
+                                                        name="front.word"
+                                                        value={values.front.word}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        type="text"
+                                                        className="form-control"
+                                                        placeholder="Front word/expression"
+                                                    />
+                                                </div>
+                                                <div className="form-group">
+                                                    <input
+                                                        name="front.example"
+                                                        value={values.front.example}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        type="text"
+                                                        className="form-control"
+                                                        placeholder="Front exapmle"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="preview">LOFASZ</div>
+                                        </div>
+                                        <hr />
+                                        <div className="adder back">
+                                            <div className="inputs">
+                                                <div className="adder-image">
+                                                    <div className="form-group">
+                                                        <input
+                                                            name="back.image"
+                                                            value={values.back.image}
+                                                            onChange={handleChange}
+                                                            onBlur={handleBlur}
+                                                            type="file"
+                                                            className="form-control"
+                                                            placeholder="Upload a picture"
+                                                        />
+                                                    </div>
+                                                    /
+                                                    <div className="form-group">
+                                                        <input
+                                                            name="back.imageUrl"
+                                                            value={values.back.imageUrl}
+                                                            onChange={handleChange}
+                                                            onBlur={handleBlur}
+                                                            type="text"
+                                                            className="form-control"
+                                                            placeholder="Or add an Url"
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="form-group">
+                                                    <input
+                                                        name="back.word"
+                                                        value={values.back.word}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        type="text"
+                                                        className="form-control"
+                                                        placeholder="Back word/expression"
+                                                    />
+                                                </div>
+                                                <div className="form-group">
+                                                    <input
+                                                        name="back.example"
+                                                        value={values.back.example}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        type="text"
+                                                        className="form-control"
+                                                        placeholder="Back example"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="preview">LOFASZ</div>
                                         </div>
                                         <div className="modal-buttons">
                                             <button type="submit" className="btn btn-primary">

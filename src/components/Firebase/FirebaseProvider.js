@@ -104,6 +104,10 @@ export default class FirebaseProvider extends Component {
         const ref = db.collection('packages');
         return ref.where('subjectId', '==', subjectId).get();
     };
+    getCardsByPackageId = (cardId: string) => {
+        const ref = db.collection('cards');
+        return ref.where('cardId', '==', cardId).get();
+    };
 
     render() {
         return (
@@ -119,6 +123,7 @@ export default class FirebaseProvider extends Component {
                     createNewPackage: this.createNewPackage,
                     getSubjectsByCurrentUser: this.getSubjectsByCurrentUser,
                     getPackagesBySubjectId: this.getPackagesBySubjectId,
+                    getCardsByPackageId: this.getCardsByPackageId,
                 }}
             >
                 {this.props.children}

@@ -7,25 +7,11 @@ export default function SubjectsProvider(props) {
     const [state, setState] = useState({
         subjects: null,
         packages: {},
+        selectedPackageId: '',
+        cardsOfPackage: [],
     });
     const fireContext = useContext(FirebaseContext);
-    useEffect(() => {
-        fireContext
-            .getSubjectsByCurrentUser()
-            .then(querySnapshot => {
-                const subjects = [];
-                querySnapshot.forEach(doc => {
-                    subjects.push({
-                        id: doc.id,
-                        title: doc.data().subjectName,
-                    });
-                });
-                setState({ ...state, subjects });
-            })
-            .catch(function(error) {
-                console.log('Error getting documents: ', error);
-            });
-    }, []);
+    useEffect(getSubjectsByCurrentUser, []);
     return (
         <SubjectsContext.Provider
             value={{
@@ -33,11 +19,40 @@ export default function SubjectsProvider(props) {
                 createNewSubject,
                 createNewPackageForSubject,
                 getPackagesBySubjectId,
+                getSubjectsByCurrentUser,
+                setSelectedPackage,
             }}
         >
             {props.children}
         </SubjectsContext.Provider>
     );
+    function setSelectedPackage(packageId) {
+        setState({ ...state, selectedPackageId: packageId, cardsOfPackage: [] });
+        fireContext
+            .getCardsByPackageId(packageId)
+            .then(querySnapshot => {
+                const cardsOfPackage = [];
+                querySnapshot.forEach(doc => {
+                    cardsOfPackage.push({
+                        id: doc.id,
+                        front: {
+                            word: doc.data().front.word,
+                            image: doc.data().front.image,
+                            example: doc.data().front.example,
+                        },
+                        back: {
+                            word: doc.data().back.word,
+                            image: doc.data().back.image,
+                            example: doc.data().back.example,
+                        },
+                    });
+                });
+                setState({ ...state, selectedPackageId: packageId, cardsOfPackage });
+            })
+            .catch(function(error) {
+                console.log('Error getting documents: ', error);
+            });
+    }
     function createNewSubject(subject: string) {
         return fireContext.createNewSubject(subject);
     }
@@ -59,6 +74,24 @@ export default function SubjectsProvider(props) {
                     });
                 });
                 setState({ ...state, packages });
+            })
+            .catch(function(error) {
+                console.log('Error getting documents: ', error);
+            });
+    }
+
+    function getSubjectsByCurrentUser() {
+        fireContext
+            .getSubjectsByCurrentUser()
+            .then(querySnapshot => {
+                const subjects = [];
+                querySnapshot.forEach(doc => {
+                    subjects.push({
+                        id: doc.id,
+                        title: doc.data().subjectName,
+                    });
+                });
+                setState({ ...state, subjects });
             })
             .catch(function(error) {
                 console.log('Error getting documents: ', error);

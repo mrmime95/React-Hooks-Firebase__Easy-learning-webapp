@@ -10,3 +10,22 @@
         margin: 20px 15px;
     }
 }
+.modal-root .modal-container .modal-content {
+    width: 500px;
+    .modal-form {
+        .adder {
+            display: flex;
+            justify-content: space-between;
+            &.front {
+            }
+            &.back {
+            }
+            .inputs {
+                width: 60%;
+            }
+            .preview {
+                width: 40%;
+            }
+        }
+    }
+}

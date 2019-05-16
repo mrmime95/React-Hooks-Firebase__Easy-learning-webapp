@@ -41,6 +41,7 @@ function ListSubject(props: {
         setSubjectNameModalOpen: false,
         uploadModalOpen: false,
         publicPackage: false,
+        openedPackage: '',
     });
     const context = useContext(SubjectsContext);
     return (
@@ -70,7 +71,22 @@ function ListSubject(props: {
             <div className="packages">
                 {context.packages[props.subject.id] ? (
                     context.packages[props.subject.id].map((pack, index) => {
-                        return <ListPackage baseRoute={props.baseRoute} pack={pack} key={`ListPackage${index}`} />;
+                        return (
+                            <div
+                                className="pack"
+                                onClick={() => {
+                                    context.setSelectedPackage(pack.id);
+                                }}
+                                key={`package${pack.id}`}
+                            >
+                                {pack.id === context.selectedPackageId ? (
+                                    <i className="far fa-eye" />
+                                ) : (
+                                    <i className="fas fa-archive" />
+                                )}
+                                <span className="text">{pack.title}</span>
+                            </div>
+                        );
                     })
                 ) : (
                     <div>Loading...</div>
@@ -86,6 +102,7 @@ function ListSubject(props: {
                     }}
                     onSubmit={values => {
                         context.createNewPackageForSubject(props.subject.id, values);
+                        context.getPackagesBySubjectId(props.subject.id);
                         closeModal();
                     }}
                 >
@@ -149,7 +166,6 @@ function ListSubject(props: {
                     </div>
                 </form>
             </Modal>
-
             <Modal isOpen={state.uploadModalOpen} handleClickOutside={closeModal}>
                 <div>Set subject name</div>
                 <form>
@@ -179,7 +195,7 @@ function ListPackage(props: { baseRoute: string, pack: { title: string, id: numb
     });
 
     return (
-        <Link
+        <div
             to={`${props.baseRoute}/${props.pack.id}`}
             className="pack"
             onClick={e => {
@@ -188,6 +204,6 @@ function ListPackage(props: { baseRoute: string, pack: { title: string, id: numb
         >
             {state.open ? <i className="far fa-eye" /> : <i className="fas fa-archive" />}
             <span className="text">{props.pack.title}</span>
-        </Link>
+        </div>
     );
 }
