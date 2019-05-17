@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import Modal from '../../shared/Modal/Modal';
 import { SubjectsContext } from '../SubjectsProvider/SubjectsProvider';
+import { CardListContext } from '../CardListProvider/CardListProvider';
 import Form from '../../shared/Form/Form';
 import './ListView.css';
 
@@ -44,6 +45,7 @@ function ListSubject(props: {
         openedPackage: '',
     });
     const context = useContext(SubjectsContext);
+    const cardListContext = useContext(CardListContext);
     return (
         <div className={`list-subject ${state.open && 'open'}`}>
             <div className="title">
@@ -76,6 +78,7 @@ function ListSubject(props: {
                                 className="pack"
                                 onClick={() => {
                                     context.setSelectedPackage(pack.id);
+                                    cardListContext.getCardsByPackageId(pack.id);
                                 }}
                                 key={`package${pack.id}`}
                             >
@@ -187,23 +190,4 @@ function ListSubject(props: {
             publicPackage: false,
         });
     }
-}
-
-function ListPackage(props: { baseRoute: string, pack: { title: string, id: number } }) {
-    const [state, setState] = useState({
-        open: false,
-    });
-
-    return (
-        <div
-            to={`${props.baseRoute}/${props.pack.id}`}
-            className="pack"
-            onClick={e => {
-                setState({ ...state, open: !state.open });
-            }}
-        >
-            {state.open ? <i className="far fa-eye" /> : <i className="fas fa-archive" />}
-            <span className="text">{props.pack.title}</span>
-        </div>
-    );
 }

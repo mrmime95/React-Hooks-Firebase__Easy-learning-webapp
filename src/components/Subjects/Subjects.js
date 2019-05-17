@@ -5,13 +5,16 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Form from '../shared/Form/Form';
 import Modal from '../shared/Modal/Modal';
 import SubjectsProvider, { SubjectsContext } from './SubjectsProvider/SubjectsProvider';
+import CardListProvider from './CardListProvider/CardListProvider';
 
 import CardsList from './CardsList/CardsList';
 
 export default function Subjects(props) {
     return (
         <SubjectsProvider>
-            <SubjectsContent {...props} />
+            <CardListProvider>
+                <SubjectsContent {...props} />
+            </CardListProvider>
         </SubjectsProvider>
     );
 }

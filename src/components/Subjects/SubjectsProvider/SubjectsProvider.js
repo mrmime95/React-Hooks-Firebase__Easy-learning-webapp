@@ -8,7 +8,6 @@ export default function SubjectsProvider(props) {
         subjects: null,
         packages: {},
         selectedPackageId: '',
-        cardsOfPackage: [],
     });
     const fireContext = useContext(FirebaseContext);
     useEffect(getSubjectsByCurrentUser, []);
@@ -27,39 +26,38 @@ export default function SubjectsProvider(props) {
         </SubjectsContext.Provider>
     );
     function setSelectedPackage(packageId) {
-        setState({ ...state, selectedPackageId: packageId, cardsOfPackage: [] });
-        fireContext
-            .getCardsByPackageId(packageId)
-            .then(querySnapshot => {
-                const cardsOfPackage = [];
-                querySnapshot.forEach(doc => {
-                    cardsOfPackage.push({
-                        id: doc.id,
-                        front: {
-                            word: doc.data().front.word,
-                            image: doc.data().front.image,
-                            example: doc.data().front.example,
-                        },
-                        back: {
-                            word: doc.data().back.word,
-                            image: doc.data().back.image,
-                            example: doc.data().back.example,
-                        },
-                    });
-                });
-                setState({ ...state, selectedPackageId: packageId, cardsOfPackage });
-            })
-            .catch(function(error) {
-                console.log('Error getting documents: ', error);
-            });
+        setState({ ...state, selectedPackageId: packageId });
+        console.log('setSelectedPackage', packageId);
     }
     function createNewSubject(subject: string) {
-        return fireContext.createNewSubject(subject);
+        return fireContext.db
+            .collection('subjects')
+            .add({
+                subjectName: subject,
+                userId: fireContext.user.id,
+            })
+            .then(() => {
+                console.log('subject saved');
+            })
+            .catch(error => {
+                console.log('Got error: ', error);
+            });
     }
     function createNewPackageForSubject(sibjectId: string, values: { packageName: string, public: boolean }) {
-        return fireContext.createNewPackage(sibjectId, values);
+        return fireContext.db
+            .collection('packages')
+            .add({
+                packageName: values.packageName,
+                public: values.public,
+                subjectId: sibjectId,
+            })
+            .then(() => {
+                console.log('package saved');
+            })
+            .catch(error => {
+                console.log('Got error: ', error);
+            });
     }
-
     function getPackagesBySubjectId(subjectId: string) {
         fireContext
             .getPackagesBySubjectId(subjectId)

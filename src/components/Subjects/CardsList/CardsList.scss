@@ -7,10 +7,11 @@
     flex-wrap: wrap;
     .flip-card {
         width: calc(100% / 3 - 30px);
+        max-width: 250px;
         margin: 20px 15px;
     }
 }
-.modal-root .modal-container .modal-content {
+.modal-content {
     width: 500px;
     .modal-form {
         .adder {
@@ -21,10 +22,18 @@
             &.back {
             }
             .inputs {
-                width: 60%;
+                width: 58%;
+                .adder-image {
+                    .image {
+                        margin: 0;
+                    }
+                }
             }
             .preview {
-                width: 40%;
+                width: 38%;
+                .flip-card {
+                    max-width: 100%;
+                }
             }
         }
     }
