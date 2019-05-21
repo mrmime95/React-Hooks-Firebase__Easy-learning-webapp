@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 
 import { FirebaseContext } from '../Firebase/FirebaseProvider';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 
 function Login() {
     const [state, setState] = useState({
@@ -57,6 +57,9 @@ function Login() {
                 >
                     Login
                 </button>
+                <Link to="/signup" className="btn btn-primary">
+                    Sign Up
+                </Link>
             </form>
         </div>
     );

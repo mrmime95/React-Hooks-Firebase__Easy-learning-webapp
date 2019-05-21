@@ -11,10 +11,22 @@ export default function MultiSelect(props: {
     placeholder?: string,
     isDisabled: boolean,
 }) {
-    return (
+    return props.options ? (
         <Select
             id={props.name}
             options={props.options}
+            isMulti
+            onChange={handleChange}
+            onBlur={handleBlur}
+            value={props.value}
+            className={props.className && props.className}
+            placeholder={props.placeholder && props.placeholder}
+            isDisabled={props.isDisabled}
+        />
+    ) : (
+        <Select
+            id={props.name}
+            isLoading
             isMulti
             onChange={handleChange}
             onBlur={handleBlur}

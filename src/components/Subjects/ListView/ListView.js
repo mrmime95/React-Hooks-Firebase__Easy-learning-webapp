@@ -2,7 +2,8 @@ import React, { useState, useContext } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import Modal from '../../shared/Modal/Modal';
 import { SubjectsContext } from '../SubjectsProvider/SubjectsProvider';
-import { CardListContext } from '../CardListProvider/CardListProvider';
+import { CardListContext } from '../CardsList/CardListProvider/CardListProvider';
+import WithTooltip from '../../shared/WithTooltip/WithTooltip';
 import Form from '../../shared/Form/Form';
 import './ListView.css';
 
@@ -39,16 +40,16 @@ function ListSubject(props: {
     const [state, setState] = useState({
         open: false,
         newPackageModalOpen: false,
-        setSubjectNameModalOpen: false,
         uploadModalOpen: false,
         publicPackage: false,
+        editSubjectModalOpen: false,
         openedPackage: '',
     });
     const context = useContext(SubjectsContext);
     const cardListContext = useContext(CardListContext);
     return (
         <div className={`list-subject ${state.open && 'open'}`}>
-            <div className="title">
+            <div className="subject-element">
                 <div
                     className="text"
                     onClick={() => {
@@ -59,14 +60,20 @@ function ListSubject(props: {
                     }}
                 >
                     {state.open ? <i className="far fa-folder-open" /> : <i className="far fa-folder" />}
-                    <span className="text">{props.subject.title}</span>
+                    <p className="subject-name">{props.subject.title}</p>
                 </div>
                 <div className="subject-options">
                     <button className="btn btn-dark" onClick={() => setState({ ...state, newPackageModalOpen: true })}>
                         <i className="fas fa-plus" />
                     </button>
-                    <button className="btn btn-dark" data-for={`moreOptions${props.subject.id}`} data-tip>
-                        <i className="fas fa-ellipsis-h" />
+                    <button className="btn btn-dark" onClick={() => setState({ ...state, editSubjectModalOpen: true })}>
+                        <i className="far fa-edit" />
+                    </button>
+                    <button className="btn btn-dark" onClick={() => setState({ ...state, editSubjectModalOpen: true })}>
+                        <i className="far fa-trash-alt" />
+                    </button>
+                    <button className="btn btn-dark">
+                        <i className="fas fa-file-upload" />
                     </button>
                 </div>
             </div>
@@ -74,21 +81,13 @@ function ListSubject(props: {
                 {context.packages[props.subject.id] ? (
                     context.packages[props.subject.id].map((pack, index) => {
                         return (
-                            <div
-                                className="pack"
-                                onClick={() => {
-                                    context.setSelectedPackage(pack.id);
-                                    cardListContext.getCardsByPackageId(pack.id);
-                                }}
+                            <ListPacks
+                                pack={pack}
+                                context={context}
+                                onClick={() => cardListContext.getCardsByPackageId(pack.id)}
+                                subjectId={props.subject.id}
                                 key={`package${pack.id}`}
-                            >
-                                {pack.id === context.selectedPackageId ? (
-                                    <i className="far fa-eye" />
-                                ) : (
-                                    <i className="fas fa-archive" />
-                                )}
-                                <span className="text">{pack.title}</span>
-                            </div>
+                            />
                         );
                     })
                 ) : (
@@ -153,31 +152,46 @@ function ListSubject(props: {
                     }}
                 </Form>
             </Modal>
-            <Modal isOpen={state.setSubjectNameModalOpen} handleClickOutside={closeModal} className="one-line-modal">
-                <div>Set subject name</div>
-                <form className="modal-form">
-                    <div className="form-group">
-                        <input type="text" className="form-control" placeholder="Set subject name" />
-                    </div>
-                    <div className="modal-buttons">
-                        <button type="submit" className="btn btn-primary">
-                            Submit
-                        </button>
-                        <button type="button" className="btn btn-secondary" onClick={closeModal}>
-                            Cancel
-                        </button>
-                    </div>
-                </form>
-            </Modal>
-            <Modal isOpen={state.uploadModalOpen} handleClickOutside={closeModal}>
-                <div>Set subject name</div>
-                <form>
-                    <input />
-                    <button>tab navigation</button>
-                    <button>stays</button>
-                    <button>inside</button>
-                    <button>the modal</button>
-                </form>
+            <Modal isOpen={state.editSubjectModalOpen} handleClickOutside={closeModal} className="one-line-modal">
+                <div className="modal-title">Edit {props.subject.title} subject</div>
+                <Form
+                    initialValues={{
+                        subject: props.subject.title,
+                    }}
+                    onSubmit={values => {
+                        context.updateSubject(props.subject.id, values);
+                        closeModal();
+                    }}
+                >
+                    {(
+                        { handleChange, handleBlur, values, setFieldValue, setFieldTouched, errors, touched },
+                        FormRow
+                    ) => {
+                        return (
+                            <div className="modal-form">
+                                <div className="form-group">
+                                    <input
+                                        name="subject"
+                                        value={values.subject}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="Edit subject"
+                                    />
+                                </div>
+                                <div className="modal-buttons">
+                                    <button type="submit" className="btn btn-primary">
+                                        Submit
+                                    </button>
+                                    <button type="button" className="btn btn-secondary" onClick={closeModal}>
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        );
+                    }}
+                </Form>
             </Modal>
         </div>
     );
@@ -186,8 +200,112 @@ function ListSubject(props: {
             ...state,
             newPackageModalOpen: false,
             setSubjectNameModalOpen: false,
-            uploadModalOpen: false,
             publicPackage: false,
+            editSubjectModalOpen: false,
+        });
+    }
+}
+
+function ListPacks(props: {
+    context: any,
+    onClick: string => {},
+    pack: { id: string, title: string, public: boolean },
+    subjectId: string,
+}) {
+    const { context, pack } = props;
+    const [state, setState] = useState({
+        editPackageModalOpen: false,
+    });
+    return (
+        <div className="pack">
+            <div
+                className="text"
+                onClick={() => {
+                    context.setSelectedPackage(pack.id);
+                    props.onClick();
+                }}
+            >
+                {pack.id === context.selectedPackageId ? (
+                    <i className="far fa-eye" />
+                ) : (
+                    <i className="fas fa-archive" />
+                )}
+                <span className="pack-name">{pack.title}</span>
+            </div>
+            <div className="pack-options">
+                <button className="btn btn-dark" onClick={() => setState({ ...state, editPackageModalOpen: true })}>
+                    <i className="far fa-edit" />
+                </button>
+                <button className="btn btn-dark">
+                    <i className="far fa-trash-alt" />
+                </button>
+                <button className="btn btn-dark">
+                    <i className="fas fa-file-download" />
+                </button>
+            </div>
+            <Modal isOpen={state.editPackageModalOpen} handleClickOutside={closeModal} className="one-line-modal">
+                <div className="modal-title">New package</div>
+                <Form
+                    initialValues={{
+                        packageName: pack.title,
+                        public: pack.public,
+                    }}
+                    onSubmit={values => {
+                        context.updatePackagesAtSubject(props.subjectId, pack.id, values);
+                        closeModal();
+                    }}
+                >
+                    {(
+                        { handleChange, handleBlur, values, setFieldValue, setFieldTouched, errors, touched },
+                        FormRow
+                    ) => {
+                        return (
+                            <div className="modal-form">
+                                <div className="form-group">
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="New package"
+                                        name="packageName"
+                                        value={values.packageName}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                </div>
+                                <div className="checkbox">
+                                    <input
+                                        className="form-check-input"
+                                        type="checkbox"
+                                        value={values.public}
+                                        defaultChecked={values.public}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        id="public"
+                                        name="public"
+                                    />
+                                    <label className="form-check-label" htmlFor="public">
+                                        Public
+                                    </label>
+                                </div>
+                                <div className="modal-buttons">
+                                    <button type="submit" className="btn btn-primary">
+                                        Submit
+                                    </button>
+                                    <button type="button" className="btn btn-secondary" onClick={closeModal}>
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        );
+                    }}
+                </Form>
+            </Modal>
+        </div>
+    );
+    function closeModal() {
+        setState({
+            ...state,
+            editPackageModalOpen: false,
         });
     }
 }

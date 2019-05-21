@@ -4,71 +4,70 @@ li {
 button:focus {
   outline: none; }
 
-.tooltip-container {
-  position: relative; }
-  .tooltip-container .tooltip {
-    opacity: 0;
-    visibility: hidden;
-    position: absolute;
-    font-family: Lato;
-    background-color: #fff;
-    z-index: 2;
-    font-size: 11px;
-    line-height: 1.2;
-    color: #444;
-    text-transform: uppercase;
-    padding: 10px;
-    box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
-    transition: all 0.35s ease;
-    white-space: nowrap; }
-    .tooltip-container .tooltip.top, .tooltip-container .tooltip.top-right {
-      top: 0;
-      bottom: auto;
-      right: 0;
-      left: auto; }
-    .tooltip-container .tooltip.top-left {
-      top: 0;
-      bottom: auto;
-      right: auto;
-      left: 0; }
-    .tooltip-container .tooltip.bottom, .tooltip-container .tooltip.bottom-right {
-      top: auto;
-      bottom: 0;
-      right: 0;
-      left: auto; }
-    .tooltip-container .tooltip.bottom-left {
-      top: auto;
-      bottom: 0;
-      right: auto;
-      left: 0; }
-    .tooltip-container .tooltip.right, .tooltip-container .tooltip.right-top {
-      top: 0;
-      bottom: auto;
-      right: 0;
-      left: auto; }
-    .tooltip-container .tooltip.right-bottom {
-      top: auto;
-      bottom: 0;
-      right: 0;
-      left: auto; }
-    .tooltip-container .tooltip.left, .tooltip-container .tooltip.left-top {
-      top: 0;
-      bottom: auto;
-      right: auto;
-      left: 0; }
-    .tooltip-container .tooltip.left-bottom {
-      top: auto;
-      bottom: 0;
-      right: auto;
-      left: 0; }
-  .tooltip-container:hover .tooltip, .tooltip-container:focus .tooltip {
-    opacity: 1;
-    visibility: visible; }
-    .tooltip-container:hover .tooltip.top, .tooltip-container:hover .tooltip.top-right, .tooltip-container:hover .tooltip.top-left, .tooltip-container:focus .tooltip.top, .tooltip-container:focus .tooltip.top-right, .tooltip-container:focus .tooltip.top-left {
-      transform: translateY(-100%); }
-    .tooltip-container:hover .tooltip.bottom, .tooltip-container:hover .tooltip.bottom-right, .tooltip-container:hover .tooltip.bottom-left, .tooltip-container:focus .tooltip.bottom, .tooltip-container:focus .tooltip.bottom-right, .tooltip-container:focus .tooltip.bottom-left {
-      transform: translateY(100%); }
-    .tooltip-container:hover .tooltip.right, .tooltip-container:hover .tooltip.right-top, .tooltip-container:hover .tooltip.right-bottom, .tooltip-container:focus .tooltip.right, .tooltip-container:focus .tooltip.right-top, .tooltip-container:focus .tooltip.right-bottom {
-      transform: translateX(100%); }
-    .tooltip-container:hover .tooltip.left, .tooltip-container:hover .tooltip.left-top, .tooltip-container:hover .tooltip.left-bottom, .tooltip-container:focus .tooltip.left, .tooltip-container:focus .tooltip.left-top, .tooltip-container:focus .tooltip.left-bottom {
-      transform: translateX(-100%); }
+.tooltip-container .tooltip {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  font-family: Lato;
+  background-color: #fff;
+  z-index: 2;
+  font-size: 11px;
+  line-height: 1.2;
+  color: #444;
+  text-transform: uppercase;
+  padding: 10px;
+  box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
+  transition: all 0.35s ease;
+  white-space: nowrap; }
+  .tooltip-container .tooltip.top, .tooltip-container .tooltip.top-right {
+    top: 0;
+    bottom: auto;
+    right: 0;
+    left: auto; }
+  .tooltip-container .tooltip.top-left {
+    top: 0;
+    bottom: auto;
+    right: auto;
+    left: 0; }
+  .tooltip-container .tooltip.bottom, .tooltip-container .tooltip.bottom-right {
+    top: auto;
+    bottom: 0;
+    right: 0;
+    left: auto; }
+  .tooltip-container .tooltip.bottom-left {
+    top: auto;
+    bottom: 0;
+    right: auto;
+    left: 0; }
+  .tooltip-container .tooltip.right, .tooltip-container .tooltip.right-top {
+    top: 0;
+    bottom: auto;
+    right: 0;
+    left: auto; }
+  .tooltip-container .tooltip.right-bottom {
+    top: auto;
+    bottom: 0;
+    right: 0;
+    left: auto; }
+  .tooltip-container .tooltip.left, .tooltip-container .tooltip.left-top {
+    top: 0;
+    bottom: auto;
+    right: auto;
+    left: 0; }
+  .tooltip-container .tooltip.left-bottom {
+    top: auto;
+    bottom: 0;
+    right: auto;
+    left: 0; }
+
+.tooltip-container:hover .tooltip, .tooltip-container:focus .tooltip {
+  opacity: 1;
+  visibility: visible; }
+  .tooltip-container:hover .tooltip.top, .tooltip-container:hover .tooltip.top-right, .tooltip-container:hover .tooltip.top-left, .tooltip-container:focus .tooltip.top, .tooltip-container:focus .tooltip.top-right, .tooltip-container:focus .tooltip.top-left {
+    transform: translateY(-100%); }
+  .tooltip-container:hover .tooltip.bottom, .tooltip-container:hover .tooltip.bottom-right, .tooltip-container:hover .tooltip.bottom-left, .tooltip-container:focus .tooltip.bottom, .tooltip-container:focus .tooltip.bottom-right, .tooltip-container:focus .tooltip.bottom-left {
+    transform: translateY(100%); }
+  .tooltip-container:hover .tooltip.right, .tooltip-container:hover .tooltip.right-top, .tooltip-container:hover .tooltip.right-bottom, .tooltip-container:focus .tooltip.right, .tooltip-container:focus .tooltip.right-top, .tooltip-container:focus .tooltip.right-bottom {
+    transform: translateX(100%); }
+  .tooltip-container:hover .tooltip.left, .tooltip-container:hover .tooltip.left-top, .tooltip-container:hover .tooltip.left-bottom, .tooltip-container:focus .tooltip.left, .tooltip-container:focus .tooltip.left-top, .tooltip-container:focus .tooltip.left-bottom {
+    transform: translateX(-100%); }

@@ -20,17 +20,20 @@ export default function SubjectsProvider(props) {
                 getPackagesBySubjectId,
                 getSubjectsByCurrentUser,
                 setSelectedPackage,
+                updateSubject,
+                updatePackagesAtSubject,
             }}
         >
             {props.children}
         </SubjectsContext.Provider>
     );
     function setSelectedPackage(packageId) {
-        setState({ ...state, selectedPackageId: packageId });
-        console.log('setSelectedPackage', packageId);
+        packageId === state.selectedPackageId
+            ? setState({ ...state, selectedPackageId: '' })
+            : setState({ ...state, selectedPackageId: packageId });
     }
     function createNewSubject(subject: string) {
-        return fireContext.db
+        fireContext.db
             .collection('subjects')
             .add({
                 subjectName: subject,
@@ -43,8 +46,41 @@ export default function SubjectsProvider(props) {
                 console.log('Got error: ', error);
             });
     }
+    function updateSubject(subjectId: string, values: { subject: string }) {
+        fireContext.db
+            .doc(`subjects/${subjectId}`)
+            .update({
+                subjectName: values.subject,
+            })
+            .then(function() {
+                console.log('Document successfully updated!');
+                getSubjectsByCurrentUser();
+            })
+            .catch(function(error) {
+                console.error('Error updating document: ', error);
+            });
+    }
+    function updatePackagesAtSubject(
+        subjectId: string,
+        packId: string,
+        values: { packageName: string, public: boolean }
+    ) {
+        fireContext.db
+            .doc(`packages/${packId}`)
+            .update({
+                packageName: values.packageName,
+                public: values.public,
+            })
+            .then(function() {
+                console.log('Document successfully updated!');
+                getPackagesBySubjectId(subjectId);
+            })
+            .catch(function(error) {
+                console.error('Error updating document: ', error);
+            });
+    }
     function createNewPackageForSubject(sibjectId: string, values: { packageName: string, public: boolean }) {
-        return fireContext.db
+        fireContext.db
             .collection('packages')
             .add({
                 packageName: values.packageName,
@@ -95,4 +131,19 @@ export default function SubjectsProvider(props) {
                 console.log('Error getting documents: ', error);
             });
     }
+
+    /* function deleteSubject(subjectId: string) {
+        fireContext.db
+            .doc(`subjects/${subjectId}`)
+            .update({
+                subjectName: values.subject,
+            })
+            .then(function() {
+                console.log('Document successfully updated!');
+                getSubjectsByCurrentUser();
+            })
+            .catch(function(error) {
+                console.error('Error updating document: ', error);
+            });
+    } */
 }

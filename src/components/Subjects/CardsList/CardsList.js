@@ -3,12 +3,13 @@ import FlipCard from '../../shared/FlipCard/FlipCard';
 import Modal from '../../shared/Modal/Modal';
 import Form from '../../shared/Form/Form';
 import { SubjectsContext } from '../SubjectsProvider/SubjectsProvider';
-import { CardListContext } from '../CardListProvider/CardListProvider';
+import { CardListContext } from './CardListProvider/CardListProvider';
 import './CardsList.css';
 
 export default function CardsList() {
     const [state, setState] = useState({
         newCardModalOpen: false,
+        editCardModalOpen: false,
     });
     const subjectContext = useContext(SubjectsContext);
     const cardListContext = useContext(CardListContext);
@@ -32,7 +33,16 @@ export default function CardsList() {
                     {cardListContext.cardsOfPackage[subjectContext.selectedPackageId] ? (
                         cardListContext.cardsOfPackage[subjectContext.selectedPackageId].map((card, index) => {
                             return (
-                                <FlipCard workWithHover front={card.front} back={card.back} key={`Flipcard${index}`} />
+                                <React.Fragment key={`Flipcard${index}`}>
+                                    <FlipCard
+                                        context={cardListContext}
+                                        workWithHover
+                                        packageId={subjectContext.selectedPackageId}
+                                        card={card}
+                                        editable
+                                        stars
+                                    />
+                                </React.Fragment>
                             );
                         })
                     ) : (
@@ -131,7 +141,7 @@ function NewCardModal(props: {
                                     </div>
                                 </div>
                                 <div className="preview">
-                                    <FlipCard front={values.front} back={values.front} />
+                                    <FlipCard card={values} />
                                 </div>
                             </div>
                             <hr />
@@ -185,7 +195,7 @@ function NewCardModal(props: {
                                     </div>
                                 </div>
                                 <div className="preview">
-                                    <FlipCard front={values.back} back={values.back} />
+                                    <FlipCard card={values} inverse />
                                 </div>
                             </div>
                             <div className="modal-buttons">

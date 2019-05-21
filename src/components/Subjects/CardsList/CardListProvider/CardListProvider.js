@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { FirebaseContext } from '../../Firebase/FirebaseProvider';
+import { FirebaseContext } from '../../../Firebase/FirebaseProvider';
 export const CardListContext = React.createContext();
 export const CardListConsumer = CardListContext.Consumer;
 
@@ -15,6 +15,7 @@ export default function CardListProvider(props) {
                 ...state,
                 getCardsByPackageId,
                 createNewCardForPackage,
+                updateCard,
             }}
         >
             {props.children}
@@ -22,7 +23,6 @@ export default function CardListProvider(props) {
     );
 
     function getCardsByPackageId(packageId) {
-        console.log(packageId);
         fireContext
             .getCardsByPackageId(packageId)
             .then(querySnapshot => {
@@ -63,6 +63,7 @@ export default function CardListProvider(props) {
                 front,
                 back,
                 packageId,
+                knowledge: 5,
             })
             .then(() => {
                 console.log('card saved');
@@ -70,6 +71,27 @@ export default function CardListProvider(props) {
             })
             .catch(error => {
                 console.log('Got error: ', error);
+            });
+    }
+
+    function updateCard(
+        packageId: string,
+        cardId: string,
+        front: { example: string, image: string, word: string },
+        back: { example: string, image: string, word: string }
+    ) {
+        fireContext.db
+            .doc(`cards/${cardId}`)
+            .update({
+                front: front,
+                back: back,
+            })
+            .then(function() {
+                console.log('Document successfully updated!');
+                getCardsByPackageId(packageId);
+            })
+            .catch(function(error) {
+                console.error('Error updating document: ', error);
             });
     }
 }

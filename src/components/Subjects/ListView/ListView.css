@@ -6,31 +6,36 @@ button:focus {
 
 .list .list-subject {
   padding: 0px 20px; }
-  .list .list-subject .title {
+  .list .list-subject .subject-element {
     cursor: pointer;
     display: flex;
     justify-content: space-between;
-    align-items: center; }
-    .list .list-subject .title:hover {
+    align-items: center;
+    position: relative; }
+    .list .list-subject .subject-element:hover {
       background-color: #ccc; }
-      .list .list-subject .title:hover .subject-options {
-        display: flex; }
-    .list .list-subject .title .text {
-      padding-left: 10px;
-      width: calc(100% - 48px); }
-      .list .list-subject .title .text i {
+      .list .list-subject .subject-element:hover .subject-options {
+        display: flex;
+        position: absolute;
+        right: 0;
+        top: 0; }
+    .list .list-subject .subject-element .text {
+      width: 100%; }
+      .list .list-subject .subject-element .text i {
         width: 18px;
         height: 18px; }
-    .list .list-subject .title .subject-options {
+      .list .list-subject .subject-element .text .subject-name {
+        margin: 0;
+        padding-left: 10px; }
+    .list .list-subject .subject-element .subject-options {
       display: none;
-      height: 100%;
       align-items: center; }
-      .list .list-subject .title .subject-options button {
+      .list .list-subject .subject-element .subject-options button {
         font-size: 15px;
         padding: 0;
         height: 100%;
         width: 24px; }
-        .list .list-subject .title .subject-options button:focus {
+        .list .list-subject .subject-element .subject-options button:focus {
           box-shadow: unset; }
   .list .list-subject .packages {
     transform: scaleY(0);
@@ -39,15 +44,29 @@ button:focus {
     height: 0; }
     .list .list-subject .packages .pack {
       display: block;
-      cursor: pointer; }
+      cursor: pointer;
+      position: relative; }
       .list .list-subject .packages .pack:hover {
         background-color: #ccc; }
-      .list .list-subject .packages .pack .text {
-        padding-left: 10px; }
+        .list .list-subject .packages .pack:hover .pack-options {
+          display: flex;
+          position: absolute;
+          right: 0;
+          top: 0; }
+      .list .list-subject .packages .pack .pack-options {
+        display: none;
+        align-items: center; }
+        .list .list-subject .packages .pack .pack-options button {
+          font-size: 15px;
+          padding: 0;
+          height: 100%;
+          width: 24px; }
+          .list .list-subject .packages .pack .pack-options button:focus {
+            box-shadow: unset; }
   .list .list-subject.open .packages {
     overflow: hidden;
     transition: transform 0.1s ease-out;
     height: auto;
     transform: scaleY(1);
     transform-origin: top;
-    padding: 5px 20px; }
+    padding: 5px 0 5px 20px; }

@@ -3,6 +3,8 @@
   width: 300px;
   height: 300px;
   perspective: 1000px;
+  position: relative;
+  padding: 20px;
   cursor: pointer; }
   .flip-card .content {
     position: relative;
@@ -11,7 +13,8 @@
     text-align: center;
     transition: transform 0.6s;
     transform-style: preserve-3d;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); }
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    z-index: 0; }
     .flip-card .content .front,
     .flip-card .content .back {
       position: absolute;
@@ -39,5 +42,20 @@
       z-index: 1; }
     .flip-card .content.show-back {
       transform: rotateY(180deg); }
+  .flip-card .card-options {
+    position: absolute;
+    top: 0;
+    right: 0;
+    align-items: center;
+    z-index: 2; }
+    .flip-card .card-options button {
+      font-size: 15px;
+      padding: 0;
+      height: 25px;
+      width: 25px; }
+      .flip-card .card-options button:focus {
+        box-shadow: unset; }
+  .flip-card .knowledge {
+    text-align: center; }
   .flip-card.work-with-hover:hover .content {
     transform: rotateY(180deg); }

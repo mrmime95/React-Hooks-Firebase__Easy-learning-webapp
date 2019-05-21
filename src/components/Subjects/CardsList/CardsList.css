@@ -5,14 +5,10 @@ button:focus {
   outline: none; }
 
 .cards-list {
-  display: flex;
-  justify-content: space-between;
-  padding: 20px;
-  flex-wrap: wrap; }
+  padding: 20px; }
   .cards-list .flip-card {
-    width: calc(100% / 3 - 30px);
     max-width: 250px;
-    margin: 20px 15px; }
+    display: inline-block; }
 
 .modal-content {
   width: 500px; }

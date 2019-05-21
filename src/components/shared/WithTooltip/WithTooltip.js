@@ -4,7 +4,7 @@ import './WithTooltip.css';
 
 export default function WithTooltip(props: {
     children: React$node,
-    tooltip: string,
+    tooltip: string | React$Node,
     onClick: () => void,
     className: string,
     tooltipPosition?:

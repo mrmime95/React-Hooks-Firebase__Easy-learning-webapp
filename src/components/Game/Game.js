@@ -20,9 +20,6 @@ export default function Game(props: {}) {
 
 function GameContent(props: {}) {
     const context = useContext(GameContext);
-    const submit: data => void = debounce(data => {
-        context.onSubmit(data);
-    }, 300);
 
     return (
         <Form
@@ -41,9 +38,12 @@ function GameContent(props: {}) {
                             className="subjects-select"
                             onChange={setFieldValue}
                             onBlur={setFieldTouched}
-                            options={context.subjects.map(subject => {
-                                return { value: subject, label: subject };
-                            })}
+                            options={
+                                context.subjects &&
+                                context.subjects.map(subject => {
+                                    return { value: subject.id, label: subject.title };
+                                })
+                            }
                             placeholder="Select subjects"
                             isDisabled={context.gameStarted}
                         />
@@ -54,7 +54,7 @@ function GameContent(props: {}) {
                             onChange={setFieldValue}
                             onBlur={setFieldTouched}
                             options={context.packages.map(pack => {
-                                return { value: pack, label: pack };
+                                return { value: pack.id, label: pack.title };
                             })}
                             placeholder="Select packages from selected subjects"
                             isDisabled={context.gameStarted}
@@ -112,7 +112,6 @@ function GameContent(props: {}) {
                                     Play!
                                 </button>
                             ))}
-                        <AutoSubmit data={values} onSubmit={submit} />
                     </div>
                 );
             }}
