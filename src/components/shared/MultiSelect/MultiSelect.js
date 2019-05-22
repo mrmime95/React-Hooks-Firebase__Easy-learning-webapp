@@ -5,7 +5,7 @@ export default function MultiSelect(props: {
     value: [{ value: string, label: string }],
     name: string,
     onChange: () => void,
-    onBlur: () => void,
+    onBlur?: () => void,
     options: any,
     className?: string,
     placeholder?: string,
@@ -16,21 +16,24 @@ export default function MultiSelect(props: {
             id={props.name}
             options={props.options}
             isMulti
-            onChange={handleChange}
-            onBlur={handleBlur}
-            value={props.value}
+            onChange={props.onChange}
+            onBlur={props.onBlur && props.onBlur}
+            defaultValue={props.value}
             className={props.className && props.className}
             placeholder={props.placeholder && props.placeholder}
             isDisabled={props.isDisabled}
+            getValue={value => {
+                console.log(value);
+            }}
         />
     ) : (
         <Select
             id={props.name}
             isLoading
             isMulti
-            onChange={handleChange}
-            onBlur={handleBlur}
-            value={props.value}
+            onChange={props.onChange}
+            onBlur={props.onBlur && props.onBlur}
+            defaultValue={props.value}
             className={props.className && props.className}
             placeholder={props.placeholder && props.placeholder}
             isDisabled={props.isDisabled}

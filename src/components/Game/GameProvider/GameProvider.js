@@ -2,18 +2,18 @@ import React, { useState, useContext, useEffect } from 'react';
 import { FirebaseContext } from '../../Firebase/FirebaseProvider';
 export const GameContext = React.createContext();
 
-export default function GameProvider(props: { children: React$Node, myWords: {} }) {
-    const [state, setState] = useState({
-        selectedPackages: [],
-        subjects: null,
-        packages: [],
-        gameStarted: false,
-    });
+export default function GameProvider(props: { children: React$Node }) {
+    const [subjects, setSubjects] = useState(null);
+    const [gameStarted, setGameStarted] = useState(false);
+    const [packages, setPackages] = useState([]);
+    const [packagesLoading, setPackagesLoading] = useState(true);
+
     const fireContext = useContext(FirebaseContext);
     useEffect(getSubjectsByCurrentUser, []);
-
     return (
-        <GameContext.Provider value={{ ...state, onSubmit, changeGameStarted }}>{props.children}</GameContext.Provider>
+        <GameContext.Provider value={{ subjects, packages, getPackagesOfSubjects, getPackagesBySubjectId }}>
+            {props.children}
+        </GameContext.Provider>
     );
 
     function getSubjectsByCurrentUser() {
@@ -27,40 +27,51 @@ export default function GameProvider(props: { children: React$Node, myWords: {} 
                         title: doc.data().subjectName,
                     });
                 });
-                setState({ ...state, subjects });
+                setSubjects(subjects);
             })
             .catch(function(error) {
-                console.log('Error getting documents: ', error);
+                alert('Error getting documents: ', error);
             });
     }
-    function getPackagesBySubjectId(subjectId: string) {
-        fireContext
+
+    async function getPackagesOfSubjects(localSubjects: [{ value: string, label: string }]) {
+        const listOfResults = await Promise.all(
+            localSubjects.map(async subject => {
+                return await getPackagesBySubjectId(subject.value);
+            })
+        );
+        const listOfPackages = [];
+        listOfResults.map(value1 => value1.map(value2 => listOfPackages.push(value2)));
+        setPackages(listOfPackages);
+    }
+
+    async function getPackagesBySubjectId(subjectId: string) {
+        const packs = [];
+        await fireContext
             .getPackagesBySubjectId(subjectId)
             .then(querySnapshot => {
-                const packages = state.packages;
                 querySnapshot.forEach(doc => {
-                    packages.push({
+                    packs.push({
                         id: doc.id,
                         title: doc.data().packageName,
                     });
                 });
-                console.log('getPackagesBySubjectId', packages);
-                setState({ ...state, packages });
             })
             .catch(function(error) {
-                console.log('Error getting documents: ', error);
+                alert('Error getting documents: ', error);
             });
+        return packs;
     }
-
+    /* 
     function onSubmit(data) {
-        if (!state.gameStarted) {
+        if (!gameStarted) {
             console.log(data);
             /* data.subjects.forEach(subject => {
                 getPackagesBySubjectId(subject.value);
-            }); */
+            }); 
         }
     }
     function changeGameStarted() {
-        setState({ ...state, gameStarted: !state.gameStarted });
-    }
+        setGameStarted(!gameStarted);
+    } */
 }

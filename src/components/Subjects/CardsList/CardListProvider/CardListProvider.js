@@ -63,7 +63,7 @@ export default function CardListProvider(props) {
                 front,
                 back,
                 packageId,
-                knowledge: 5,
+                knowledge: 0,
             })
             .then(() => {
                 console.log('card saved');

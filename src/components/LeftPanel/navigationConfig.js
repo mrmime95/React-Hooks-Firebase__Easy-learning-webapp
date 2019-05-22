@@ -40,11 +40,6 @@ const navigationConfig = {
         route: componentRoute('/friends', EmptyRouteComponent('Friends')),
         Icon: OrganizationIcon,
     },
-    createCard: {
-        title: 'Create card',
-        route: componentRoute('/create-card', CreateCard),
-        Icon: OrganizationIcon,
-    },
     playAndLearn: {
         title: 'Play and learn',
         route: componentRoute('/play-and-learn', Game),
