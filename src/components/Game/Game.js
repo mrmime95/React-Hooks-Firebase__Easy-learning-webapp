@@ -20,98 +20,118 @@ export default function Game(props: {}) {
 
 function GameContent(props: {}) {
     const context = useContext(GameContext);
-    const [subjects, setSubjects] = useState([]);
-    const [packages, setPackages] = useState([]);
     return (
         <div className="search-area">
-            <MultiSelect
-                value={subjects}
-                name="subjects"
-                className="subjects-select"
-                onChange={values => {
-                    setSubjects(values);
-                    context.getPackagesOfSubjects(values);
+            <Form
+                initialValues={{
+                    hardnessIDs: [],
+                    packages: [],
+                    subjects: [],
                 }}
-                options={
-                    context.subjects &&
-                    context.subjects.map(subject => {
-                        return { value: subject.id, label: subject.title };
-                    })
-                }
-                isDisabled={packages.length !== 0}
-                placeholder="Select subjects"
-            />
-            {subjects.length !== 0 && (
-                <MultiSelect
-                    value={packages}
-                    name="subjects"
-                    className="subjects-select"
-                    onChange={values => {
-                        setPackages(values);
-                    }}
-                    options={
-                        context.packages &&
-                        context.packages.map(pack => {
-                            return { value: pack.id, label: pack.title };
-                        })
-                    }
-                    placeholder="Select packages"
-                />
-            )}
-            {/* 
-            <FieldArray
-                name="hardnessIDs"
-                render={arrayHelpers => (
-                    <React.Fragment>
-                        <Checkbox
-                            handleChange={e => {
-                                values.hardnessIDs.forEach(() => {
-                                    arrayHelpers.pop();
-                                });
-                                if (e.target.checked)
-                                    ['1', '2', '3', '4', '5'].forEach(index => {
-                                        arrayHelpers.push(index);
+                onSubmit={values => {
+                    console.log(values);
+                }}
+            >
+                {({ handleChange, handleBlur, values, setFieldValue, setFieldTouched, errors, touched }, FormRow) => {
+                    return (
+                        <React.Fragment>
+                            <MultiSelect
+                                value={values.subjects}
+                                name="subjects"
+                                className="subjects-select"
+                                onChange={value => {
+                                    handleChange({
+                                        target: {
+                                            name: 'subjects',
+                                            value,
+                                        },
                                     });
-                            }}
-                            name="hardnessIDs"
-                            checked={values.hardnessIDs.length === 5}
-                            label={
-                                values.hardnessIDs.length === 0
-                                    ? 'Select all hardnesses'
-                                    : `${values.hardnessIDs.length} selected`
-                            }
-                        />
-                        <CheckboxGroup
-                            checkboxes={[
-                                { label: '1', id: '1' },
-                                { label: '2', id: '2' },
-                                { label: '3', id: '3' },
-                                { label: '4', id: '4' },
-                                { label: '5', id: '5' },
-                            ]}
-                            checked={values.hardnessIDs}
-                            onChange={(id, checked) => {
-                                if (!checked) arrayHelpers.push(id);
-                                else {
-                                    const idx = values.hardnessIDs.indexOf(id);
-                                    arrayHelpers.remove(idx);
+                                    context.getPackagesOfSubjects(value);
+                                }}
+                                options={
+                                    context.subjects &&
+                                    context.subjects.map(subject => {
+                                        return { value: subject.id, label: subject.title };
+                                    })
                                 }
-                            }}
-                        />
-                    </React.Fragment>
-                )}
-            />
-            {values.packages.length !== 0 &&
-                values.subjects.length !== 0 &&
-                (context.gameStarted ? (
-                    <button type="button" className="btn btn-success" onClick={context.changeGameStarted}>
-                        Stop!
-                    </button>
-                ) : (
-                    <button type="button" className="btn btn-success" onClick={context.changeGameStarted}>
-                        Play!
-                    </button>
-                ))} */}
+                                isDisabled={values.packages.length !== 0}
+                                placeholder="Select subjects"
+                            />
+                            <MultiSelect
+                                value={values.packages}
+                                name="packages"
+                                className="packages-select"
+                                onChange={value =>
+                                    handleChange({
+                                        target: {
+                                            name: 'packages',
+                                            value,
+                                        },
+                                    })
+                                }
+                                options={
+                                    context.packages &&
+                                    context.packages.map(pack => {
+                                        return { value: pack.id, label: pack.title };
+                                    })
+                                }
+                                placeholder="Select packages"
+                            />
+                            <FieldArray
+                                name="hardnessIDs"
+                                render={arrayHelpers => (
+                                    <React.Fragment>
+                                        <Checkbox
+                                            handleChange={e => {
+                                                values.hardnessIDs.forEach(() => {
+                                                    arrayHelpers.pop();
+                                                });
+                                                if (e.target.checked)
+                                                    ['1', '2', '3', '4', '5'].forEach(index => {
+                                                        arrayHelpers.push(index);
+                                                    });
+                                            }}
+                                            name="hardnessIDs"
+                                            checked={values.hardnessIDs.length === 5}
+                                            label={
+                                                values.hardnessIDs.length === 0
+                                                    ? 'Select all hardnesses'
+                                                    : `${values.hardnessIDs.length} selected`
+                                            }
+                                        />
+                                        <CheckboxGroup
+                                            checkboxes={[
+                                                { label: '1', id: '1' },
+                                                { label: '2', id: '2' },
+                                                { label: '3', id: '3' },
+                                                { label: '4', id: '4' },
+                                                { label: '5', id: '5' },
+                                            ]}
+                                            checked={values.hardnessIDs}
+                                            onChange={(id, checked) => {
+                                                if (!checked) arrayHelpers.push(id);
+                                                else {
+                                                    const idx = values.hardnessIDs.indexOf(id);
+                                                    arrayHelpers.remove(idx);
+                                                }
+                                            }}
+                                        />
+                                    </React.Fragment>
+                                )}
+                            />
+                            {context.gameStarted ? (
+                                <button type="button" className="btn btn-success" onClick={context.changeGameStarted}>
+                                    Stop!
+                                </button>
+                            ) : (
+                                <button type="submit" className="btn btn-success">
+                                    Play!
+                                </button>
+                            )}
+                        </React.Fragment>
+                    );
+                }}
+            </Form>
         </div>
     );
 }

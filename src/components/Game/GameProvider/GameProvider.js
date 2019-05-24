@@ -11,7 +11,16 @@ export default function GameProvider(props: { children: React$Node }) {
     const fireContext = useContext(FirebaseContext);
     useEffect(getSubjectsByCurrentUser, []);
     return (
-        <GameContext.Provider value={{ subjects, packages, getPackagesOfSubjects, getPackagesBySubjectId }}>
+        <GameContext.Provider
+            value={{
+                subjects,
+                packages,
+                gameStarted,
+                getPackagesOfSubjects,
+                changeGameStarted,
+                getPackagesBySubjectId,
+            }}
+        >
             {props.children}
         </GameContext.Provider>
     );
@@ -70,8 +79,8 @@ export default function GameProvider(props: { children: React$Node }) {
                 getPackagesBySubjectId(subject.value);
             }); 
         }
-    }
+    }*/
     function changeGameStarted() {
         setGameStarted(!gameStarted);
-    } */
+    }
 }
