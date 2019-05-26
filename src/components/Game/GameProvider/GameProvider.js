@@ -6,13 +6,17 @@ export default function GameProvider(props: { children: React$Node }) {
     const [subjects, setSubjects] = useState(null);
     const [gameStarted, setGameStarted] = useState(false);
     const [packages, setPackages] = useState([]);
-    const [packagesLoading, setPackagesLoading] = useState(true);
-
+    const [selectedElements, setSelectedElements] = useState({
+        selectedHardnessIDs: [],
+        selectedPackages: [],
+        selectedSubjects: [],
+    });
     const fireContext = useContext(FirebaseContext);
     useEffect(getSubjectsByCurrentUser, []);
     return (
         <GameContext.Provider
             value={{
+                ...selectedElements,
                 subjects,
                 packages,
                 gameStarted,

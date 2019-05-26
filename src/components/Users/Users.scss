@@ -12,10 +12,12 @@
                 border-left: solid 5px $color-aproover;
             }
             .column {
+                &.profile-picture {
+                    flex: 1;
+                }
                 &.name {
                     display: flex;
                     justify-content: flex-start;
-                    align-items: center;
                     flex: 3;
                     .title {
                         text-transform: uppercase;
@@ -32,7 +34,24 @@
                         padding: 0 23px;
                         flex: 1;
                     }
-
+                    &.name-content {
+                        .with-label {
+                            width: auto;
+                            .label {
+                                margin: 0;
+                                display: block;
+                                line-height: 1.5;
+                                font-size: 12px;
+                                font-family: 'Lato', sans-serif;
+                            }
+                            p {
+                                font-family: 'Lato', sans-serif;
+                                font-weight: normal;
+                                line-height: 1.5;
+                                font-size: 12px;
+                            }
+                        }
+                    }
                     &.datas {
                         flex: 2;
                         .with-label {

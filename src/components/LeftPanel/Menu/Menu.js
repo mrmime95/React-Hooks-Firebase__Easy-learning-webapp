@@ -1,7 +1,9 @@
 // @flow
-import React from 'react';
+import React, { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import Octicon from '@githubprimer/octicons-react';
+import IconWithBadge from '../../shared/IconWithBadge/IconWithBadge';
+import { FirebaseContext } from '../../Firebase/FirebaseProvider';
 import './Menu.css';
 
 export default function Menu(props) {
@@ -18,10 +20,20 @@ export default function Menu(props) {
 
 function MenuItem(props) {
     const { item } = props;
+
+    const fireContext = useContext(FirebaseContext);
+    if (item.withBadge) fireContext.getFriendRequestsNumber();
+
     return (
         <li className="menu-item">
             <NavLink to={item.route.path} activeClassName="active">
-                <Octicon icon={item.Icon} className="icon" />
+                {item.withBadge ? (
+                    <IconWithBadge badgeValue={fireContext.user.friendRequestsNumber}>
+                        <Octicon icon={item.Icon} className="icon" />
+                    </IconWithBadge>
+                ) : (
+                    <Octicon icon={item.Icon} className="icon" />
+                )}
                 <span className="text">{item.title}</span>
                 <div className="tooltip">{item.title}</div>
             </NavLink>

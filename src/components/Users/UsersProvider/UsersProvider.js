@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { FirebaseContext } from '../../Firebase/FirebaseProvider';
 
 export const UsersContext = React.createContext();
 
@@ -25,13 +26,107 @@ export default function UsersProvider(props: { users: [Users] }) {
         numberOfFilteredUsers: props.users.length,
         sort: defaultSortBy,
         sortAscending: defaultAscending,
+        users: [],
     });
+    const fireContext = useContext(FirebaseContext);
+    useEffect(() => {
+        getAllUsers();
+    }, []);
 
     return (
-        <UsersContext.Provider value={{ ...state, onSearch: onSearch, onPagingChange: onPagingChange }}>
+        <UsersContext.Provider value={{ ...state, onSearch, onPagingChange, createFriendReques, deleteFriendReques }}>
             {props.children}
         </UsersContext.Provider>
     );
+
+    async function getAllUsers() {
+        const allUsers = await fireContext.db.collection('users').get();
+        const returnableUsers = await Promise.all(
+            allUsers.docs.map(async doc => {
+                const friendRequest = await fireContext.db
+                    .collection('friendRequests')
+                    .doc(fireContext.user.id + '_' + doc.id)
+                    .get();
+                return {
+                    id: doc.id,
+                    email: doc.data().email,
+                    name: `${doc.data().firstName} ${doc.data().lastName}`,
+                    birthDate: doc.data().birthDate,
+                    subjects: doc.data().subjectsNumber,
+                    packages: doc.data().packagesNumber,
+                    cards: doc.data().cardsNumber,
+                    role: doc.data().role,
+                    requested: friendRequest.exists,
+                };
+            })
+        );
+        setState({ ...state, users: returnableUsers });
+    }
+
+    async function createFriendReques(requestedId: string) {
+        const friendRequestsRef = fireContext.db
+            .collection('friendRequests')
+            .doc(fireContext.user.id + '_' + requestedId);
+        const friendRequestNumberRef = fireContext.db.doc(`friendRequestNumber/${requestedId}`);
+        const batch = fireContext.db.batch();
+        const today = new Date();
+        const dateTime =
+            today.getFullYear() +
+            '-' +
+            (today.getMonth() + 1) +
+            '-' +
+            today.getDate() +
+            ' ' +
+            today.getHours() +
+            ':' +
+            today.getMinutes() +
+            ':' +
+            today.getSeconds();
+        batch.set(friendRequestsRef, {
+            dateTime,
+        });
+        batch.update(friendRequestNumberRef, {
+            counter: fireContext.increment,
+            requestedId,
+        });
+        batch.commit();
+        getAllUsers();
+    }
+
+    async function deleteFriendReques(requestedId: string) {
+        fireContext.db
+            .collection('friendRequests')
+            .doc(fireContext.user.id + '_' + requestedId)
+            .delete()
+            .then(() => {
+                console.log('Document successfully deleted!');
+                getAllUsers();
+                fireContext.db
+                    .collection(`friendRequestNumber`)
+                    .where('requestedId', '==', requestedId)
+                    .get()
+                    .then(querySnapshot => {
+                        querySnapshot.forEach(doc => {
+                            console.log(doc.id);
+                            fireContext.db
+                                .collection('friendRequestsNumber')
+                                .doc(doc.id)
+                                .update({ counter: fireContext.decrement });
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error removing document: ', error);
+                    });
+            });
+    }
+
+    async function getCurrentUsersFriends() {
+        const usersFriends = await fireContext.db
+            .doc(`users/${fireContext.user.id}`)
+            .where('userId', '==', this.state.user.id)
+            .get();
+    }
+
     function onPagingChange(newState: { activePage: number, pageSize: number }) {
         setState({
             ...state,
@@ -40,6 +135,7 @@ export default function UsersProvider(props: { users: [Users] }) {
             pageOfUsers: getAPageOfContent(newState.activePage, newState.pageSize, state.filteredUsers),
         });
     }
+
     function onSearch(data: SearchData) {
         let filtered = props.users
             .filter(filterByNameFn(data.searchTerm))

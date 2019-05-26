@@ -10,34 +10,44 @@ export default function MultiSelect(props: {
     className?: string,
     placeholder?: string,
     isDisabled: boolean,
+    label: string,
 }) {
-    return props.options ? (
-        <Select
-            id={props.name}
-            options={props.options}
-            isMulti
-            onChange={props.onChange}
-            onBlur={props.onBlur && props.onBlur}
-            defaultValue={props.value}
-            className={props.className && props.className}
-            placeholder={props.placeholder && props.placeholder}
-            isDisabled={props.isDisabled}
-            getValue={value => {
-                console.log(value);
-            }}
-        />
-    ) : (
-        <Select
-            id={props.name}
-            isLoading
-            isMulti
-            onChange={props.onChange}
-            onBlur={props.onBlur && props.onBlur}
-            defaultValue={props.value}
-            className={props.className && props.className}
-            placeholder={props.placeholder && props.placeholder}
-            isDisabled={props.isDisabled}
-        />
+    return (
+        <div>
+            {props.label && (
+                <label htmlFor={`${props.name}`} className="group-label">
+                    {props.label}
+                </label>
+            )}
+            {props.options ? (
+                <Select
+                    id={props.name}
+                    options={props.options}
+                    isMulti
+                    onChange={props.onChange}
+                    onBlur={props.onBlur && props.onBlur}
+                    defaultValue={props.value}
+                    className={props.className && props.className}
+                    placeholder={props.placeholder && props.placeholder}
+                    isDisabled={props.isDisabled}
+                    getValue={value => {
+                        console.log(value);
+                    }}
+                />
+            ) : (
+                <Select
+                    id={props.name}
+                    isLoading
+                    isMulti
+                    onChange={props.onChange}
+                    onBlur={props.onBlur && props.onBlur}
+                    defaultValue={props.value}
+                    className={props.className && props.className}
+                    placeholder={props.placeholder && props.placeholder}
+                    isDisabled={props.isDisabled}
+                />
+            )}
+        </div>
     );
     function handleChange(value) {
         props.onChange(props.name, value);

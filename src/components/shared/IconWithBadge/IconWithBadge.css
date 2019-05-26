@@ -1,0 +1,21 @@
+li {
+  list-style-type: none; }
+
+button:focus {
+  outline: none; }
+
+.badged-icon {
+  position: relative; }
+  .badged-icon .badge {
+    border-radius: 50%;
+    background-color: #e3163a;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: bold;
+    height: 18px;
+    width: 18px;
+    line-height: 18px;
+    position: absolute;
+    top: -5px;
+    right: -7px;
+    text-align: center; }

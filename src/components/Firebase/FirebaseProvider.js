@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { auth, db } from './setup';
+import { auth, db, increment, decrement } from './setup';
 export const FirebaseContext = React.createContext();
 export const FirebaseConsumer = FirebaseContext.Consumer;
 
@@ -13,20 +13,34 @@ export default class FirebaseProvider extends Component {
     componentDidMount() {
         this.authUser();
     }
-
+    render() {
+        return (
+            <FirebaseContext.Provider
+                value={{
+                    ...this.state,
+                    db,
+                    increment,
+                    decrement,
+                    doCreateUserWithEmailAndPassword: this.doCreateUserWithEmailAndPassword,
+                    doSignInWithEmailAndPassword: this.doSignInWithEmailAndPassword,
+                    doSignOut: this.doSignOut,
+                    authUser: this.authUser,
+                    createNewUser: this.createNewUser,
+                    getSubjectsByCurrentUser: this.getSubjectsByCurrentUser,
+                    getPackagesBySubjectId: this.getPackagesBySubjectId,
+                    getCardsByPackageId: this.getCardsByPackageId,
+                    getFriendRequestsNumber: this.getFriendRequestsNumber,
+                }}
+            >
+                {this.props.children}
+            </FirebaseContext.Provider>
+        );
+    }
     authUser = () => {
         auth.onAuthStateChanged(user => {
             if (user && !user.isAnonymous) {
-                const { uid, email, displayName } = user;
-                this.setState({
-                    authReady: true,
-                    isLoggedIn: true,
-                    user: {
-                        id: uid,
-                        email,
-                        displayName,
-                    },
-                });
+                const { uid } = user;
+                this.getCurrentUser(uid);
             } else {
                 this.setState({ authReady: true, isLoggedIn: false, user: null });
             }
@@ -51,6 +65,9 @@ export default class FirebaseProvider extends Component {
             lastName: string,
             email: string,
             birthDate: string,
+            subjectsNumber: number,
+            packagesNumber: number,
+            cardsNumber: number,
         }
     ) => {
         db.doc(`users/${uid}`)
@@ -59,12 +76,79 @@ export default class FirebaseProvider extends Component {
                 lastName: values.lastName,
                 email: values.email,
                 birthDate: values.birthDate ? values.birthDate : null,
+                subjectsNumber: 0,
+                packagesNumber: 0,
+                cardsNumber: 0,
+                role: 'user',
             })
             .then(() => {
                 console.log('User Saved');
             })
             .catch(error => {
                 console.log('Got error: ', error);
+            });
+        db.doc(`friendRequestNumber/${uid}`)
+            .set({
+                counter: 0,
+            })
+            .then(() => {
+                console.log('requestCounter created');
+            })
+            .catch(error => {
+                console.log('Got error: ', error);
+            });
+    };
+
+    getCurrentUser = (uid: string) => {
+        db.doc(`users/${uid}`)
+            .get()
+            .then(querySnapshot => {
+                this.setState({
+                    authReady: true,
+                    isLoggedIn: true,
+                    user: {
+                        id: uid,
+                        ...querySnapshot.data(),
+                    },
+                });
+            })
+            .catch(function(error) {
+                console.log('Error getting document: ', error);
+            });
+    };
+
+    /* getFriendRequestsNumber = () => {
+        db.doc(`friendRequestNumber/${this.state.user.id}`).onSnapshot(
+            {
+                includeMetadataChanges: true,
+            },
+            doc => {
+                const user = this.state.user;
+                console.log(doc.data());
+                user.friendRequestsNumber = doc.data().counter;
+                this.setState(user);
+            }
+        );
+
+          .onSnapshot(doc => {
+            const user = this.state.user;
+            console.log(doc.data());
+            user.friendRequestsNumber = doc.data().counter;
+            this.setState(user);
+        }); 
+    }; */
+    getFriendRequestsNumber = () => {
+        db.collection(`friendRequestNumber`)
+            .where('requestedId', '==', this.state.user.id)
+            .onSnapshot(snapshot => {
+                snapshot.docChanges().forEach(change => {
+                    if (change.type === 'modified') {
+                        console.log('Modified city: ', change.doc.data());
+                        const user = this.state.user;
+                        user.friendRequestsNumber = change.doc.data().counter;
+                        this.setState(user);
+                    }
+                });
             });
     };
 
@@ -80,25 +164,4 @@ export default class FirebaseProvider extends Component {
         const ref = db.collection('cards');
         return ref.where('packageId', '==', packageId).get();
     };
-
-    render() {
-        return (
-            <FirebaseContext.Provider
-                value={{
-                    ...this.state,
-                    db,
-                    doCreateUserWithEmailAndPassword: this.doCreateUserWithEmailAndPassword,
-                    doSignInWithEmailAndPassword: this.doSignInWithEmailAndPassword,
-                    doSignOut: this.doSignOut,
-                    authUser: this.authUser,
-                    createNewUser: this.createNewUser,
-                    getSubjectsByCurrentUser: this.getSubjectsByCurrentUser,
-                    getPackagesBySubjectId: this.getPackagesBySubjectId,
-                    getCardsByPackageId: this.getCardsByPackageId,
-                }}
-            >
-                {this.props.children}
-            </FirebaseContext.Provider>
-        );
-    }
 }

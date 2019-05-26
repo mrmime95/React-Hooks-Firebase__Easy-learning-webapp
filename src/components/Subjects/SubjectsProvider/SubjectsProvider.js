@@ -32,20 +32,6 @@ export default function SubjectsProvider(props) {
             ? setState({ ...state, selectedPackageId: '' })
             : setState({ ...state, selectedPackageId: packageId });
     }
-    function createNewSubject(subject: string) {
-        fireContext.db
-            .collection('subjects')
-            .add({
-                subjectName: subject,
-                userId: fireContext.user.id,
-            })
-            .then(() => {
-                console.log('subject saved');
-            })
-            .catch(error => {
-                console.log('Got error: ', error);
-            });
-    }
     function updateSubject(subjectId: string, values: { subject: string }) {
         fireContext.db
             .doc(`subjects/${subjectId}`)
@@ -80,19 +66,28 @@ export default function SubjectsProvider(props) {
             });
     }
     function createNewPackageForSubject(sibjectId: string, values: { packageName: string, public: boolean }) {
-        fireContext.db
-            .collection('packages')
-            .add({
-                packageName: values.packageName,
-                public: values.public,
-                subjectId: sibjectId,
-            })
-            .then(() => {
-                console.log('package saved');
-            })
-            .catch(error => {
-                console.log('Got error: ', error);
-            });
+        const batch = fireContext.db.batch();
+        const packagesRef = fireContext.db.collection('packages').doc();
+        const userRef = fireContext.db.collection('users').doc(fireContext.user.id);
+        batch.set(packagesRef, {
+            packageName: values.packageName,
+            public: values.public,
+            subjectId: sibjectId,
+        });
+        batch.update(userRef, { packagesNumber: fireContext.increment });
+        batch.commit();
+    }
+
+    function createNewSubject(subject: string) {
+        const batch = fireContext.db.batch();
+        const subjectsRef = fireContext.db.collection('subjects').doc();
+        const userRef = fireContext.db.collection('users').doc(fireContext.user.id);
+        batch.set(subjectsRef, {
+            subjectName: subject,
+            userId: fireContext.user.id,
+        });
+        batch.update(userRef, { subjectsNumber: fireContext.increment });
+        batch.commit();
     }
     function getPackagesBySubjectId(subjectId: string) {
         fireContext

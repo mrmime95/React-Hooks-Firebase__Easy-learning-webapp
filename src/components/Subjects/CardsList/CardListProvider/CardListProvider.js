@@ -57,21 +57,18 @@ export default function CardListProvider(props) {
         front: { image: string, imageUrl: string, word: string, example: string },
         back: { image: string, imageUrl: string, word: string, example: string }
     ) {
-        return fireContext.db
-            .collection('cards')
-            .add({
-                front,
-                back,
-                packageId,
-                knowledge: 0,
-            })
-            .then(() => {
-                console.log('card saved');
-                getCardsByPackageId(packageId);
-            })
-            .catch(error => {
-                console.log('Got error: ', error);
-            });
+        const batch = fireContext.db.batch();
+        const cardsRef = fireContext.db.collection('cards').doc();
+        const userRef = fireContext.db.collection('users').doc(fireContext.user.id);
+        batch.set(cardsRef, {
+            front,
+            back,
+            packageId,
+            knowledge: 0,
+        });
+        batch.update(userRef, { cardsNumber: fireContext.increment });
+        batch.commit();
+        getCardsByPackageId(packageId);
     }
 
     function updateCard(

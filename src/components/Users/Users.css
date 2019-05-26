@@ -13,10 +13,11 @@ button:focus {
       border-left: solid 5px #e3163a; }
     .user-list .grid .grid-row.aproover {
       border-left: solid 5px #7cc253; }
+    .user-list .grid .grid-row .column.profile-picture {
+      flex: 1; }
     .user-list .grid .grid-row .column.name {
       display: flex;
       justify-content: flex-start;
-      align-items: center;
       flex: 3; }
       .user-list .grid .grid-row .column.name .title {
         text-transform: uppercase;
@@ -29,6 +30,19 @@ button:focus {
       .user-list .grid .grid-row .column.status {
         padding: 0 23px;
         flex: 1; }
+      .user-list .grid .grid-row .column.name-content .with-label {
+        width: auto; }
+        .user-list .grid .grid-row .column.name-content .with-label .label {
+          margin: 0;
+          display: block;
+          line-height: 1.5;
+          font-size: 12px;
+          font-family: 'Lato', sans-serif; }
+        .user-list .grid .grid-row .column.name-content .with-label p {
+          font-family: 'Lato', sans-serif;
+          font-weight: normal;
+          line-height: 1.5;
+          font-size: 12px; }
       .user-list .grid .grid-row .column.datas {
         flex: 2; }
         .user-list .grid .grid-row .column.datas .with-label {

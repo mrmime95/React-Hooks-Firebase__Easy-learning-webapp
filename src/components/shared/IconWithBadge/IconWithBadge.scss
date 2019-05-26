@@ -1,0 +1,18 @@
+@import '../../../utils.scss';
+.badged-icon {
+    position: relative;
+    .badge {
+        border-radius: 50%;
+        background-color: $color-red-main;
+        color: #ffffff;
+        font-size: 12px;
+        font-weight: bold;
+        height: 18px;
+        width: 18px;
+        line-height: 18px;
+        position: absolute;
+        top: -5px;
+        right: -7px;
+        text-align: center;
+    }
+}

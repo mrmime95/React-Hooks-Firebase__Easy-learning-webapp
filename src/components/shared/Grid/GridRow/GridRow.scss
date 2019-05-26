@@ -27,3 +27,7 @@
         flex-wrap: unset;
     }
 }
+a.grid-row {
+    color: $color-grid-column-active-hover;
+    text-decoration: none;
+}

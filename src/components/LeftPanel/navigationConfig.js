@@ -12,7 +12,6 @@ import {
 
 import Dashboard from '../Dashboard/Dashboard';
 import Users from '../Users/Users';
-import CreateCard from '../CreateCard/CreateCard';
 import Subjects from '../Subjects/Subjects';
 import Game from '../Game/Game';
 
@@ -39,6 +38,7 @@ const navigationConfig = {
         title: 'Friends',
         route: componentRoute('/friends', EmptyRouteComponent('Friends')),
         Icon: OrganizationIcon,
+        withBadge: true,
     },
     playAndLearn: {
         title: 'Play and learn',

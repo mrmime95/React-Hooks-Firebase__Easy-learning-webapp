@@ -24,9 +24,9 @@ function GameContent(props: {}) {
         <div className="search-area">
             <Form
                 initialValues={{
-                    hardnessIDs: [],
-                    packages: [],
-                    subjects: [],
+                    hardnessIDs: context.selectedHardnessIDs,
+                    packages: context.selectedPackages,
+                    subjects: context.selectedSubjects,
                 }}
                 onSubmit={values => {
                     console.log(values);
@@ -36,6 +36,7 @@ function GameContent(props: {}) {
                     return (
                         <React.Fragment>
                             <MultiSelect
+                                label="Selected subjects:"
                                 value={values.subjects}
                                 name="subjects"
                                 className="subjects-select"
@@ -58,6 +59,7 @@ function GameContent(props: {}) {
                                 placeholder="Select subjects"
                             />
                             <MultiSelect
+                                label="Selected packages:"
                                 value={values.packages}
                                 name="packages"
                                 className="packages-select"
@@ -107,6 +109,7 @@ function GameContent(props: {}) {
                                                 { label: '4', id: '4' },
                                                 { label: '5', id: '5' },
                                             ]}
+                                            label="Hardnesses: "
                                             checked={values.hardnessIDs}
                                             onChange={(id, checked) => {
                                                 if (!checked) arrayHelpers.push(id);
