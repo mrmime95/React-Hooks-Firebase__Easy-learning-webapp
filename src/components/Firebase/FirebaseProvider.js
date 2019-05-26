@@ -103,14 +103,22 @@ export default class FirebaseProvider extends Component {
         db.doc(`users/${uid}`)
             .get()
             .then(querySnapshot => {
-                this.setState({
-                    authReady: true,
-                    isLoggedIn: true,
-                    user: {
-                        id: uid,
-                        ...querySnapshot.data(),
-                    },
-                });
+                db.doc(`friendRequestNumber/${uid}`)
+                    .get()
+                    .then(querySnapshot2 => {
+                        this.setState({
+                            authReady: true,
+                            isLoggedIn: true,
+                            user: {
+                                id: uid,
+                                ...querySnapshot.data(),
+                                friendRequestsNumber: querySnapshot2.data().counter,
+                            },
+                        });
+                    })
+                    .catch(function(error) {
+                        console.log('Error getting document: ', error);
+                    });
             })
             .catch(function(error) {
                 console.log('Error getting document: ', error);

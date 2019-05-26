@@ -87,36 +87,24 @@ export default function UsersProvider(props: { users: [Users] }) {
         });
         batch.update(friendRequestNumberRef, {
             counter: fireContext.increment,
-            requestedId,
         });
         batch.commit();
         getAllUsers();
     }
 
     async function deleteFriendReques(requestedId: string) {
-        fireContext.db
+        await fireContext.db
             .collection('friendRequests')
             .doc(fireContext.user.id + '_' + requestedId)
             .delete()
             .then(() => {
                 console.log('Document successfully deleted!');
                 getAllUsers();
-                fireContext.db
-                    .collection(`friendRequestNumber`)
-                    .where('requestedId', '==', requestedId)
-                    .get()
-                    .then(querySnapshot => {
-                        querySnapshot.forEach(doc => {
-                            console.log(doc.id);
-                            fireContext.db
-                                .collection('friendRequestsNumber')
-                                .doc(doc.id)
-                                .update({ counter: fireContext.decrement });
-                        });
-                    })
-                    .catch(error => {
-                        console.error('Error removing document: ', error);
-                    });
+                const friendRequestNumberRef = fireContext.db.doc(`friendRequestNumber/${requestedId}`);
+                friendRequestNumberRef.update({ counter: fireContext.decrement });
+            })
+            .catch(error => {
+                console.error('Error removing document: ', error);
             });
     }
 
