@@ -44,8 +44,8 @@ export default function UsersProvider(props: { users: [Users] }) {
         const returnableUsers = await Promise.all(
             allUsers.docs.map(async doc => {
                 const friendRequest = await fireContext.db
-                    .collection('friendRequests')
-                    .doc(fireContext.user.id + '_' + doc.id)
+                    .collection('friendRequestNumber')
+                    .doc(doc.id)
                     .get();
                 return {
                     id: doc.id,
@@ -56,7 +56,9 @@ export default function UsersProvider(props: { users: [Users] }) {
                     packages: doc.data().packagesNumber,
                     cards: doc.data().cardsNumber,
                     role: doc.data().role,
-                    requested: friendRequest.exists,
+                    requested: friendRequest.data().requesters
+                        ? friendRequest.data().requesters.find(element => element === fireContext.user.id)
+                        : false,
                 };
             })
         );
@@ -64,48 +66,25 @@ export default function UsersProvider(props: { users: [Users] }) {
     }
 
     async function createFriendReques(requestedId: string) {
-        const friendRequestsRef = fireContext.db
-            .collection('friendRequests')
-            .doc(fireContext.user.id + '_' + requestedId);
         const friendRequestNumberRef = fireContext.db.doc(`friendRequestNumber/${requestedId}`);
         const batch = fireContext.db.batch();
-        const today = new Date();
-        const dateTime =
-            today.getFullYear() +
-            '-' +
-            (today.getMonth() + 1) +
-            '-' +
-            today.getDate() +
-            ' ' +
-            today.getHours() +
-            ':' +
-            today.getMinutes() +
-            ':' +
-            today.getSeconds();
-        batch.set(friendRequestsRef, {
-            dateTime,
-        });
+        const friendRequestNumber = await friendRequestNumberRef.get();
+        const requesterArray = friendRequestNumber.data().requesters || [];
+        requesterArray.push(fireContext.user.id);
         batch.update(friendRequestNumberRef, {
             counter: fireContext.increment,
+            requesters: requesterArray,
         });
         batch.commit();
         getAllUsers();
     }
 
     async function deleteFriendReques(requestedId: string) {
-        await fireContext.db
-            .collection('friendRequests')
-            .doc(fireContext.user.id + '_' + requestedId)
-            .delete()
-            .then(() => {
-                console.log('Document successfully deleted!');
-                getAllUsers();
-                const friendRequestNumberRef = fireContext.db.doc(`friendRequestNumber/${requestedId}`);
-                friendRequestNumberRef.update({ counter: fireContext.decrement });
-            })
-            .catch(error => {
-                console.error('Error removing document: ', error);
-            });
+        const friendRequestNumberRef = fireContext.db.doc(`friendRequestNumber/${requestedId}`);
+        const friendRequestNumber = await friendRequestNumberRef.get();
+        const requesterArray = friendRequestNumber.data().requesters.filter(element => element !== fireContext.user.id);
+        friendRequestNumberRef.update({ counter: fireContext.decrement, requesters: requesterArray });
+        getAllUsers();
     }
 
     async function getCurrentUsersFriends() {

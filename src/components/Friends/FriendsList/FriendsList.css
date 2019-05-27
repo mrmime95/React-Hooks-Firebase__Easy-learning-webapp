@@ -1,0 +1,78 @@
+li {
+  list-style-type: none; }
+
+button:focus {
+  outline: none; }
+
+.user-list .grid {
+  font-family: 'Lato', sans-serif;
+  margin-top: 20px; }
+  .user-list .grid .grid-row {
+    border-left: solid 5px #00a0d0; }
+    .user-list .grid .grid-row.admin {
+      border-left: solid 5px #e3163a; }
+    .user-list .grid .grid-row.aproover {
+      border-left: solid 5px #7cc253; }
+    .user-list .grid .grid-row .column.profile-picture {
+      flex: 1; }
+    .user-list .grid .grid-row .column.name {
+      display: flex;
+      justify-content: flex-start;
+      flex: 3; }
+      .user-list .grid .grid-row .column.name .title {
+        text-transform: uppercase;
+        font-family: 'Lato', sans-serif;
+        font-size: 12px;
+        font-weight: bold;
+        max-width: 66%;
+        padding-left: 20px; }
+    @media only screen and (min-width: 992px) {
+      .user-list .grid .grid-row .column.status {
+        padding: 0 23px;
+        flex: 1; }
+      .user-list .grid .grid-row .column.name-content .with-label {
+        width: auto; }
+        .user-list .grid .grid-row .column.name-content .with-label .label {
+          margin: 0;
+          display: block;
+          line-height: 1.5;
+          font-size: 12px;
+          font-family: 'Lato', sans-serif; }
+        .user-list .grid .grid-row .column.name-content .with-label p {
+          font-family: 'Lato', sans-serif;
+          font-weight: normal;
+          line-height: 1.5;
+          font-size: 12px; }
+      .user-list .grid .grid-row .column.datas {
+        flex: 2; }
+        .user-list .grid .grid-row .column.datas .with-label {
+          width: auto; }
+          .user-list .grid .grid-row .column.datas .with-label .label {
+            margin: 0;
+            width: calc(100% - 120px);
+            display: block;
+            line-height: 1.5;
+            font-size: 12px;
+            font-family: 'Lato', sans-serif; }
+          .user-list .grid .grid-row .column.datas .with-label p {
+            font-family: 'Lato', sans-serif;
+            width: 120px;
+            font-weight: normal;
+            line-height: 1.5;
+            font-size: 12px; }
+      .user-list .grid .grid-row .column.buttons {
+        flex: 2; }
+        .user-list .grid .grid-row .column.buttons .with-label {
+          justify-content: space-between;
+          width: auto; }
+          .user-list .grid .grid-row .column.buttons .with-label .label {
+            padding: 0 15px 0 0;
+            text-align: right;
+            width: calc(100% - 120px);
+            display: block; }
+          .user-list .grid .grid-row .column.buttons .with-label .date {
+            padding: 0 0 0 15px;
+            width: 120px;
+            text-align: right;
+            font-weight: normal;
+            line-height: 1.5; } }

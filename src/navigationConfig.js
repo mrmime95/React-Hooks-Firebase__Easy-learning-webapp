@@ -10,10 +10,11 @@ import {
     Play,
 } from '@githubprimer/octicons-react';
 
-import Dashboard from '../Dashboard/Dashboard';
-import Users from '../Users/Users';
-import Subjects from '../Subjects/Subjects';
-import Game from '../Game/Game';
+import Dashboard from './components/Dashboard/Dashboard';
+import Users from './components/Users/Users';
+import Friends from './components/Friends/Friends';
+import Subjects from './components/Subjects/Subjects';
+import Game from './components/Game/Game';
 
 const EmptyRouteComponent = title => props => <div>{title}</div>;
 
@@ -36,7 +37,7 @@ const navigationConfig = {
     },
     friends: {
         title: 'Friends',
-        route: componentRoute('/friends', EmptyRouteComponent('Friends')),
+        route: componentRoute('/friends', Friends),
         Icon: OrganizationIcon,
         withBadge: true,
     },
