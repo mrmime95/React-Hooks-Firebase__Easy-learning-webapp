@@ -8,7 +8,13 @@ export default function NewSharedPackage(props: {
     user: { fullName: string, link: string, profilePicture?: string },
     package: {
         title: string,
-        words: [{ front: string, back: string, correct: 'correct' | 'unknown' | 'uncorrect' }],
+        words: [
+            {
+                front: { example: string, image: string, imageUrl: string, word: string },
+                back: { example: string, image: string, imageUrl: string, word: string },
+                correct: 'correct' | 'unknown' | 'uncorrect',
+            },
+        ],
         approved: boolean,
     },
 }) {
@@ -29,7 +35,7 @@ export default function NewSharedPackage(props: {
                     {props.package.words.map((word, index) => {
                         return (
                             <li key={`li${index}`} className="line" data-for={`li${index}`} data-tip>
-                                <p className="word">{`${word.front}-${word.back}`}</p>
+                                <p className="word">{`${word.front.word}-${word.back.word}`}</p>
                                 {word.correct === 'unknown' ? (
                                     <Octicon className="correct unknown" icon={Alert} />
                                 ) : word.correct === 'correct' ? (

@@ -125,26 +125,6 @@ export default class FirebaseProvider extends Component {
             });
     };
 
-    /* getFriendRequestsNumber = () => {
-        db.doc(`friendRequestNumber/${this.state.user.id}`).onSnapshot(
-            {
-                includeMetadataChanges: true,
-            },
-            doc => {
-                const user = this.state.user;
-                console.log(doc.data());
-                user.friendRequestsNumber = doc.data().counter;
-                this.setState(user);
-            }
-        );
-
-          .onSnapshot(doc => {
-            const user = this.state.user;
-            console.log(doc.data());
-            user.friendRequestsNumber = doc.data().counter;
-            this.setState(user);
-        }); 
-    }; */
     getFriendRequestsNumber = () => {
         db.collection(`friendRequestNumber`)
             .where('requestedId', '==', this.state.user.id)

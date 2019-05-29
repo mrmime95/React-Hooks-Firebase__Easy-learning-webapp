@@ -73,6 +73,10 @@ export default function SubjectsProvider(props) {
             packageName: values.packageName,
             public: values.public,
             subjectId: sibjectId,
+            createdBy: {
+                id: fireContext.user.id,
+                fullName: `${fireContext.user.firstName} ${fireContext.user.lastName}`,
+            },
         });
         batch.update(userRef, { packagesNumber: fireContext.increment });
         batch.commit();
@@ -126,19 +130,4 @@ export default function SubjectsProvider(props) {
                 console.log('Error getting documents: ', error);
             });
     }
-
-    /* function deleteSubject(subjectId: string) {
-        fireContext.db
-            .doc(`subjects/${subjectId}`)
-            .update({
-                subjectName: values.subject,
-            })
-            .then(function() {
-                console.log('Document successfully updated!');
-                getSubjectsByCurrentUser();
-            })
-            .catch(function(error) {
-                console.error('Error updating document: ', error);
-            });
-    } */
 }
