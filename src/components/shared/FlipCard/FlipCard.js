@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import './FlipCard.css';
 import Modal from '../Modal/Modal';
 import Form from '../../shared/Form/Form';
 import PicureUploader from '../../shared/PicureUploader/PicureUploader';
+import { CardListContext } from '../../Subjects/CardsList/CardListProvider/CardListProvider';
 import Rater from 'react-rater';
 import 'react-rater/lib/react-rater.css';
 
@@ -91,7 +92,6 @@ export default function FlipCard(props: {
                         className="big-modal"
                         packageId={props.packageId}
                         card={props.card}
-                        context={props.context}
                     />
                 </div>
             )}
@@ -109,7 +109,6 @@ export default function FlipCard(props: {
     );
 }
 function EditCardModal(props: {
-    context: () => void,
     closeModal: () => void,
     isOpen: boolean,
     className: string,
@@ -128,6 +127,7 @@ function EditCardModal(props: {
         },
     },
 }) {
+    const context = useContext(CardListContext);
     return (
         <Modal isOpen={props.isOpen} handleClickOutside={props.closeModal} className={props.className}>
             <div className="modal-title">Edit card</div>
@@ -148,7 +148,7 @@ function EditCardModal(props: {
                 }}
                 onSubmit={values => {
                     console.log('Edit cardSubmiting');
-                    props.context.updateCard(props.packageId, props.card.id, values.front, values.back);
+                    context.updateCard(props.packageId, props.card.id, values.front, values.back);
                     props.closeModal();
                 }}
             >
