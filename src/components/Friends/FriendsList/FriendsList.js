@@ -16,114 +16,81 @@ export default function FriendsList(props: { match: RouterMatch }) {
     const { user } = useContext(FirebaseContext);
     const { match } = props;
     const path = match.path;
-
     return (
         <div className="friends-list">
             <div className="grid-area">
-                {context.users.length !== 0 ? (
-                    <GridWithPagination
-                        headerConfig={[
-                            { label: 'picture', flex: 1 },
-                            { label: 'personal data', flex: 3 },
-                            { label: 'status', flex: 1 },
-                            { label: 'datas', flex: 2 },
-                            { label: 'actions', flex: 2 },
-                        ]}
-                        createRow={(rowData: {
-                            id: number,
-                            name: string,
-                            profilePicture?: string,
-                            email: string,
-                            birthDate: string,
-                            status: string,
-                            subjects: number,
-                            packages: number,
-                            words: number,
-                            requested: boolean,
-                        }) => {
-                            if (rowData.id !== user.id) {
-                                return (
-                                    <GridRow key={`LinkGridRow${rowData.id}`} className={`${rowData.role}`}>
-                                        <GridColumn className="profile-picture">
-                                            <AvatarCircle
-                                                profilePicture={rowData.profilePicture}
-                                                fullName={rowData.name}
-                                            />
-                                        </GridColumn>
-                                        <GridColumn className="name">
-                                            <GridColumn className="name-content">
-                                                <GridColumn label="Name">
-                                                    <p className="name-text">{rowData.name}</p>
-                                                </GridColumn>
-                                                <GridColumn label="E-mail">
-                                                    <p className="email">{rowData.email}</p>
-                                                </GridColumn>
-                                                <GridColumn label="Birth">
-                                                    <p className="birth">{rowData.birthDate}</p>
-                                                </GridColumn>
+                <h3>Friends:</h3>
+                <GridWithPagination
+                    headerConfig={[
+                        { label: 'picture', flex: 1 },
+                        { label: 'personal data', flex: 3 },
+                        { label: 'status', flex: 1 },
+                        { label: 'datas', flex: 2 },
+                        { label: 'actions', flex: 2 },
+                    ]}
+                    createRow={(rowData: {
+                        id: number,
+                        name: string,
+                        profilePicture?: string,
+                        email: string,
+                        birthDate: string,
+                        status: string,
+                        subjects: number,
+                        packages: number,
+                        words: number,
+                        requested: boolean,
+                    }) => {
+                        if (rowData.id !== user.id) {
+                            return (
+                                <GridRow key={`LinkGridRow${rowData.id}`} className={`${rowData.role}`}>
+                                    <GridColumn className="profile-picture">
+                                        <AvatarCircle profilePicture={rowData.profilePicture} fullName={rowData.name} />
+                                    </GridColumn>
+                                    <GridColumn className="name">
+                                        <GridColumn className="name-content">
+                                            <GridColumn label="Name">
+                                                <p className="name-text">{rowData.name}</p>
+                                            </GridColumn>
+                                            <GridColumn label="E-mail">
+                                                <p className="email">{rowData.email}</p>
+                                            </GridColumn>
+                                            <GridColumn label="Birth">
+                                                <p className="birth">{rowData.birthDate}</p>
                                             </GridColumn>
                                         </GridColumn>
+                                    </GridColumn>
 
-                                        <GridColumn className="status" label="status">
-                                            <p>{rowData.role}</p>
-                                        </GridColumn>
+                                    <GridColumn className="status" label="status">
+                                        <p>{rowData.role}</p>
+                                    </GridColumn>
 
-                                        <GridColumn className="datas">
-                                            <GridColumn label="subjects">
-                                                <p className="subjects">{rowData.subjects}</p>
-                                            </GridColumn>
-                                            <GridColumn label="packages">
-                                                <p className="packages">{rowData.packages}</p>
-                                            </GridColumn>
-                                            <GridColumn label="words">
-                                                <p className="words">{rowData.cards}</p>
-                                            </GridColumn>
+                                    <GridColumn className="datas">
+                                        <GridColumn label="subjects">
+                                            <p className="subjects">{rowData.subjects}</p>
                                         </GridColumn>
-                                        <GridColumn className="buttons">
-                                            {rowData.requested ? (
-                                                <button
-                                                    type="button"
-                                                    className="btn btn-outline-primary"
-                                                    onClick={() => context.deleteFriendReques(rowData.id)}
-                                                >
-                                                    Delete friend request
-                                                </button>
-                                            ) : (
-                                                <button
-                                                    type="button"
-                                                    className="btn btn-outline-primary"
-                                                    onClick={() => context.createFriendReques(rowData.id)}
-                                                >
-                                                    Send friend request
-                                                </button>
-                                            )}
-                                            {user.role === 'admin' && (
-                                                <React.Fragment>
-                                                    <button type="button" className="btn btn-outline-secondary">
-                                                        Delete user
-                                                    </button>
-                                                    <button type="button" className="btn btn-outline-secondary">
-                                                        Create approover
-                                                    </button>
-                                                    <button type="button" className="btn btn-outline-secondary">
-                                                        Create admin
-                                                    </button>
-                                                    <button type="button" className="btn btn-outline-secondary">
-                                                        Create user
-                                                    </button>
-                                                </React.Fragment>
-                                            )}
+                                        <GridColumn label="packages">
+                                            <p className="packages">{rowData.packages}</p>
                                         </GridColumn>
-                                    </GridRow>
-                                );
-                            }
-                            return null;
-                        }}
-                        data={context.users}
-                    />
-                ) : (
-                    <div>Loading...</div>
-                )}
+                                        <GridColumn label="words">
+                                            <p className="words">{rowData.cards}</p>
+                                        </GridColumn>
+                                    </GridColumn>
+                                    <GridColumn className="buttons">
+                                        <button
+                                            type="button"
+                                            className="btn btn-outline-primary"
+                                            onClick={() => context.deleteFriend(rowData.id)}
+                                        >
+                                            Delete friend
+                                        </button>
+                                    </GridColumn>
+                                </GridRow>
+                            );
+                        }
+                        return null;
+                    }}
+                    data={context.friends}
+                />
             </div>
         </div>
     );

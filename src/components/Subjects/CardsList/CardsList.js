@@ -4,6 +4,7 @@ import Modal from '../../shared/Modal/Modal';
 import Form from '../../shared/Form/Form';
 import { SubjectsContext } from '../SubjectsProvider/SubjectsProvider';
 import { CardListContext } from './CardListProvider/CardListProvider';
+import PicureUploader from '../../shared/PicureUploader/PicureUploader';
 import './CardsList.css';
 
 export default function CardsList() {
@@ -35,7 +36,6 @@ export default function CardsList() {
                             return (
                                 <React.Fragment key={`Flipcard${index}`}>
                                     <FlipCard
-                                        context={cardListContext}
                                         workWithHover
                                         packageId={subjectContext.selectedPackageId}
                                         card={card}
@@ -70,13 +70,13 @@ function NewCardModal(props: {
             <Form
                 initialValues={{
                     front: {
-                        image: '',
+                        image: null,
                         imageUrl: '',
                         word: '',
                         example: '',
                     },
                     back: {
-                        image: '',
+                        image: null,
                         imageUrl: '',
                         word: '',
                         example: '',
@@ -94,28 +94,43 @@ function NewCardModal(props: {
                             <div className="adder front">
                                 <div className="inputs">
                                     <div className="adder-image">
-                                        <div className="form-group image">
-                                            <input
-                                                name="front.image"
-                                                value={values.front.image}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                type="file"
-                                                className="form-control"
-                                                placeholder="Upload a picture"
-                                            />
-                                        </div>
-                                        <div className="form-group image-url">
-                                            <input
-                                                name="front.imageUrl"
-                                                value={values.front.imageUrl}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                className="form-control"
-                                                type="text"
-                                                placeholder="Or add an Url"
-                                            />
-                                        </div>
+                                        <PicureUploader
+                                            nameUrl="front.imageUrl"
+                                            nameImage="front.image"
+                                            imageUrl={values.front.imageUrl}
+                                            handleChange={value => {
+                                                handleChange(value);
+                                                if (typeof value.target.value !== 'string') {
+                                                    let reader = new FileReader();
+
+                                                    reader.onloadend = () => {
+                                                        handleChange(
+                                                            (({
+                                                                target: {
+                                                                    name: 'front.imageUrl',
+                                                                    value: reader.result,
+                                                                },
+                                                            }: any): SyntheticInputEvent<any>)
+                                                        );
+                                                    };
+
+                                                    reader.readAsDataURL(value.target.value);
+                                                } else {
+                                                    handleChange(
+                                                        (({
+                                                            target: {
+                                                                name: 'front.image',
+                                                                value: null,
+                                                            },
+                                                        }: any): SyntheticInputEvent<any>)
+                                                    );
+                                                }
+                                            }}
+                                            onBlur={handleBlur}
+                                            type="file"
+                                            className="form-control"
+                                            placeholder="Upload a picture"
+                                        />
                                     </div>
                                     <div className="form-group word">
                                         <input
@@ -148,28 +163,43 @@ function NewCardModal(props: {
                             <div className="adder back">
                                 <div className="inputs">
                                     <div className="adder-image">
-                                        <div className="form-group">
-                                            <input
-                                                name="back.image"
-                                                value={values.back.image}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                type="file"
-                                                className="form-control"
-                                                placeholder="Upload a picture"
-                                            />
-                                        </div>
-                                        <div className="form-group">
-                                            <input
-                                                name="back.imageUrl"
-                                                value={values.back.imageUrl}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                type="text"
-                                                className="form-control"
-                                                placeholder="Or add an Url"
-                                            />
-                                        </div>
+                                        <PicureUploader
+                                            nameUrl="back.imageUrl"
+                                            nameImage="back.image"
+                                            imageUrl={values.back.imageUrl}
+                                            handleChange={value => {
+                                                handleChange(value);
+                                                if (typeof value.target.value !== 'string') {
+                                                    let reader = new FileReader();
+
+                                                    reader.onloadend = () => {
+                                                        handleChange(
+                                                            (({
+                                                                target: {
+                                                                    name: 'back.imageUrl',
+                                                                    value: reader.result,
+                                                                },
+                                                            }: any): SyntheticInputEvent<any>)
+                                                        );
+                                                    };
+
+                                                    reader.readAsDataURL(value.target.value);
+                                                } else {
+                                                    handleChange(
+                                                        (({
+                                                            target: {
+                                                                name: 'back.image',
+                                                                value: null,
+                                                            },
+                                                        }: any): SyntheticInputEvent<any>)
+                                                    );
+                                                }
+                                            }}
+                                            onBlur={handleBlur}
+                                            type="file"
+                                            className="form-control"
+                                            placeholder="Upload a picture"
+                                        />
                                     </div>
                                     <div className="form-group">
                                         <input

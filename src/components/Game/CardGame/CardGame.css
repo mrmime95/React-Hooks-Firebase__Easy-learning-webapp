@@ -1,0 +1,10 @@
+li {
+  list-style-type: none; }
+
+button:focus {
+  outline: none; }
+
+.card-game {
+  min-height: calc(100vh - 140px);
+  max-height: calc(100vh - 140px);
+  overflow: hidden; }

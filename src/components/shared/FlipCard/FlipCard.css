@@ -59,3 +59,5 @@
     text-align: center; }
   .flip-card.work-with-hover:hover .content {
     transform: rotateY(180deg); }
+  .flip-card.work-with-focus .content {
+    transform: rotateY(180deg); }

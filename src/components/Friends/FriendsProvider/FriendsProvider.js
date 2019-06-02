@@ -32,11 +32,21 @@ export default function FriendsProvider(props: { users: [Users] }) {
     const fireContext = useContext(FirebaseContext);
     useEffect(() => {
         getAllRequesters();
+        getAllFriends();
     }, []);
 
     return (
         <FriendsContext.Provider
-            value={{ ...state, onSearch, onPagingChange, getAllRequesters, deleteFriendReques, acceptFriend }}
+            value={{
+                ...state,
+                onSearch,
+                onPagingChange,
+                getAllRequesters,
+                deleteFriendReques,
+                acceptFriend,
+                getAllFriends,
+                deleteFriend,
+            }}
         >
             {props.children}
         </FriendsContext.Provider>
@@ -48,9 +58,8 @@ export default function FriendsProvider(props: { users: [Users] }) {
             .doc(fireContext.user.id)
             .get();
         const requesters = friendRequestNumber.data().requesters;
-        console.log(requesters);
 
-        if (requesters.length) {
+        if (requesters) {
             const requesterUsers = await Promise.all(
                 requesters.map(async (requester, index) => {
                     const friendRequesters = await fireContext.db
@@ -74,81 +83,7 @@ export default function FriendsProvider(props: { users: [Users] }) {
         } else {
             setState({ ...state, recuesters: [] });
         }
-
-        /*  const returnableUsers = await Promise.all(
-            allUsers.docs.map(async doc => {
-                const friendRequest = await fireContext.db
-                    .collection('friendRequests')
-                    .doc(fireContext.user.id + '_' + doc.id)
-                    .get();
-                return {
-                    id: doc.id,
-                    email: doc.data().email,
-                    name: `${doc.data().firstName} ${doc.data().lastName}`,
-                    birthDate: doc.data().birthDate,
-                    subjects: doc.data().subjectsNumber,
-                    packages: doc.data().packagesNumber,
-                    cards: doc.data().cardsNumber,
-                    role: doc.data().role,
-                    requested: friendRequest.exists,
-                };
-            })
-        );
-        setState({ ...state, users: returnableUsers }); */
     }
-
-    /*     async function getAllFriends() {
-        const allUsers = await fireContext.db.collection('users').get();
-        const returnableUsers = await Promise.all(
-            allUsers.docs.map(async doc => {
-                const friendRequest = await fireContext.db
-                    .collection('friendRequests')
-                    .doc(fireContext.user.id + '_' + doc.id)
-                    .get();
-                return {
-                    id: doc.id,
-                    email: doc.data().email,
-                    name: `${doc.data().firstName} ${doc.data().lastName}`,
-                    birthDate: doc.data().birthDate,
-                    subjects: doc.data().subjectsNumber,
-                    packages: doc.data().packagesNumber,
-                    cards: doc.data().cardsNumber,
-                    role: doc.data().role,
-                    requested: friendRequest.exists,
-                };
-            })
-        );
-        setState({ ...state, users: returnableUsers });
-    } */
-
-    /*    async function createFriendReques(requestedId: string) {
-        const friendRequestsRef = fireContext.db
-            .collection('friendRequests')
-            .doc(fireContext.user.id + '_' + requestedId);
-        const friendRequestNumberRef = fireContext.db.doc(`friendRequestNumber/${requestedId}`);
-        const batch = fireContext.db.batch();
-        const today = new Date();
-        const dateTime =
-            today.getFullYear() +
-            '-' +
-            (today.getMonth() + 1) +
-            '-' +
-            today.getDate() +
-            ' ' +
-            today.getHours() +
-            ':' +
-            today.getMinutes() +
-            ':' +
-            today.getSeconds();
-        batch.set(friendRequestsRef, {
-            dateTime,
-        });
-        batch.update(friendRequestNumberRef, {
-            counter: fireContext.increment,
-        });
-        batch.commit();
-        getAllUsers();
-    } */
     async function acceptFriend(friendId: string) {
         const currentUserRef = fireContext.db.doc(`users/${fireContext.user.id}`);
         const friendUserRef = fireContext.db.doc(`users/${friendId}`);
@@ -160,6 +95,7 @@ export default function FriendsProvider(props: { users: [Users] }) {
         const currentUsersFriendsArray = currentUser.data().friends || [];
         currentUsersFriendsArray.push(friendId);
         batch.update(currentUserRef, {
+            friendCounter: fireContext.increment,
             friends: currentUsersFriendsArray,
         });
 
@@ -167,6 +103,7 @@ export default function FriendsProvider(props: { users: [Users] }) {
         const friendUsersFriendsArray = friendUser.data().friends || [];
         friendUsersFriendsArray.push(fireContext.user.id);
         batch.update(friendUserRef, {
+            friendCounter: fireContext.increment,
             friends: friendUsersFriendsArray,
         });
 
@@ -188,7 +125,13 @@ export default function FriendsProvider(props: { users: [Users] }) {
             dateTime,
         });
         batch.commit();
-        getAllRequesters();
+
+        setTimeout(() => {
+            getAllRequesters();
+            setTimeout(() => {
+                getAllFriends();
+            }, 500);
+        }, 500);
     }
     async function deleteFriendReques(requesterId: string) {
         const friendRequestNumberRef = fireContext.db.doc(`friendRequestNumber/${fireContext.user.id}`);
@@ -198,12 +141,50 @@ export default function FriendsProvider(props: { users: [Users] }) {
         getAllRequesters();
     }
 
-    /*  async function getCurrentUsersFriends() {
-        const usersFriends = await fireContext.db
-            .doc(`users/${fireContext.user.id}`)
-            .where('userId', '==', this.state.user.id)
+    async function getAllFriends() {
+        const userData = await fireContext.db
+            .collection('users')
+            .doc(fireContext.user.id)
             .get();
-    } */
+        const friends = userData.data().friends;
+        if (friends) {
+            const requesterUsers = await Promise.all(
+                friends.map(async (friendId, index) => {
+                    const friendData = await fireContext.db
+                        .collection('users')
+                        .doc(friendId)
+                        .get();
+                    return {
+                        id: friendData.id,
+                        email: friendData.data().email,
+                        name: `${friendData.data().firstName} ${friendData.data().lastName}`,
+                        birthDate: friendData.data().birthDate,
+                        subjects: friendData.data().subjectsNumber,
+                        packages: friendData.data().packagesNumber,
+                        cards: friendData.data().cardsNumber,
+                        role: friendData.data().role,
+                    };
+                })
+            );
+            setState({ ...state, friends: requesterUsers });
+        } else {
+            setState({ ...state, friends: [] });
+        }
+    }
+
+    async function deleteFriend(friendId: string) {
+        const userRef = fireContext.db.doc(`users/${fireContext.user.id}`);
+        const user = await userRef.get();
+        const friendArray = user.data().friends.filter(element => element !== friendId);
+        userRef.update({ friendCounter: fireContext.decrement, friends: friendArray });
+
+        const friendRef = fireContext.db.doc(`users/${friendId}`);
+        const friend = await friendRef.get();
+        const friendWithUserArray = friend.data().friends.filter(element => element !== fireContext.user.id);
+        friendRef.update({ friendCounter: fireContext.decrement, friends: friendWithUserArray });
+
+        getAllFriends();
+    }
 
     function onPagingChange(newState: { activePage: number, pageSize: number }) {
         setState({

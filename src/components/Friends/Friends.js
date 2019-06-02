@@ -18,6 +18,7 @@ export default function Friends(props) {
         <div className="list">
             <FriendsProvider users={users}>
                 <FriendRequestsContent {...props} />
+                <FriendsList {...props} />
             </FriendsProvider>
         </div>
     );

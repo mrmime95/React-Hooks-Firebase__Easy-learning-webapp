@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import './FlipCard.css';
 import Modal from '../Modal/Modal';
 import Form from '../../shared/Form/Form';
+import PicureUploader from '../../shared/PicureUploader/PicureUploader';
 import Rater from 'react-rater';
 import 'react-rater/lib/react-rater.css';
 
 export default function FlipCard(props: {
     showBack?: boolean,
     workWithHover?: boolean,
+    workWithFocus?: boolean,
     inverse?: boolean,
     editable: boolean,
     packageId?: string,
@@ -16,27 +18,43 @@ export default function FlipCard(props: {
         back: {
             example: string,
             image: string,
+            imageUrl: string,
             word: string,
         },
         front: {
             example: string,
             image: string,
+            imageUrl: string,
             word: string,
         },
-        hardness: number,
+        knowledge: number,
     },
+    onClick: () => void,
+    onClickStars: () => void,
     stars: boolean,
     interactiveStars: boolean,
 }) {
-    const [state, setState] = useState({ editCardModalOpen: false });
+    const [state, setState] = useState({ editCardModalOpen: false, clicked: false });
 
     return (
-        <div className={`flip-card ${props.workWithHover && 'work-with-hover'}`}>
-            <div className={`content ${props.showBack && 'show-back'}`}>
+        <div
+            className={`flip-card ${props.workWithHover && 'work-with-hover'} ${props.workWithFocus &&
+                state.clicked &&
+                'work-with-focus'}`}
+        >
+            <div
+                className={`content ${props.showBack && 'show-back'}`}
+                onClick={() => {
+                    setState({ ...state, clicked: !state.clicked });
+                    if (props.onClick) {
+                        props.onClick();
+                    }
+                }}
+            >
                 <div className={props.inverse ? 'back' : 'front'}>
-                    {props.card.front.image && (
+                    {props.card.front.imageUrl && (
                         <div className="image-container">
-                            <img className="image" src={props.card.front.image} alt={props.card.front.word} />
+                            <img className="image" src={props.card.front.imageUrl} alt={props.card.front.word} />
                         </div>
                     )}
                     <div className="text-container">
@@ -45,9 +63,9 @@ export default function FlipCard(props: {
                     </div>
                 </div>
                 <div className={props.inverse ? 'front' : 'back'}>
-                    {props.card.back.image && (
+                    {props.card.back.imageUrl && (
                         <div className="image-container">
-                            <img className="image" src={props.card.back.image} alt={props.card.back.word} />
+                            <img className="image" src={props.card.back.imageUrl} alt={props.card.back.word} />
                         </div>
                     )}
                     <div className="text-container">
@@ -83,6 +101,7 @@ export default function FlipCard(props: {
                         total={5}
                         rating={props.card.knowledge}
                         interactive={props.interactiveStars ? true : false}
+                        onRate={props.onClickStars}
                     />
                 </div>
             )}
@@ -115,14 +134,14 @@ function EditCardModal(props: {
             <Form
                 initialValues={{
                     front: {
-                        image: '',
-                        imageUrl: props.card.front.image,
+                        image: null,
+                        imageUrl: props.card.front.imageUrl,
                         word: props.card.front.word,
                         example: props.card.front.example,
                     },
                     back: {
-                        image: '',
-                        imageUrl: props.card.back.image,
+                        image: null,
+                        imageUrl: props.card.back.imageUrl,
                         word: props.card.back.word,
                         example: props.card.back.example,
                     },
@@ -139,28 +158,43 @@ function EditCardModal(props: {
                             <div className="adder front">
                                 <div className="inputs">
                                     <div className="adder-image">
-                                        <div className="form-group image">
-                                            <input
-                                                name="front.image"
-                                                value={values.front.image}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                type="file"
-                                                className="form-control"
-                                                placeholder="Upload a picture"
-                                            />
-                                        </div>
-                                        <div className="form-group image-url">
-                                            <input
-                                                name="front.imageUrl"
-                                                value={values.front.imageUrl}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                className="form-control"
-                                                type="text"
-                                                placeholder="Or add an Url"
-                                            />
-                                        </div>
+                                        <PicureUploader
+                                            nameUrl="front.imageUrl"
+                                            nameImage="front.image"
+                                            imageUrl={values.front.imageUrl}
+                                            handleChange={value => {
+                                                handleChange(value);
+                                                if (typeof value.target.value !== 'string') {
+                                                    let reader = new FileReader();
+
+                                                    reader.onloadend = () => {
+                                                        handleChange(
+                                                            (({
+                                                                target: {
+                                                                    name: 'front.imageUrl',
+                                                                    value: reader.result,
+                                                                },
+                                                            }: any): SyntheticInputEvent<any>)
+                                                        );
+                                                    };
+
+                                                    reader.readAsDataURL(value.target.value);
+                                                } else {
+                                                    handleChange(
+                                                        (({
+                                                            target: {
+                                                                name: 'front.image',
+                                                                value: null,
+                                                            },
+                                                        }: any): SyntheticInputEvent<any>)
+                                                    );
+                                                }
+                                            }}
+                                            onBlur={handleBlur}
+                                            type="file"
+                                            className="form-control"
+                                            placeholder="Upload a picture"
+                                        />
                                     </div>
                                     <div className="form-group word">
                                         <input
@@ -193,28 +227,43 @@ function EditCardModal(props: {
                             <div className="adder back">
                                 <div className="inputs">
                                     <div className="adder-image">
-                                        <div className="form-group">
-                                            <input
-                                                name="back.image"
-                                                value={values.back.image}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                type="file"
-                                                className="form-control"
-                                                placeholder="Upload a picture"
-                                            />
-                                        </div>
-                                        <div className="form-group">
-                                            <input
-                                                name="back.imageUrl"
-                                                value={values.back.imageUrl}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                type="text"
-                                                className="form-control"
-                                                placeholder="Or add an Url"
-                                            />
-                                        </div>
+                                        <PicureUploader
+                                            nameUrl="back.imageUrl"
+                                            nameImage="back.image"
+                                            imageUrl={values.back.imageUrl}
+                                            handleChange={value => {
+                                                handleChange(value);
+                                                if (typeof value.target.value !== 'string') {
+                                                    let reader = new FileReader();
+
+                                                    reader.onloadend = () => {
+                                                        handleChange(
+                                                            (({
+                                                                target: {
+                                                                    name: 'back.imageUrl',
+                                                                    value: reader.result,
+                                                                },
+                                                            }: any): SyntheticInputEvent<any>)
+                                                        );
+                                                    };
+
+                                                    reader.readAsDataURL(value.target.value);
+                                                } else {
+                                                    handleChange(
+                                                        (({
+                                                            target: {
+                                                                name: 'back.image',
+                                                                value: null,
+                                                            },
+                                                        }: any): SyntheticInputEvent<any>)
+                                                    );
+                                                }
+                                            }}
+                                            onBlur={handleBlur}
+                                            type="file"
+                                            className="form-control"
+                                            placeholder="Upload a picture"
+                                        />
                                     </div>
                                     <div className="form-group">
                                         <input

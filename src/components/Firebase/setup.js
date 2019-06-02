@@ -1,6 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
+import 'firebase/storage';
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -15,5 +16,6 @@ firebase.initializeApp(firebaseConfig);
 
 export const auth = firebase.auth();
 export const db = firebase.firestore();
+export const storage = firebase.storage();
 export const increment = firebase.firestore.FieldValue.increment(1);
 export const decrement = firebase.firestore.FieldValue.increment(-1);

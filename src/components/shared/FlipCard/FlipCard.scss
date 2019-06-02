@@ -70,4 +70,7 @@
     &.work-with-hover:hover .content {
         transform: rotateY(180deg);
     }
+    &.work-with-focus .content {
+        transform: rotateY(180deg);
+    }
 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { auth, db, increment, decrement } from './setup';
+import { auth, db, increment, decrement, storage } from './setup';
 export const FirebaseContext = React.createContext();
 export const FirebaseConsumer = FirebaseContext.Consumer;
 
@@ -19,6 +19,7 @@ export default class FirebaseProvider extends Component {
                 value={{
                     ...this.state,
                     db,
+                    storage,
                     increment,
                     decrement,
                     doCreateUserWithEmailAndPassword: this.doCreateUserWithEmailAndPassword,
@@ -111,7 +112,8 @@ export default class FirebaseProvider extends Component {
                             isLoggedIn: true,
                             user: {
                                 id: uid,
-                                ...querySnapshot.data(),
+                                email: querySnapshot.data().email,
+                                birthDate: querySnapshot.data().birthDate,
                                 friendRequestsNumber: querySnapshot2.data().counter,
                             },
                         });

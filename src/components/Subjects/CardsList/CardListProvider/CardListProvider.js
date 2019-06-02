@@ -33,14 +33,15 @@ export default function CardListProvider(props) {
                         id: doc.id,
                         front: {
                             word: doc.data().front.word,
-                            image: doc.data().front.image,
+                            imageUrl: doc.data().front.imageUrl,
                             example: doc.data().front.example,
                         },
                         back: {
                             word: doc.data().back.word,
-                            image: doc.data().back.image,
+                            imageUrl: doc.data().back.imageUrl,
                             example: doc.data().back.example,
                         },
+                        knowledge: doc.data().knowledge,
                     });
                 });
 
@@ -52,36 +53,67 @@ export default function CardListProvider(props) {
             });
     }
 
-    function createNewCardForPackage(
+    async function uploadImage(side) {
+        return new Promise(async (resolve, reject) => {
+            if (side.image) {
+                const storageRef = fireContext.storage.ref('cardImages');
+                const imageRef = await storageRef.child(Math.random() + side.image.name);
+                console.log(side.image);
+                const uploadImage = imageRef.put(side.image);
+                uploadImage.on(
+                    'state_changed',
+                    snapshot => {
+                        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                        console.log('Upload is ' + progress + '% done');
+                    },
+                    error => {
+                        console.log('Front image Uploading error:', error);
+                        reject(error);
+                    },
+                    () => {
+                        resolve(uploadImage.snapshot.ref.getDownloadURL());
+                    }
+                );
+            } else {
+                resolve(side.imageUrl);
+            }
+        });
+    }
+
+    async function createNewCardForPackage(
         packageId,
-        front: { image: string, imageUrl: string, word: string, example: string },
-        back: { image: string, imageUrl: string, word: string, example: string }
+        front: { image: any, imageUrl: string, word: string, example: string },
+        back: { image: any, imageUrl: string, word: string, example: string }
     ) {
+        const frontUrl = await uploadImage(front);
+        const backUrl = await uploadImage(back);
         const batch = fireContext.db.batch();
         const cardsRef = fireContext.db.collection('cards').doc();
         const userRef = fireContext.db.collection('users').doc(fireContext.user.id);
         batch.set(cardsRef, {
-            front,
-            back,
+            front: { imageUrl: frontUrl, word: front.word, example: front.example },
+            back: { imageUrl: backUrl, word: back.word, example: back.example },
             packageId,
-            knowledge: 0,
+            knowledge: 1,
         });
         batch.update(userRef, { cardsNumber: fireContext.increment });
         batch.commit();
         getCardsByPackageId(packageId);
     }
 
-    function updateCard(
+    async function updateCard(
         packageId: string,
         cardId: string,
-        front: { example: string, image: string, word: string },
-        back: { example: string, image: string, word: string }
+        front: { image: any, imageUrl: string, word: string, example: string },
+        back: { image: any, imageUrl: string, word: string, example: string }
     ) {
+        const frontUrl = await uploadImage(front);
+        const backUrl = await uploadImage(back);
         fireContext.db
             .doc(`cards/${cardId}`)
             .update({
-                front: front,
-                back: back,
+                front: { imageUrl: frontUrl, word: front.word, example: front.example },
+                back: { imageUrl: backUrl, word: back.word, example: back.example },
             })
             .then(function() {
                 console.log('Document successfully updated!');
