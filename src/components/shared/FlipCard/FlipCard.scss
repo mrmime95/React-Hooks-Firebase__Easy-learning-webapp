@@ -6,7 +6,7 @@
     position: relative;
     padding: 20px;
     cursor: pointer;
-    .content {
+    .flip-card-content {
         position: relative;
         width: 100%;
         height: 100%;
@@ -29,6 +29,11 @@
                 .image {
                     width: 100%;
                     height: 100%;
+                }
+            }
+            .text-container {
+                .title {
+                    font-size: 2vw;
                 }
             }
         }
@@ -67,10 +72,10 @@
         text-align: center;
     }
 
-    &.work-with-hover:hover .content {
+    &.work-with-hover:hover .flip-card-content {
         transform: rotateY(180deg);
     }
-    &.work-with-focus .content {
+    &.work-with-focus .flip-card-content {
         transform: rotateY(180deg);
     }
 }

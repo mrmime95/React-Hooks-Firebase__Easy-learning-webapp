@@ -89,6 +89,7 @@ function NewCardModal(props: {
                 }}
             >
                 {({ handleChange, handleBlur, values, setFieldValue, setFieldTouched, errors, touched }, FormRow) => {
+                    console.log(values);
                     return (
                         <div className="modal-form">
                             <div className="adder front">

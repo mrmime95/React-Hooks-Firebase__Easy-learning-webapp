@@ -87,13 +87,6 @@ export default function UsersProvider(props: { users: [Users] }) {
         getAllUsers();
     }
 
-    async function getCurrentUsersFriends() {
-        const usersFriends = await fireContext.db
-            .doc(`users/${fireContext.user.id}`)
-            .where('userId', '==', this.state.user.id)
-            .get();
-    }
-
     function onPagingChange(newState: { activePage: number, pageSize: number }) {
         setState({
             ...state,

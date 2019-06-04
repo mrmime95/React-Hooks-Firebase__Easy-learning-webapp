@@ -1,0 +1,118 @@
+% !TEX root = KezdoOldalak.tex
+\chapter{Általam ismert és alkalmazni kívánt technológiák}\label{ch:ALTALAMISMERT}
+
+\lstdefinelanguage{JavaScript}{
+  sensitive=true,
+    keywords={%
+    % JavaScript
+    typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break,
+    % HTML
+    html, title, meta, style, head, body, script, canvas,
+    % CSS
+    border:, transform:, -moz-transform:, transition-duration:, transition-property:,
+    transition-timing-function:
+    },
+    % http://texblog.org/tag/otherkeywords/
+    otherkeywords={<, >, \/},   
+    ndkeywords={class, export, boolean, throw, implements, import, this},   
+    comment=[l]{//},
+    % morecomment=[s][keywordstyle]{<}{>},  
+    morecomment=[s]{/*}{*/},
+    morecomment=[s]{<!}{>},
+    morestring=[b]',
+    morestring=[b]",    
+    alsoletter={-},
+    alsodigit={:}
+}
+
+\lstset{
+   language=JavaScript,
+   backgroundcolor=\color{lightgray},
+   extendedchars=true,
+   basicstyle=\footnotesize\ttfamily,
+   showstringspaces=false,
+   showspaces=false,
+   numbers=left,
+   numberstyle=\footnotesize,
+   numbersep=9pt,
+   tabsize=2,
+   breaklines=true,
+   showtabs=false,
+   captionpos=b
+}
+
+\begin{osszefoglal}
+Ennek a fejezetnek a célja, hogy a dolgozat belátást nyújtson az általam már ismert, kipróbált és alkalmazni kívánt technológiák történetébe, működésének rövid ismertetőjébe
+\end{osszefoglal}
+
+\section{React}\label{sec:ALTALAMISMERT:react}
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.7]{React}
+\end{figure}
+\subsection{Miért is pont a React?}\label{subsec:ALTALAMISMERT:react:miertis}
+Amint már említettem, a praktikám során találkoztam ezzel a keretrendszerrel, ott kellett alkossunk vele egy szabadságnyilvántartó webalkalmazást.
+
+A mentorunk mondta, hogy jó lenne ezzel dolgozzunk, mivel egy új, gyorsan feltörekvő, egyre jobban terjedő javaScript alapú keretrendszer. 
+
+Én a javaScriptet már addig is nagyon megszerettem könnyedsége miatt, bármit hihetetlenül egyszerűen meg leget vele valósítani, de a React még egyszerűbbé tette a dolgunk.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Mi is az a React?}\label{subsec:ALTALAMISMERT:react:miis}
+A React.js egy javaScript állomány, melyet a Facebook mérnökei fejlesztettek ki. 2011-ben használták először a Facebook fejlesztői, majd 2013-ban nyílt forráskódúvá tették. 2015-ben megjelent a React Native, ezzel már Android-ra és iOS-re is könnyűszerrel lehet fejleszteni.
+
+\newpage
+NodeJS {\bf n}ode {\bf p}ackage {\bf m}anager-e (npm) segítségével tudjuk telepíteni, pontosabban a projektünk mellé letölteni a megfelelő csomagokat, amelyek elősegítik a React kódunk lefordítását, futtatását.
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.2]{nodeJS}
+\end{figure}
+
+A React egy úgynevezett virtuális DOM-ot használ a módosítások végrehajtásához. Ha valami változás történik a weboldalon, megkeresi a DOM részfáját, és csak azt módosítja, így nem kell az egész weboldalnak frissülnie. Ezzel létrejöttek az újrafelhasználható komponensek, melyek nagyban megkönnyítik a User Interfacek (felhasználói felületek) létrehozásának módját.
+
+A React JSX elemek használata segítségével még könnyebben átlátható és megérthető kódot alkothat.
+
+Íme néhány ok, amiért érdemes megismerni:
+\renewcommand{\baselinestretch}{0.98}\normalsize
+\begin{description}
+    \setlength{\itemsep}{0.04mm}
+    \item[gyors] -- Alkalmazásai képesek kezelni a komplex változásokat, és még mindig gyorsaságot és megbízhatóságot mutatnak.
+    \item[moduláris] -- Ahelyett, hogy nagy, hosszú kódokat írnánk, sok kisebb, újrafelhasználható fájlt írhatunk.
+    \item[rugalmas] -- Olyan dolgokra is alkalmazható, aminek semmi köze a webapplikációkhoz
+    \item[népszerű] -- Egyre jobban terjed, így ismeretével sok előnyünk lehet az informatika szakmában
+\end{description}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{JSX}\label{subsec:ALTALAMISMERT:react:jsx}
+A JSX a JavaScript bővítése, azaz a böngésző nem képes olvasni, nem egy igazi JavaScritpt. Azért alkották meg, hogy a Reactal együtt használják.
+Szükség van egy JSX fordítóra, amely hagyományos JavaScripté alakítja.
+
+Egy JSX elem pont úgy néz ki mint egy HTML elem, de a JavaScript tulajdonságnak köszönhetően el is menthetem egy változóba,de akár objektumba is.
+
+\subsubsection{Példák:}\label{subsubsec:ALTALAMISMERT:react:jsx:pl}
+JSX elem elmentése egy változóba:
+\lstinputlisting[caption=A JSX kód sokban hasonlít a HTML-re]{Codes/jsx.js}
+JSX elem elmentése a \verb+myList+\ változóba és a változó kirenderelése a DOMra:
+\lstinputlisting[caption=Az "app" Id-jű tag közé fog kerülni az elem]{Codes/jsxWithRender.js}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{JSON}\label{sec:ALTALAMISMERT:json}
+Már a webprogramozás tantárgy során be kellett lássam, a {\bf JavaScript Object Notation} hihetetlenül hasznos kis méretű szöveg alapú szabvány, mely kulcs-érték párok segítségével bármit eltud tárolni, természetesen szöveg formában.
+
+Aztán a praktika során megmutatták, ezt a szabványt API-k milyen könnyedén lehet alkalmazni különböző technológiák közti információcserére. Nagy előnye a JSON objektumoknak az, hogy ennek az egyszerű adatstruktúrának több nyelvben is van értelmezője. Tehát objektumból JSON-t alkotva, a szöveg alapú objektumot átküldve más technológiáknak, majd ott JSON-ből objektumot visszaalakítva a kommunikáció játszi könnyedséggel létrejöhet.
+\subsubsection{Példa:}\label{subsubsec:ALTALAMISMERT:react:json:pl}
+\lstinputlisting[caption=JSON kód]{Codes/json.json}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{MySQL-Wamp szerver}\label{sec:ALTALAMISMERT:mysql}
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.35]{wamp}
+\end{figure}
+\subsection{A wamp virtuális szerver}\label{subsec:ALTALAMISMERT:mysql:virtuals}
+A Wamp server lényegében egy webfejlesztő-keretrendszer Windows operációs rendszerhez. Tartalmazza a PHP, Apache, MySQL rendszereket egy csomagba összerakva, amely segítségével nagyon egyszerűen tudunk szervert létrehozni helyi gépen lokális tárolási lehetőséggel.
+
+Ezzel a programmal a Webprogramozás tantárgy keretein belül találkoztam, megtetszett ez az összeépített csomag, így a lokális gépemen létrejött egy mySQL adatbázis, amit kedvem szerint tudtam feltölteni több különböző adatbázissal. A Wamp vizuális felülettel is rendelkezik, amely hihetetlenül megkönnyíti az adatbázis átláthatóságát.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{A mySQL-ről röviden}\label{subsec:ALTALAMISMERT:mysql:mysqlrolroviden}
+A MySQL egy többfelhasználós, többszálú, SQL-alapú relációs adatbázis-kezelő szerver.
+A szoftver eredeti fejlesztője a svéd MySQL AB cég volt, de 2008-ban a Sun felvásárolta, majd 2010-ben a Sun-t  az Oracle, így most a mySQL az Oracle birtokában van.
+
+A MySQL az egyik legelterjedtebb adatbázis kezelő rendszer, teljesen nyílt forráskódú Linux–Apache–MySQL–PHP összeállítás, platformfüggetlen, számos programozási nyelv által elérhető, hatékony és egyszerűen beüzemelhető dinamikus webhelyek számára. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

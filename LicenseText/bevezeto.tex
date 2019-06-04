@@ -1,0 +1,45 @@
+% !TEX root = KezdoOldalak.tex
+\chapter{Bevezető}\label{ch:BEVEZET}
+
+\begin{osszefoglal}
+Ebben a fejezetben a témám rövid ismertetője, ennek választásának okai illetve egy rövid felvezetés lesz olvasható.
+\end{osszefoglal}
+
+\section{Az átalam választott téma és választásának okai}\label{sec:BEVEZET:temaoka}
+
+Első találkozásom a Javascript programozási nyevel, mély benyomást tett bennem, hogy milyen egyszerű, és könnyedén futtatható. Webprogramozás kurzuson beszéltünk róla, a weboldalon történő események, logikák kezelésére alkalmazzák. Aztán a praktika során ismerkedtem meg a React.js Javascript könyvtárral, teljesen magával ragadott, így a későbbiekben a front-end irányba orientálódtam.
+Aztán a praktika során a Firebase-t kellett használjuk, akkor láttam meg, hogy nincs szükség back-end írásra, ha valamilyen kisebb alkalmazást szeretnénk megalkotni. 
+
+\subsection{Az ötlet kialakulása}\label{subsec:BEVEZET:temaoka:kialakulas}
+
+Mivel egy kissé nehézkes volt számomra a román illetve angol nyelv tanulása, így arra jutottam, hogy államvizsga gyanánt, megpróbálok egy komplexebb webalkalmazást létrehozni back-end írás nélkül, melynek a lényege, egy szociális hálós szótár alkalmazás.
+
+Úgy gondoltam, hogy a Firebaset felhasználva elég egyszerűen megoldható a back-end, illetve real-time hatás, és React segítségével a front-end is. Kutakodtam kicsit, találtam onlne nyevtanuló alkamazást (Duolingo), letölthető nyelvtanuló alkalmazást (Anki), de ezek nem tudták nyújtani számomra azt amit elvártam tőlük: saját magamnak könnyen létrehozható csomagokat, amelyeket elláthatok képpel, példamondattal. Végsőkben, úgymond ötvöztem ezen programok számomra hasznos tulajdonságait.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Az alkalmazás rövid leírása}\label{sec:BEVEZET:felvezet}
+
+Tehát az alkalmazás egy szociális háló (pl.: Facebook, Pinterest stb.), amely abban nyilvanul meg, hogy valami a felhasználó számára hasznos dolog jelenik meg a "hírfolyamban", és barátokat tudunk bejelölni, visszaigazolni. Ugyanakkor ez mellett egy szótárszerű program is kell legyen.
+
+Úgy gondoltam, hogy a Pinterest másoló funkciója hasznos lehet a felhasználó számára, amely segítségével ha lát valami neki tetszetős dolgot a hírfolyamban, elmenti a saját maga számára. Ez úgy néz ki a szótár esetben, hogy a hírfolyamban a barátok által létrehozott csomagok és azokban szavak jelennek meg, így eltudom dönteni, hogy mennyire tudnám felhasználni, és ha úgyvan elmentem magamhoz.
+
+Az alkalmazás valahogy meg is kell tanítsa a szavakat, tehát kellett egy olyan rész is, amely megmutatja a szavat egy nyelven, és például klickre megmutatja a másik felét is, majd valahogy elmenthetem hogy mennyire tudtam. Ez lett végül az alkalmazásom "játék" része, melyet "forgató kártyák" segítségével láttam ésszerűnek megoldani. 
+
+Mindezek mellett, hogy még könnyitsek a szavak bevitelén, egy ".csv" fájlos feltöltesi lehetőséget is nyújtok, amivel a megfelelő táblázat feltöltésével egyszerrere több szavat is felvezethet a felhasználó.
+
+Azért gondoltam, hogy csomagokban tároljam a szavakat, azaz a szókártyákat, mert például amikor órán jegyzeteljük az idegen szavakat, akkor is egyszerre csak párat írunk le a füzetbe, mivel könnyebb kisebb csoportokban tanulgatni őket. De például az angol szavakat "angol" füzetbe írjuk, tehát szükségünk van egy Tantárgy csoportositásra is. Így egy olyan szerkezet állt elő, hogy: Tantárgy, ami Csoportokat tartalmaz, és a Csoportok pedig Szókártyákat.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{A dolgozat szerkezete}\label{sec:BEVEZET:szerkezet}
+A dolgozat során bemutatom, hogy hogyan készítettem az alkalmazást, hogyan terveztem meg az adatok tárolására alkalmas Firebase adatbázist, kitérek majd hasznos dolgokra, nehézségekre, érdekességekre.
+
+A következő fejezetben részletesen tárgyalom a célként kitűzött alkalmazás leírását, specifikálását, kitérek felhasználó típusokra, miértekre, hogyanokra.
+
+A harmadik fejezet témája a Front-end megalkotásának folyamata lesz, a Front-enden használt teknológia, a React.js bemutatásával párhuzamosan.
+
+A negyedik fejezet, az adatbázis tervezés folyamatárol fog szólni. Mivel a Firebase "noSQL" adatbázissal dolgozik, bemutatom, mik az előnyei illetve hátrányai a "noSQL" adatbázisoknak a "Relációs adatbázisokkal" szemben.
+
+Az ötödik fejezet a Front-end Firebasere való "rákapcsolásárol" fog szólni, magába foglalva a Firebase nyújtotta lehetőségekket.
+
+A hatodik és egyben utolsó fejezetben olvasható lesz egy összegzés, hogy az alkalmazás fejlesztése során mire jutottam, megéri-e back-end nélküli alkalmazást készíteni. Majd szó esik pár továbbfejlesztési lehetőségről-ötletről is.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

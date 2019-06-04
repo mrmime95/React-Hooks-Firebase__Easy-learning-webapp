@@ -6,7 +6,7 @@
   position: relative;
   padding: 20px;
   cursor: pointer; }
-  .flip-card .content {
+  .flip-card .flip-card-content {
     position: relative;
     width: 100%;
     height: 100%;
@@ -15,32 +15,35 @@
     transform-style: preserve-3d;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     z-index: 0; }
-    .flip-card .content .front,
-    .flip-card .content .back {
+    .flip-card .flip-card-content .front,
+    .flip-card .flip-card-content .back {
       position: absolute;
       width: 100%;
       height: 100%;
       backface-visibility: hidden;
       display: flex;
       flex-direction: column; }
-      .flip-card .content .front .image-container,
-      .flip-card .content .back .image-container {
+      .flip-card .flip-card-content .front .image-container,
+      .flip-card .flip-card-content .back .image-container {
         width: 100%;
         height: 50%; }
-        .flip-card .content .front .image-container .image,
-        .flip-card .content .back .image-container .image {
+        .flip-card .flip-card-content .front .image-container .image,
+        .flip-card .flip-card-content .back .image-container .image {
           width: 100%;
           height: 100%; }
-    .flip-card .content .front {
+      .flip-card .flip-card-content .front .text-container .title,
+      .flip-card .flip-card-content .back .text-container .title {
+        font-size: 2vw; }
+    .flip-card .flip-card-content .front {
       background-color: #bbb;
       color: black;
       z-index: 2; }
-    .flip-card .content .back {
+    .flip-card .flip-card-content .back {
       background-color: #2980b9;
       color: white;
       transform: rotateY(180deg);
       z-index: 1; }
-    .flip-card .content.show-back {
+    .flip-card .flip-card-content.show-back {
       transform: rotateY(180deg); }
   .flip-card .card-options {
     position: absolute;
@@ -57,7 +60,7 @@
         box-shadow: unset; }
   .flip-card .knowledge {
     text-align: center; }
-  .flip-card.work-with-hover:hover .content {
+  .flip-card.work-with-hover:hover .flip-card-content {
     transform: rotateY(180deg); }
-  .flip-card.work-with-focus .content {
+  .flip-card.work-with-focus .flip-card-content {
     transform: rotateY(180deg); }

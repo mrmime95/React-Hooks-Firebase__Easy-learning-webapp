@@ -1,0 +1,21 @@
+{
+     "vezetekNev": "Arany",
+     "keresztNev": "Ember",
+     "kor": 22,
+     "cim":
+     {
+         "utcaHazszam": "XYZ utca, 1000",
+         "varos": "Honolulu",
+         "iranyitoSzam": "1"
+     },
+     "telefonSzam":[
+	 {
+           "tipus": "otthoni",
+           "szam": "212 555-1234"
+         },
+         {
+           "tipus": "fax",
+           "szam": "646 555-4567"
+         }
+     ]
+ }

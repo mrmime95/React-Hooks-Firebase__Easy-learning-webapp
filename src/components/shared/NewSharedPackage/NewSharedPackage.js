@@ -2,6 +2,7 @@ import React from 'react';
 import AvatarCircle from '../AvatarCircle/AvatarCircle';
 import Octicon, { Alert, Check, X, Package } from '@githubprimer/octicons-react';
 import ReactTooltip from 'react-tooltip';
+import FlipCard from '../FlipCard/FlipCard';
 import './NewSharedPackage.css';
 
 export default function NewSharedPackage(props: {
@@ -33,6 +34,7 @@ export default function NewSharedPackage(props: {
                 </div>
                 <ul className="words">
                     {props.package.words.map((word, index) => {
+                        console.log({ front: word.front, back: word.back });
                         return (
                             <li key={`li${index}`} className="line" data-for={`li${index}`} data-tip>
                                 <p className="word">{`${word.front.word}-${word.back.word}`}</p>
@@ -44,7 +46,10 @@ export default function NewSharedPackage(props: {
                                     <Octicon className="correct incorrect" icon={X} />
                                 )}
                                 <ReactTooltip id={`li${index}`} place="right" type="success" effect="solid">
-                                    <span>Show sad face</span>
+                                    <div className="preview">
+                                        <FlipCard card={{ front: word.front, back: word.back }} />
+                                        <FlipCard card={{ front: word.front, back: word.back }} inverse />
+                                    </div>
                                 </ReactTooltip>
                             </li>
                         );

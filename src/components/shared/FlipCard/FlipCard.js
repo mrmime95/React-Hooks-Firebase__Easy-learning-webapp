@@ -44,7 +44,7 @@ export default function FlipCard(props: {
                 'work-with-focus'}`}
         >
             <div
-                className={`content ${props.showBack && 'show-back'}`}
+                className={`flip-card-content ${props.showBack && 'show-back'}`}
                 onClick={() => {
                     setState({ ...state, clicked: !state.clicked });
                     if (props.onClick) {
@@ -59,7 +59,7 @@ export default function FlipCard(props: {
                         </div>
                     )}
                     <div className="text-container">
-                        <h1 className="title">{props.card.front.word}</h1>
+                        <h3 className="title">{props.card.front.word}</h3>
                         <p className="example">{props.card.front.example}</p>
                     </div>
                 </div>
@@ -70,8 +70,8 @@ export default function FlipCard(props: {
                         </div>
                     )}
                     <div className="text-container">
-                        <h1>{props.card.back.word}</h1>
-                        <p>{props.card.back.example}</p>
+                        <h3 className="title">{props.card.back.word}</h3>
+                        <p className="example">{props.card.back.example}</p>
                     </div>
                 </div>
             </div>

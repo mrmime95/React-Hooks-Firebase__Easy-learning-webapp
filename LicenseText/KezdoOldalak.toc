@@ -1,0 +1,10 @@
+\select@language {magyar} \contentsline {chapter}{\numberline {2}Bevezet\IeC {\H o}}{5}{chapter.2}% 
+\select@language {magyar} \contentsline {section}{\numberline {2.1}Az \IeC {\'a}talam v\IeC {\'a}lasztott t\IeC {\'e}ma \IeC {\'e}s v\IeC {\'a}laszt\IeC {\'a}s\IeC {\'a}nak okai}{5}{section.2.1}% 
+\select@language {magyar} \contentsline {subsection}{\numberline {2.1.1}Az \IeC {\"o}tlet kialakul\IeC {\'a}sa}{5}{subsection.2.1.1}% 
+\select@language {magyar} \contentsline {subsection}{\numberline {2.1.2}Az alkalmaz\IeC {\'a}s r\IeC {\"o}vid le\IeC {\'\i }r\IeC {\'a}sa}{5}{subsection.2.1.2}% 
+\select@language {magyar} \contentsline {section}{\numberline {2.2}A dolgozat szerkezete}{6}{section.2.2}% 
+\select@language {magyar} \contentsline {chapter}{\numberline {2}Bevezet\IeC {\H o}}{5}{chapter.2}% 
+\select@language {magyar} \contentsline {section}{\numberline {2.1}Az \IeC {\'a}talam v\IeC {\'a}lasztott t\IeC {\'e}ma \IeC {\'e}s v\IeC {\'a}laszt\IeC {\'a}s\IeC {\'a}nak okai}{5}{section.2.1}% 
+\select@language {magyar} \contentsline {subsection}{\numberline {2.1.1}Az \IeC {\"o}tlet kialakul\IeC {\'a}sa}{5}{subsection.2.1.1}% 
+\select@language {magyar} \contentsline {subsection}{\numberline {2.1.2}Az alkalmaz\IeC {\'a}s r\IeC {\"o}vid le\IeC {\'\i }r\IeC {\'a}sa}{5}{subsection.2.1.2}% 
+\select@language {magyar} \contentsline {section}{\numberline {2.2}A dolgozat szerkezete}{6}{section.2.2}% 

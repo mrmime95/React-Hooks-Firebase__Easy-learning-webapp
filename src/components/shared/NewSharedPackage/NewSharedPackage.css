@@ -45,6 +45,15 @@
             color: red; }
           .new-shared-package .content .words .line .correct.unknown {
             color: #a5a500; }
+        .new-shared-package .content .words .line .__react_component_tooltip.show {
+          opacity: 1; }
+          .new-shared-package .content .words .line .__react_component_tooltip.show .preview {
+            display: flex;
+            justify-content: space-between; }
+            .new-shared-package .content .words .line .__react_component_tooltip.show .preview .flip-card {
+              width: 100px;
+              height: 100px;
+              padding: 5px; }
     .new-shared-package .content .buttons {
       display: flex;
       justify-content: flex-end; }

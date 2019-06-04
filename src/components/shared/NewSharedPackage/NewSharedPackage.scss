@@ -54,6 +54,18 @@
                         color: rgb(165, 165, 0);
                     }
                 }
+                .__react_component_tooltip.show {
+                    opacity: 1;
+                    .preview {
+                        display: flex;
+                        justify-content: space-between;
+                        .flip-card {
+                            width: 100px;
+                            height: 100px;
+                            padding: 5px;
+                        }
+                    }
+                }
             }
         }
         .buttons {
