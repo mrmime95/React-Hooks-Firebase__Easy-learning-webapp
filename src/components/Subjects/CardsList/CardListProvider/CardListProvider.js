@@ -95,6 +95,7 @@ export default function CardListProvider(props) {
             back: { imageUrl: backUrl, word: back.word, example: back.example },
             packageId,
             knowledge: 1,
+            createdAt: fireContext.getDateTime(),
         });
         batch.update(userRef, { cardsNumber: fireContext.increment });
         batch.commit();
@@ -114,6 +115,7 @@ export default function CardListProvider(props) {
             .update({
                 front: { imageUrl: frontUrl, word: front.word, example: front.example },
                 back: { imageUrl: backUrl, word: back.word, example: back.example },
+                createdAt: fireContext.getDateTime(),
             })
             .then(function() {
                 console.log('Document successfully updated!');

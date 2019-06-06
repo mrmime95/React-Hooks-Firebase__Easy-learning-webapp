@@ -31,6 +31,7 @@ function UsersContent(props: { match: RouterMatch }) {
     return (
         <div className="user-list">
             <div className="grid-area">
+                <h3>Users:</h3>
                 {context.users.length !== 0 ? (
                     <GridWithPagination
                         headerConfig={[

@@ -31,6 +31,7 @@ export default class FirebaseProvider extends Component {
                     getPackagesBySubjectId: this.getPackagesBySubjectId,
                     getCardsByPackageId: this.getCardsByPackageId,
                     getFriendRequestsNumber: this.getFriendRequestsNumber,
+                    getDateTime: this.getDateTime,
                 }}
             >
                 {this.props.children}
@@ -81,6 +82,7 @@ export default class FirebaseProvider extends Component {
                 packagesNumber: 0,
                 cardsNumber: 0,
                 role: 'user',
+                createdAt: this.getDateTime(),
             })
             .then(() => {
                 console.log('User Saved');
@@ -115,6 +117,9 @@ export default class FirebaseProvider extends Component {
                                 email: querySnapshot.data().email,
                                 birthDate: querySnapshot.data().birthDate,
                                 friendRequestsNumber: querySnapshot2.data().counter,
+                                role: querySnapshot.data().role,
+                                firstName: querySnapshot.data().firstName,
+                                lastName: querySnapshot.data().lastName,
                             },
                         });
                     })
@@ -153,5 +158,22 @@ export default class FirebaseProvider extends Component {
     getCardsByPackageId = (packageId: string) => {
         const ref = db.collection('cards');
         return ref.where('packageId', '==', packageId).get();
+    };
+
+    getDateTime = () => {
+        const today = new Date();
+        return (
+            today.getFullYear() +
+            '-' +
+            (today.getMonth() + 1) +
+            '-' +
+            today.getDate() +
+            ' ' +
+            today.getHours() +
+            ':' +
+            today.getMinutes() +
+            ':' +
+            today.getSeconds()
+        );
     };
 }

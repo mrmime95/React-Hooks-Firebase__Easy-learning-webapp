@@ -108,21 +108,8 @@ export default function FriendsProvider(props: { users: [Users] }) {
         });
 
         const friendshipRef = fireContext.db.collection('friendship').doc(fireContext.user.id + '_' + friendId);
-        const today = new Date();
-        const dateTime =
-            today.getFullYear() +
-            '-' +
-            (today.getMonth() + 1) +
-            '-' +
-            today.getDate() +
-            ' ' +
-            today.getHours() +
-            ':' +
-            today.getMinutes() +
-            ':' +
-            today.getSeconds();
         batch.set(friendshipRef, {
-            dateTime,
+            createdAt: fireContext.getDateTime(),
         });
         batch.commit();
 

@@ -10,9 +10,12 @@ export default function DashboardProvider(props: { loadSize: number }) {
         hasMore: true,
     });
     const [loading, setLoading] = useState(true);
+    const [friends, setFriends] = useState([]);
     const fireContext = useContext(FirebaseContext);
     useEffect(() => {
-        getFirstPackages();
+        getFriends().then(() => {
+            getFirstPackages();
+        });
     }, []);
 
     return (
@@ -20,6 +23,20 @@ export default function DashboardProvider(props: { loadSize: number }) {
             {props.children}
         </DashboardContext.Provider>
     );
+    async function getFriends(params) {
+        return new Promise(async (resolve, reject) => {
+            const userData = await fireContext.db
+                .collection('users')
+                .doc(fireContext.user.id)
+                .get();
+            if (userData.data().friends) {
+                setFriends([...userData.data().friends, fireContext.user.id]);
+            } else {
+                setFriends([fireContext.user.id]);
+            }
+            resolve();
+        });
+    }
 
     async function getFirstPackages() {
         setLoading(true);
@@ -30,18 +47,30 @@ export default function DashboardProvider(props: { loadSize: number }) {
 
         const first = await firstRef.get();
         const lastVisible = first.docs[first.docs.length - 1];
-        const dashboardFlow = await Promise.all(
-            first.docs.map(async doc => {
+        const dashboardFlow = first.docs.filter(async doc => friends.includes(doc.data().createdBy.id));
+
+        const savableDashboardFlow = await Promise.all(
+            dashboardFlow.map(async doc => {
                 const cards = await fireContext.getCardsByPackageId(doc.id);
                 const words = await Promise.all(
                     cards.docs.map(async (card, index) => {
-                        return { front: card.data().front, back: card.data().back, correct: card.data().correct };
+                        return {
+                            front: card.data().front,
+                            back: card.data().back,
+                            correct: card.data().correct,
+                            cardId: card.id,
+                        };
                     })
                 );
                 return { package: { title: doc.data().packageName, words }, user: doc.data().createdBy };
             })
         );
-        setState({ ...state, dashboardFlow, lastVisible, hasMore: dashboardFlow.length === props.loadSize });
+        setState({
+            ...state,
+            dashboardFlow: savableDashboardFlow,
+            lastVisible,
+            hasMore: savableDashboardFlow.length === props.loadSize,
+        });
         setLoading(false);
     }
 
@@ -55,19 +84,28 @@ export default function DashboardProvider(props: { loadSize: number }) {
 
         const next = await nextRef.get();
         const lastVisible = next.docs[next.docs.length - 1];
-        const dashboardFlowNext = await Promise.all(
-            next.docs.map(async doc => {
+        const dashboardFlowNext = next.docs.filter(doc => {
+            return friends.includes(doc.data().createdBy.id);
+        });
+
+        const savableDashboardFlow = await Promise.all(
+            dashboardFlowNext.map(async doc => {
                 const cards = await fireContext.getCardsByPackageId(doc.id);
                 const words = await Promise.all(
                     cards.docs.map(async (card, index) => {
-                        return { front: card.data().front, back: card.data().back, correct: card.data().correct };
+                        return {
+                            front: card.data().front,
+                            back: card.data().back,
+                            correct: card.data().correct,
+                            cardId: card.id,
+                        };
                     })
                 );
                 return { package: { title: doc.data().packageName, words }, user: doc.data().createdBy };
             })
         );
-        const dashboardFlow = [...state.dashboardFlow, ...dashboardFlowNext];
-        setState({ ...state, dashboardFlow, lastVisible, hasMore: dashboardFlowNext.length === props.loadSize });
+        const dashboardFlow = [...state.dashboardFlow, ...savableDashboardFlow];
+        setState({ ...state, dashboardFlow, lastVisible, hasMore: savableDashboardFlow.length === props.loadSize });
         setLoading(false);
     }
 }

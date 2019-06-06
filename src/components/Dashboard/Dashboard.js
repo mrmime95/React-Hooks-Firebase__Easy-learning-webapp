@@ -29,15 +29,19 @@ function DashboardContainer(props) {
                     </div>
                 }
             >
-                {context.dashboardFlow.map((element, index) => {
-                    return (
-                        <NewSharedPackage
-                            user={element.user}
-                            package={element.package}
-                            key={`NewSharedPackage${index}`}
-                        />
-                    );
-                })}
+                {context.dashboardFlow.length !== 0 ? (
+                    context.dashboardFlow.map((element, index) => {
+                        return (
+                            <NewSharedPackage
+                                user={element.user}
+                                package={element.package}
+                                key={`NewSharedPackage${index}`}
+                            />
+                        );
+                    })
+                ) : (
+                    <div>There aren't any package shared with you...</div>
+                )}
             </InfiniteScroll>
         </div>
     );

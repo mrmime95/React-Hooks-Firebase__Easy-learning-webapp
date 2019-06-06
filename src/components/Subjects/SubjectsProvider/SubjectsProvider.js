@@ -37,6 +37,7 @@ export default function SubjectsProvider(props) {
             .doc(`subjects/${subjectId}`)
             .update({
                 subjectName: values.subject,
+                createdAt: fireContext.getDateTime(),
             })
             .then(function() {
                 console.log('Document successfully updated!');
@@ -56,6 +57,7 @@ export default function SubjectsProvider(props) {
             .update({
                 packageName: values.packageName,
                 public: values.public,
+                createdAt: fireContext.getDateTime(),
             })
             .then(function() {
                 console.log('Document successfully updated!');
@@ -69,6 +71,7 @@ export default function SubjectsProvider(props) {
         const batch = fireContext.db.batch();
         const packagesRef = fireContext.db.collection('packages').doc();
         const userRef = fireContext.db.collection('users').doc(fireContext.user.id);
+
         batch.set(packagesRef, {
             packageName: values.packageName,
             public: values.public,
@@ -76,6 +79,7 @@ export default function SubjectsProvider(props) {
             createdBy: {
                 id: fireContext.user.id,
                 fullName: `${fireContext.user.firstName} ${fireContext.user.lastName}`,
+                createdAt: fireContext.getDateTime(),
             },
         });
         batch.update(userRef, { packagesNumber: fireContext.increment });
@@ -89,6 +93,7 @@ export default function SubjectsProvider(props) {
         batch.set(subjectsRef, {
             subjectName: subject,
             userId: fireContext.user.id,
+            createdAt: fireContext.getDateTime(),
         });
         batch.update(userRef, { subjectsNumber: fireContext.increment });
         batch.commit();
