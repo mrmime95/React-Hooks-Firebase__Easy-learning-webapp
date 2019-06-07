@@ -22,7 +22,7 @@ function LeftPanel(props) {
 
                 <div className="logo">
                     <Link to="/">
-                        <i className="logo-img">SDA</i>
+                        {/*  <AvatarCircle profilePicture={rowData.profilePicture} fullName={rowData.name} /> */}dsadsa
                     </Link>
                 </div>
                 <Menu items={props.menu} className="menu-main" />

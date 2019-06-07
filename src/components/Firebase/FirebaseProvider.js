@@ -74,15 +74,17 @@ export default class FirebaseProvider extends Component {
     ) => {
         db.doc(`users/${uid}`)
             .set({
-                firstName: values.firstName,
-                lastName: values.lastName,
-                email: values.email,
                 birthDate: values.birthDate ? values.birthDate : null,
-                subjectsNumber: 0,
-                packagesNumber: 0,
                 cardsNumber: 0,
-                role: 'user',
                 createdAt: this.getDateTime(),
+                email: values.email,
+                firstName: values.firstName,
+                friendCounter: 0,
+                friends: [],
+                lastName: values.lastName,
+                packagesNumber: 0,
+                role: 'user',
+                subjectsNumber: 0,
             })
             .then(() => {
                 console.log('User Saved');
@@ -133,10 +135,13 @@ export default class FirebaseProvider extends Component {
     };
 
     getFriendRequestsNumber = () => {
+        console.log('meghivodtam');
         db.collection(`friendRequestNumber`)
             .where('requestedId', '==', this.state.user.id)
             .onSnapshot(snapshot => {
+                console.log(snapshot);
                 snapshot.docChanges().forEach(change => {
+                    console.log('BENT');
                     if (change.type === 'modified') {
                         console.log('Modified city: ', change.doc.data());
                         const user = this.state.user;
