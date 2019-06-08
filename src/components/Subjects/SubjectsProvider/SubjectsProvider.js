@@ -8,6 +8,7 @@ export default function SubjectsProvider(props) {
         subjects: null,
         packages: {},
         selectedPackageId: '',
+        selectedSubjectId: '',
     });
     const fireContext = useContext(FirebaseContext);
     useEffect(getSubjectsByCurrentUser, []);
@@ -20,6 +21,7 @@ export default function SubjectsProvider(props) {
                 getPackagesBySubjectId,
                 getSubjectsByCurrentUser,
                 setSelectedPackage,
+                setSelectedSubject,
                 updateSubject,
                 updatePackagesAtSubject,
             }}
@@ -32,11 +34,49 @@ export default function SubjectsProvider(props) {
             ? setState({ ...state, selectedPackageId: '' })
             : setState({ ...state, selectedPackageId: packageId });
     }
-    function updateSubject(subjectId: string, values: { subject: string }) {
+    function setSelectedSubject(subjectId) {
+        subjectId === state.selectedSubjectId
+            ? setState({ ...state, selectedSubjectId: '' })
+            : setState({ ...state, selectedSubjectId: subjectId });
+    }
+
+    /* ------------subjects CRUD---------- */
+
+    function createNewSubject(subjectName: string) {
+        const batch = fireContext.db.batch();
+        const subjectsRef = fireContext.db.collection('subjects').doc();
+        const userRef = fireContext.db.collection('users').doc(fireContext.user.id);
+        batch.set(subjectsRef, {
+            subjectName,
+            userId: fireContext.user.id,
+            createdAt: fireContext.getDateTime(),
+        });
+        batch.update(userRef, { subjectsNumber: fireContext.increment });
+        batch.commit();
+    }
+
+    function getSubjectsByCurrentUser() {
+        fireContext
+            .getSubjectsByCurrentUser()
+            .then(querySnapshot => {
+                const subjects = [];
+                querySnapshot.forEach(doc => {
+                    subjects.push({
+                        ...doc.data(),
+                        id: doc.id,
+                    });
+                });
+                setState({ ...state, subjects });
+            })
+            .catch(function(error) {
+                console.log('Error getting documents: ', error);
+            });
+    }
+    function updateSubject(subjectId: string, values: { subjectName: string }) {
         fireContext.db
             .doc(`subjects/${subjectId}`)
             .update({
-                subjectName: values.subject,
+                ...values,
                 createdAt: fireContext.getDateTime(),
             })
             .then(function() {
@@ -47,35 +87,25 @@ export default function SubjectsProvider(props) {
                 console.error('Error updating document: ', error);
             });
     }
-    function updatePackagesAtSubject(
+
+    /* ---------------------------------------- */
+
+    /* ------------packages CRUD---------- */
+
+    function createNewPackageForSubject(
         subjectId: string,
-        packId: string,
-        values: { packageName: string, public: boolean }
+        values: { packageName: string, publicForFriends: boolean, publicForEveryone: boolean }
     ) {
-        fireContext.db
-            .doc(`packages/${packId}`)
-            .update({
-                packageName: values.packageName,
-                public: values.public,
-                createdAt: fireContext.getDateTime(),
-            })
-            .then(function() {
-                console.log('Document successfully updated!');
-                getPackagesBySubjectId(subjectId);
-            })
-            .catch(function(error) {
-                console.error('Error updating document: ', error);
-            });
-    }
-    function createNewPackageForSubject(sibjectId: string, values: { packageName: string, public: boolean }) {
         const batch = fireContext.db.batch();
         const packagesRef = fireContext.db.collection('packages').doc();
         const userRef = fireContext.db.collection('users').doc(fireContext.user.id);
 
         batch.set(packagesRef, {
-            packageName: values.packageName,
-            public: values.public,
-            subjectId: sibjectId,
+            ...values,
+            cardsNumber: 0,
+            correctsNumber: 0,
+            incorrectsNumber: 0,
+            subjectId,
             createdBy: {
                 id: fireContext.user.id,
                 fullName: `${fireContext.user.firstName} ${fireContext.user.lastName}`,
@@ -83,19 +113,6 @@ export default function SubjectsProvider(props) {
             },
         });
         batch.update(userRef, { packagesNumber: fireContext.increment });
-        batch.commit();
-    }
-
-    function createNewSubject(subject: string) {
-        const batch = fireContext.db.batch();
-        const subjectsRef = fireContext.db.collection('subjects').doc();
-        const userRef = fireContext.db.collection('users').doc(fireContext.user.id);
-        batch.set(subjectsRef, {
-            subjectName: subject,
-            userId: fireContext.user.id,
-            createdAt: fireContext.getDateTime(),
-        });
-        batch.update(userRef, { subjectsNumber: fireContext.increment });
         batch.commit();
     }
     function getPackagesBySubjectId(subjectId: string) {
@@ -106,9 +123,8 @@ export default function SubjectsProvider(props) {
                 packages[subjectId] = [];
                 querySnapshot.forEach(doc => {
                     packages[subjectId].push({
+                        ...doc.data(),
                         id: doc.id,
-                        title: doc.data().packageName,
-                        public: doc.data().public,
                     });
                 });
                 setState({ ...state, packages });
@@ -118,21 +134,24 @@ export default function SubjectsProvider(props) {
             });
     }
 
-    function getSubjectsByCurrentUser() {
-        fireContext
-            .getSubjectsByCurrentUser()
-            .then(querySnapshot => {
-                const subjects = [];
-                querySnapshot.forEach(doc => {
-                    subjects.push({
-                        id: doc.id,
-                        title: doc.data().subjectName,
-                    });
-                });
-                setState({ ...state, subjects });
+    function updatePackagesAtSubject(
+        subjectId: string,
+        packId: string,
+        values: { packageName: string, publicForFriends: boolean, publicForEveryone: boolean }
+    ) {
+        fireContext.db
+            .doc(`packages/${packId}`)
+            .update({
+                ...values,
+                createdAt: fireContext.getDateTime(),
+            })
+            .then(function() {
+                console.log('Document successfully updated!');
+                getPackagesBySubjectId(subjectId);
             })
             .catch(function(error) {
-                console.log('Error getting documents: ', error);
+                console.error('Error updating document: ', error);
             });
     }
+    /* ---------------------------------------- */
 }

@@ -11,7 +11,7 @@ export const users = [
     },
     {
         name: 'Bruce Wayne',
-        status: 'aproover',
+        status: 'approver',
         subjects: 2,
         packages: 39,
         words: 5999,
@@ -31,7 +31,7 @@ export const users = [
         name: 'Bruce Wayne',
         profilePicture:
             'https://i1.wp.com/www.sardiniauniqueproperties.com/wp-content/uploads/2015/10/Square-Profile-Pic-1-1.jpg?fit=300%2C300',
-        status: 'aproover',
+        status: 'approver',
         subjects: 2,
         packages: 39,
         words: 5999,
@@ -41,7 +41,7 @@ export const users = [
         name: 'Bruce Wayne',
         profilePicture:
             'https://i1.wp.com/www.sardiniauniqueproperties.com/wp-content/uploads/2015/10/Square-Profile-Pic-1-1.jpg?fit=300%2C300',
-        status: 'aproover',
+        status: 'approver',
         subjects: 2,
         packages: 39,
         words: 5999,

@@ -14,10 +14,32 @@ export default function CardsList() {
     });
     const subjectContext = useContext(SubjectsContext);
     const cardListContext = useContext(CardListContext);
+    const {
+        cardsNumber,
+        correctsNumber,
+        incorrectsNumber,
+        publicForEveryone,
+        publicForFriends,
+    } = cardListContext.packageInformations;
     return (
         <div className="cards-list">
             {subjectContext.selectedPackageId !== '' && (
                 <React.Fragment>
+                    <div className="package-ingormations">
+                        {publicForEveryone && (
+                            <p className="public-for-everyone">
+                                <i className="fab fa-angellist" />
+                            </p>
+                        )}
+                        {publicForFriends && (
+                            <p className="public-for-friends">
+                                <i className="fab fa-creative-commons-share" />
+                            </p>
+                        )}
+                        <p className="cards-number">cards number: {cardsNumber}</p>
+                        <p className="correction">correct: {(correctsNumber * 100) / cardsNumber || 0}%</p>
+                        <p className="incorrection">incorrect: {(incorrectsNumber * 100) / cardsNumber || 0}%</p>
+                    </div>
                     <button
                         className="new-card btn btn-success"
                         onClick={() => setState({ ...state, newCardModalOpen: true })}
@@ -31,7 +53,7 @@ export default function CardsList() {
                         className="big-modal"
                         packageId={subjectContext.selectedPackageId}
                     />
-                    {cardListContext.cardsOfPackage[subjectContext.selectedPackageId] ? (
+                    {!cardListContext.loading ? (
                         cardListContext.cardsOfPackage[subjectContext.selectedPackageId].map((card, index) => {
                             return (
                                 <React.Fragment key={`Flipcard${index}`}>
@@ -92,6 +114,7 @@ function NewCardModal(props: {
                     console.log(values);
                     return (
                         <div className="modal-form">
+                            <h5>Front side</h5>
                             <div className="adder front">
                                 <div className="inputs">
                                     <div className="adder-image">
@@ -161,6 +184,7 @@ function NewCardModal(props: {
                                 </div>
                             </div>
                             <hr />
+                            <h5>Back side</h5>
                             <div className="adder back">
                                 <div className="inputs">
                                     <div className="adder-image">

@@ -49,11 +49,4 @@ export default function MultiSelect(props: {
             )}
         </div>
     );
-    function handleChange(value) {
-        props.onChange(props.name, value);
-    }
-
-    function handleBlur() {
-        props.onBlur(props.name, true);
-    }
 }

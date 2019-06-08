@@ -10,6 +10,7 @@ import { GridRow } from '../shared/Grid/GridRow/GridRow';
 import type { Match as RouterMatch } from 'react-router-dom';
 import { FirebaseContext } from '../Firebase/FirebaseProvider';
 import FriendsList from './FriendsList/FriendsList';
+import { Link } from 'react-router-dom';
 
 import './Friends.css';
 
@@ -26,11 +27,9 @@ export default function Friends(props) {
 
 function FriendRequestsContent(props: { match: RouterMatch }) {
     const context = useContext(FriendsContext);
-    const { user } = useContext(FirebaseContext);
-    const { match } = props;
-    const path = match.path;
+    const { user, requesters } = useContext(FirebaseContext);
 
-    if (context.recuesters.length)
+    if (requesters.length)
         return (
             <div className="friend-requests-list">
                 <div className="grid-area">
@@ -67,7 +66,9 @@ function FriendRequestsContent(props: { match: RouterMatch }) {
                                         <GridColumn className="name">
                                             <GridColumn className="name-content">
                                                 <GridColumn label="Name">
-                                                    <p className="name-text">{rowData.name}</p>
+                                                    <Link to={`/user/${rowData.id}`}>
+                                                        <p className="name-text">{rowData.name}</p>
+                                                    </Link>
                                                 </GridColumn>
                                                 <GridColumn label="E-mail">
                                                     <p className="email">{rowData.email}</p>
@@ -114,7 +115,7 @@ function FriendRequestsContent(props: { match: RouterMatch }) {
                             }
                             return null;
                         }}
-                        data={context.recuesters}
+                        data={requesters}
                     />
                 </div>
             </div>

@@ -1,7 +1,5 @@
 import React, { useContext } from 'react';
-import { FirebaseContext } from '../Firebase/FirebaseProvider';
 import NewSharedPackage from '../shared/NewSharedPackage/NewSharedPackage';
-import { dashboardFlow } from '../../dummyData/dashboardFlow';
 import DashboardProvider, { DashboardContext } from './DashboardProvider/DashboardProvider';
 import InfiniteScroll from 'react-infinite-scroller';
 

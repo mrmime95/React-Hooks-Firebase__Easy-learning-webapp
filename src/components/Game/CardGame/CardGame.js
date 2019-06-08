@@ -9,7 +9,6 @@ export default function CardGame(props: {}) {
     const context = useContext(CardGameContext);
     const [activeIndex, setActiveIndex] = useState(0);
     const [inverse, setInverse] = useState(false);
-    let slider;
     return (
         <div className="card-game">
             <div id="carouselExampleControls" className="carousel slide" data-ride="carousel">
@@ -62,7 +61,7 @@ export default function CardGame(props: {}) {
         setInverse(!inverse);
         setActiveIndex(activeIndex + 1);
     }
-    function previous() {
+    /*    function previous() {
         setActiveIndex(activeIndex - 1 >= 0 ? activeIndex - 1 : 0);
-    }
+    } */
 }

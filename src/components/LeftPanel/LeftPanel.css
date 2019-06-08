@@ -8,7 +8,8 @@ button:focus {
   width: 100%;
   background: #272c33;
   transition: all 0.55s ease-in;
-  height: auto; }
+  height: auto;
+  z-index: 3; }
   .left-panel .logo {
     padding: 10px 0;
     display: flex;

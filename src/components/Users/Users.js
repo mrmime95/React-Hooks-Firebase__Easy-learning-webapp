@@ -1,5 +1,5 @@
 // @flow
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 
 import UsersProvider, { UsersContext } from './UsersProvider/UsersProvider';
 import { users } from '../../dummyData/Users';
@@ -9,6 +9,7 @@ import AvatarCircle from '../shared/AvatarCircle/AvatarCircle';
 import { GridRow } from '../shared/Grid/GridRow/GridRow';
 import type { Match as RouterMatch } from 'react-router-dom';
 import { FirebaseContext } from '../Firebase/FirebaseProvider';
+import { Link } from 'react-router-dom';
 
 import './Users.css';
 
@@ -25,9 +26,6 @@ export default function Users(props) {
 function UsersContent(props: { match: RouterMatch }) {
     const context = useContext(UsersContext);
     const { user } = useContext(FirebaseContext);
-    const { match } = props;
-    const path = match.path;
-
     return (
         <div className="user-list">
             <div className="grid-area">
@@ -53,6 +51,8 @@ function UsersContent(props: { match: RouterMatch }) {
                             words: number,
                             requested: boolean,
                         }) => {
+                            const [sent, setSent] = useState(rowData.requested);
+                            const [deleted, setDeleted] = useState(!rowData.requested);
                             if (rowData.id !== user.id) {
                                 return (
                                     <GridRow key={`LinkGridRow${rowData.id}`} className={`${rowData.role}`}>
@@ -65,7 +65,9 @@ function UsersContent(props: { match: RouterMatch }) {
                                         <GridColumn className="name">
                                             <GridColumn className="name-content">
                                                 <GridColumn label="Name">
-                                                    <p className="name-text">{rowData.name}</p>
+                                                    <Link to={`/user/${rowData.id}`}>
+                                                        <p className="name-text">{rowData.name}</p>
+                                                    </Link>
                                                 </GridColumn>
                                                 <GridColumn label="E-mail">
                                                     <p className="email">{rowData.email}</p>
@@ -92,11 +94,18 @@ function UsersContent(props: { match: RouterMatch }) {
                                             </GridColumn>
                                         </GridColumn>
                                         <GridColumn className="buttons">
-                                            {rowData.requested ? (
+                                            {user.friends && user.friends.find(friend => friend === rowData.id) ? (
+                                                <h5>Is your friend</h5>
+                                            ) : rowData.requested ? (
                                                 <button
                                                     type="button"
                                                     className="btn btn-outline-primary"
-                                                    onClick={() => context.deleteFriendReques(rowData.id)}
+                                                    onClick={() => {
+                                                        setDeleted(true);
+                                                        setSent(false);
+                                                        context.deleteFriendReques(rowData.id);
+                                                    }}
+                                                    disabled={deleted}
                                                 >
                                                     Delete friend request
                                                 </button>
@@ -104,7 +113,12 @@ function UsersContent(props: { match: RouterMatch }) {
                                                 <button
                                                     type="button"
                                                     className="btn btn-outline-primary"
-                                                    onClick={() => context.createFriendReques(rowData.id)}
+                                                    onClick={() => {
+                                                        setSent(true);
+                                                        setDeleted(false);
+                                                        context.createFriendReques(rowData.id);
+                                                    }}
+                                                    disabled={sent}
                                                 >
                                                     Send friend request
                                                 </button>
@@ -114,15 +128,21 @@ function UsersContent(props: { match: RouterMatch }) {
                                                     <button type="button" className="btn btn-outline-secondary">
                                                         Delete user
                                                     </button>
-                                                    <button type="button" className="btn btn-outline-secondary">
-                                                        Create approover
-                                                    </button>
-                                                    <button type="button" className="btn btn-outline-secondary">
-                                                        Create admin
-                                                    </button>
-                                                    <button type="button" className="btn btn-outline-secondary">
-                                                        Create user
-                                                    </button>
+                                                    {rowData.role !== 'approver' && (
+                                                        <button type="button" className="btn btn-outline-secondary">
+                                                            Create approver
+                                                        </button>
+                                                    )}
+                                                    {rowData.role !== 'admin' && (
+                                                        <button type="button" className="btn btn-outline-secondary">
+                                                            Create admin
+                                                        </button>
+                                                    )}
+                                                    {rowData.role !== 'user' && (
+                                                        <button type="button" className="btn btn-outline-secondary">
+                                                            Create user
+                                                        </button>
+                                                    )}
                                                 </React.Fragment>
                                             )}
                                         </GridColumn>

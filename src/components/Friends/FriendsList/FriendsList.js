@@ -8,14 +8,13 @@ import AvatarCircle from '../../shared/AvatarCircle/AvatarCircle';
 import { GridRow } from '../../shared/Grid/GridRow/GridRow';
 import type { Match as RouterMatch } from 'react-router-dom';
 import { FirebaseContext } from '../../Firebase/FirebaseProvider';
+import { Link } from 'react-router-dom';
 
 import './FriendsList.css';
 
 export default function FriendsList(props: { match: RouterMatch }) {
     const context = useContext(FriendsContext);
     const { user } = useContext(FirebaseContext);
-    const { match } = props;
-    const path = match.path;
     return (
         <div className="friends-list">
             <div className="grid-area">
@@ -49,7 +48,9 @@ export default function FriendsList(props: { match: RouterMatch }) {
                                     <GridColumn className="name">
                                         <GridColumn className="name-content">
                                             <GridColumn label="Name">
-                                                <p className="name-text">{rowData.name}</p>
+                                                <Link to={`/user/${rowData.id}`}>
+                                                    <p className="name-text">{rowData.name}</p>
+                                                </Link>
                                             </GridColumn>
                                             <GridColumn label="E-mail">
                                                 <p className="email">{rowData.email}</p>

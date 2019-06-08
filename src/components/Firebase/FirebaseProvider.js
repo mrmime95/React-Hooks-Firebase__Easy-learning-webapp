@@ -8,6 +8,8 @@ export default class FirebaseProvider extends Component {
         authReady: false,
         isLoggedIn: false,
         user: null,
+        requestNumber: 0,
+        requesters: [],
     };
 
     componentDidMount() {
@@ -30,8 +32,10 @@ export default class FirebaseProvider extends Component {
                     getSubjectsByCurrentUser: this.getSubjectsByCurrentUser,
                     getPackagesBySubjectId: this.getPackagesBySubjectId,
                     getCardsByPackageId: this.getCardsByPackageId,
-                    getFriendRequestsNumber: this.getFriendRequestsNumber,
+                    getFriendRequestNumber: this.getFriendRequestNumber,
                     getDateTime: this.getDateTime,
+                    getAllFriendsId: this.getAllFriendsId,
+                    refreshFriends: this.refreshFriends,
                 }}
             >
                 {this.props.children}
@@ -107,49 +111,99 @@ export default class FirebaseProvider extends Component {
     getCurrentUser = (uid: string) => {
         db.doc(`users/${uid}`)
             .get()
+            .then(async querySnapshot => {
+                const requesters = await this.getAllRequesters(uid);
+                this.setState({
+                    authReady: true,
+                    isLoggedIn: true,
+                    user: {
+                        ...querySnapshot.data(),
+                        id: uid,
+                    },
+                    requesters,
+                });
+            })
+            .catch(function(error) {
+                console.log('Error getting user document: ', error);
+            });
+
+        db.doc(`friendRequestNumber/${uid}`)
+            .get()
             .then(querySnapshot => {
-                db.doc(`friendRequestNumber/${uid}`)
-                    .get()
-                    .then(querySnapshot2 => {
-                        this.setState({
-                            authReady: true,
-                            isLoggedIn: true,
-                            user: {
-                                id: uid,
-                                email: querySnapshot.data().email,
-                                birthDate: querySnapshot.data().birthDate,
-                                friendRequestsNumber: querySnapshot2.data().counter,
-                                role: querySnapshot.data().role,
-                                firstName: querySnapshot.data().firstName,
-                                lastName: querySnapshot.data().lastName,
-                            },
-                        });
-                    })
-                    .catch(function(error) {
-                        console.log('Error getting document: ', error);
+                if (querySnapshot.data()) {
+                    this.setState({
+                        requestNumber: querySnapshot.data().counter,
                     });
+                }
             })
             .catch(function(error) {
                 console.log('Error getting document: ', error);
             });
     };
 
-    getFriendRequestsNumber = () => {
-        console.log('meghivodtam');
+    getFriendRequestNumber = () => {
         db.collection(`friendRequestNumber`)
             .where('requestedId', '==', this.state.user.id)
             .onSnapshot(snapshot => {
-                console.log(snapshot);
-                snapshot.docChanges().forEach(change => {
-                    console.log('BENT');
+                snapshot.docChanges().forEach(async change => {
                     if (change.type === 'modified') {
-                        console.log('Modified city: ', change.doc.data());
+                        console.log(change.doc.data().counter);
+                        const requesters = await this.getAllRequesters(this.state.user.id);
+                        const friends = await this.getAllFriendsId();
                         const user = this.state.user;
-                        user.friendRequestsNumber = change.doc.data().counter;
-                        this.setState(user);
+                        user.friends = friends;
+                        this.setState({ requestNumber: change.doc.data().counter, requesters, user });
                     }
                 });
             });
+    };
+
+    refreshFriends = async () => {
+        const friends = await this.getAllFriendsId();
+        const user = this.state.user;
+        user.friends = friends;
+        this.setState({ user });
+    };
+
+    getAllFriendsId = async () => {
+        const thisUser = await db
+            .collection('users')
+            .doc(this.state.user.id)
+            .get();
+        console.log(thisUser.data());
+        return thisUser.data().friends;
+    };
+
+    getAllRequesters = async (uid: string) => {
+        const friendRequestNumber = await db
+            .collection('friendRequestNumber')
+            .doc(uid)
+            .get();
+        const requesters = friendRequestNumber.data().requesters;
+
+        if (requesters) {
+            const requesterUsers = await Promise.all(
+                requesters.map(async (requester, index) => {
+                    const friendRequesters = await db
+                        .collection('users')
+                        .doc(requester)
+                        .get();
+                    return {
+                        id: friendRequesters.id,
+                        email: friendRequesters.data().email,
+                        name: `${friendRequesters.data().firstName} ${friendRequesters.data().lastName}`,
+                        birthDate: friendRequesters.data().birthDate,
+                        subjects: friendRequesters.data().subjectsNumber,
+                        packages: friendRequesters.data().packagesNumber,
+                        cards: friendRequesters.data().cardsNumber,
+                        role: friendRequesters.data().role,
+                    };
+                })
+            );
+            return requesterUsers;
+        } else {
+            return [];
+        }
     };
 
     getSubjectsByCurrentUser = () => {

@@ -9,6 +9,7 @@ import Header from '../Header/Header';
 
 import SignUp from '../SignUp/SignUp';
 import Login from '../Login/Login';
+import UserDetail from '../UserDetail/UserDetail';
 
 import './App.css';
 
@@ -37,6 +38,7 @@ function App() {
                                                 />
                                             );
                                         })}
+                                        <GuardRoute type="private" path="/user/:id" component={UserDetail} />
                                         <Redirect from="/" to={navigationConfig.dashboard.route.path} />
                                     </Switch>
                                 </React.Fragment>

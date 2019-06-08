@@ -1,7 +1,5 @@
 /* @flow */
 
-import React from 'react';
-
 import {
     Dashboard as DashboardIcon,
     Person as PersonIcon,
@@ -15,8 +13,6 @@ import Users from './components/Users/Users';
 import Friends from './components/Friends/Friends';
 import Subjects from './components/Subjects/Subjects';
 import Game from './components/Game/Game';
-
-const EmptyRouteComponent = title => props => <div>{title}</div>;
 
 const navigationConfig = {
     dashboard: {

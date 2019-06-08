@@ -1,0 +1,22 @@
+li {
+  list-style-type: none; }
+
+button:focus {
+  outline: none; }
+
+.info-block {
+  padding: 15px 0; }
+  .info-block .title {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: solid 1px #ccc;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    font-family: 'Lato', sans-serif; }
+    .info-block .title .text {
+      margin: 0;
+      font-weight: normal;
+      font-size: 12px;
+      padding-bottom: 5px;
+      font-weight: bold; }

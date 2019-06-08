@@ -4,6 +4,7 @@ import Modal from '../Modal/Modal';
 import Form from '../../shared/Form/Form';
 import PicureUploader from '../../shared/PicureUploader/PicureUploader';
 import { CardListContext } from '../../Subjects/CardsList/CardListProvider/CardListProvider';
+import Octicon, { Alert, Check, X } from '@githubprimer/octicons-react';
 import Rater from 'react-rater';
 import 'react-rater/lib/react-rater.css';
 
@@ -36,7 +37,6 @@ export default function FlipCard(props: {
     interactiveStars: boolean,
 }) {
     const [state, setState] = useState({ editCardModalOpen: false, clicked: false });
-
     return (
         <div
             className={`flip-card ${props.workWithHover && 'work-with-hover'} ${props.workWithFocus &&
@@ -83,8 +83,14 @@ export default function FlipCard(props: {
                     <button className="btn btn-dark">
                         <i className="far fa-trash-alt" />
                     </button>
-                    <button className="btn btn-dark">
-                        <i className="fas fa-file-upload" />
+                    <button className="btn btn-dark" disabled>
+                        {props.card.correct === 'incorrect' ? (
+                            <Octicon className="correct incorrect" icon={X} />
+                        ) : props.card.correct === 'correct' ? (
+                            <Octicon className="correct" icon={Check} />
+                        ) : (
+                            <Octicon className="correct unknown" icon={Alert} />
+                        )}
                     </button>
                     <EditCardModal
                         isOpen={state.editCardModalOpen}
@@ -155,6 +161,7 @@ function EditCardModal(props: {
                 {({ handleChange, handleBlur, values, setFieldValue, setFieldTouched, errors, touched }, FormRow) => {
                     return (
                         <div className="modal-form">
+                            <h5>Front side</h5>
                             <div className="adder front">
                                 <div className="inputs">
                                     <div className="adder-image">
@@ -224,6 +231,7 @@ function EditCardModal(props: {
                                 </div>
                             </div>
                             <hr />
+                            <h5>Back side</h5>
                             <div className="adder back">
                                 <div className="inputs">
                                     <div className="adder-image">

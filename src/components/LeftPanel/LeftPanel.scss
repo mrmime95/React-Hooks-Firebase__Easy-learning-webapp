@@ -4,6 +4,7 @@
     background: $background-color-navbar;
     transition: all 0.55s ease-in;
     height: auto;
+    z-index: 3;
     .logo {
         padding: 10px 0;
         display: flex;

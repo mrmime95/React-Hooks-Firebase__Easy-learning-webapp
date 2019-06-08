@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './PicureUploader.css';
 
 export default function PicureUploader({

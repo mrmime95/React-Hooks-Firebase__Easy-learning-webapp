@@ -1,14 +1,12 @@
 import React, { useState, useContext } from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import Modal from '../../shared/Modal/Modal';
 import { SubjectsContext } from '../SubjectsProvider/SubjectsProvider';
 import { CardListContext } from '../CardsList/CardListProvider/CardListProvider';
-import WithTooltip from '../../shared/WithTooltip/WithTooltip';
 import Form from '../../shared/Form/Form';
 import './ListView.css';
 
 export default function ListView(props: {
-    data: [{ title: string, id: number, packages: [{ title: string, id: number }] }],
+    data: [{ subjectName: string, id: number, packages: [{ packageName: string, id: number }] }],
     baseRoute: string,
     opened: string,
 }) {
@@ -33,7 +31,7 @@ export default function ListView(props: {
 }
 
 function ListSubject(props: {
-    subject: { title: string, id: number, packages: [{ title: string, id: number }] },
+    subject: { subjectName: string, id: number, packages: [{ packageName: string, id: number }] },
     baseRoute: string,
     opened: string,
 }) {
@@ -57,10 +55,11 @@ function ListSubject(props: {
                             context.getPackagesBySubjectId(props.subject.id);
                         }
                         setState({ ...state, open: !state.open });
+                        context.setSelectedSubject(props.subject.id);
                     }}
                 >
                     {state.open ? <i className="far fa-folder-open" /> : <i className="far fa-folder" />}
-                    <p className="subject-name">{props.subject.title}</p>
+                    <p className="subject-name">{props.subject.subjectName}</p>
                 </div>
                 <div className="subject-options">
                     <button className="btn btn-dark" onClick={() => setState({ ...state, newPackageModalOpen: true })}>
@@ -100,7 +99,8 @@ function ListSubject(props: {
                 <Form
                     initialValues={{
                         packageName: '',
-                        public: false,
+                        publicForFriends: false,
+                        publicForEveryone: false,
                     }}
                     onSubmit={values => {
                         context.createNewPackageForSubject(props.subject.id, values);
@@ -129,14 +129,29 @@ function ListSubject(props: {
                                     <input
                                         className="form-check-input"
                                         type="checkbox"
-                                        value={values.public}
+                                        value={values.publicForFriends}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        id="public"
-                                        name="public"
+                                        id="publicForFriends"
+                                        name="publicForFriends"
                                     />
-                                    <label className="form-check-label" htmlFor="public">
-                                        Public
+                                    <label className="form-check-label" htmlFor="publicForFriends">
+                                        Public for firends
+                                    </label>
+                                </div>
+
+                                <div className="checkbox">
+                                    <input
+                                        className="form-check-input"
+                                        type="checkbox"
+                                        value={values.publicForEveryone}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        id="publicForEveryone"
+                                        name="publicForEveryone"
+                                    />
+                                    <label className="form-check-label" htmlFor="publicForEveryone">
+                                        Public for everyone
                                     </label>
                                 </div>
                                 <div className="modal-buttons">
@@ -153,10 +168,10 @@ function ListSubject(props: {
                 </Form>
             </Modal>
             <Modal isOpen={state.editSubjectModalOpen} handleClickOutside={closeModal} className="one-line-modal">
-                <div className="modal-title">Edit {props.subject.title} subject</div>
+                <div className="modal-title">Edit {props.subject.subjectName} subject</div>
                 <Form
                     initialValues={{
-                        subject: props.subject.title,
+                        subject: props.subject.subjectName,
                     }}
                     onSubmit={values => {
                         context.updateSubject(props.subject.id, values);
@@ -209,7 +224,7 @@ function ListSubject(props: {
 function ListPacks(props: {
     context: any,
     onClick: string => {},
-    pack: { id: string, title: string, public: boolean },
+    pack: { id: string, packageName: string, publicForFriends: boolean, publicForEveryone: boolean },
     subjectId: string,
 }) {
     const { context, pack } = props;
@@ -230,7 +245,7 @@ function ListPacks(props: {
                 ) : (
                     <i className="fas fa-archive" />
                 )}
-                <span className="pack-name">{pack.title}</span>
+                <span className="pack-name">{pack.packageName}</span>
             </div>
             <div className="pack-options">
                 <button className="btn btn-dark" onClick={() => setState({ ...state, editPackageModalOpen: true })}>
@@ -244,11 +259,12 @@ function ListPacks(props: {
                 </button>
             </div>
             <Modal isOpen={state.editPackageModalOpen} handleClickOutside={closeModal} className="one-line-modal">
-                <div className="modal-title">New package</div>
+                <div className="modal-title">Edit {pack.packageName} package</div>
                 <Form
                     initialValues={{
-                        packageName: pack.title,
-                        public: pack.public,
+                        packageName: pack.packageName,
+                        publicForFriends: pack.publicForFriends,
+                        publicForEveryone: pack.publicForEveryone,
                     }}
                     onSubmit={values => {
                         context.updatePackagesAtSubject(props.subjectId, pack.id, values);
@@ -276,15 +292,30 @@ function ListPacks(props: {
                                     <input
                                         className="form-check-input"
                                         type="checkbox"
-                                        value={values.public}
-                                        defaultChecked={values.public}
+                                        value={values.publicForFriends}
+                                        defaultChecked={values.publicForFriends}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        id="public"
-                                        name="public"
+                                        id="publicForFriends"
+                                        name="publicForFriends"
                                     />
-                                    <label className="form-check-label" htmlFor="public">
-                                        Public
+                                    <label className="form-check-label" htmlFor="publicForFriends">
+                                        Public for friends
+                                    </label>
+                                </div>
+                                <div className="checkbox">
+                                    <input
+                                        className="form-check-input"
+                                        type="checkbox"
+                                        value={values.publicForEveryone}
+                                        defaultChecked={values.publicForEveryone}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        id="publicForEveryone"
+                                        name="publicForEveryone"
+                                    />
+                                    <label className="form-check-label" htmlFor="publicForEveryone">
+                                        Public for everyone
                                     </label>
                                 </div>
                                 <div className="modal-buttons">

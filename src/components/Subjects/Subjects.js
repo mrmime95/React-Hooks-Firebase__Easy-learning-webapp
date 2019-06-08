@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react';
 import ListView from './ListView/ListView';
 import './Subjects.css';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Form from '../shared/Form/Form';
 import Modal from '../shared/Modal/Modal';
 import SubjectsProvider, { SubjectsContext } from './SubjectsProvider/SubjectsProvider';

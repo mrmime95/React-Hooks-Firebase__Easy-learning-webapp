@@ -27,11 +27,9 @@ export default function FriendsProvider(props: { users: [Users] }) {
         sort: defaultSortBy,
         sortAscending: defaultAscending,
         friends: [],
-        recuesters: [],
     });
     const fireContext = useContext(FirebaseContext);
     useEffect(() => {
-        getAllRequesters();
         getAllFriends();
     }, []);
 
@@ -41,7 +39,6 @@ export default function FriendsProvider(props: { users: [Users] }) {
                 ...state,
                 onSearch,
                 onPagingChange,
-                getAllRequesters,
                 deleteFriendReques,
                 acceptFriend,
                 getAllFriends,
@@ -52,38 +49,6 @@ export default function FriendsProvider(props: { users: [Users] }) {
         </FriendsContext.Provider>
     );
 
-    async function getAllRequesters() {
-        const friendRequestNumber = await fireContext.db
-            .collection('friendRequestNumber')
-            .doc(fireContext.user.id)
-            .get();
-        const requesters = friendRequestNumber.data().requesters;
-
-        if (requesters) {
-            const requesterUsers = await Promise.all(
-                requesters.map(async (requester, index) => {
-                    const friendRequesters = await fireContext.db
-                        .collection('users')
-                        .doc(requester)
-                        .get();
-                    console.log(friendRequesters.data());
-                    return {
-                        id: friendRequesters.id,
-                        email: friendRequesters.data().email,
-                        name: `${friendRequesters.data().firstName} ${friendRequesters.data().lastName}`,
-                        birthDate: friendRequesters.data().birthDate,
-                        subjects: friendRequesters.data().subjectsNumber,
-                        packages: friendRequesters.data().packagesNumber,
-                        cards: friendRequesters.data().cardsNumber,
-                        role: friendRequesters.data().role,
-                    };
-                })
-            );
-            setState({ ...state, recuesters: requesterUsers });
-        } else {
-            setState({ ...state, recuesters: [] });
-        }
-    }
     async function acceptFriend(friendId: string) {
         const currentUserRef = fireContext.db.doc(`users/${fireContext.user.id}`);
         const friendUserRef = fireContext.db.doc(`users/${friendId}`);
@@ -107,25 +72,17 @@ export default function FriendsProvider(props: { users: [Users] }) {
             friends: friendUsersFriendsArray,
         });
 
-        const friendshipRef = fireContext.db.collection('friendship').doc(fireContext.user.id + '_' + friendId);
-        batch.set(friendshipRef, {
-            createdAt: fireContext.getDateTime(),
-        });
         batch.commit();
 
-        setTimeout(() => {
-            getAllRequesters();
-            setTimeout(() => {
-                getAllFriends();
-            }, 500);
-        }, 500);
+        getAllFriends();
     }
     async function deleteFriendReques(requesterId: string) {
         const friendRequestNumberRef = fireContext.db.doc(`friendRequestNumber/${fireContext.user.id}`);
         const friendRequestNumber = await friendRequestNumberRef.get();
-        const requesterArray = friendRequestNumber.data().requesters.filter(element => element !== requesterId);
-        friendRequestNumberRef.update({ counter: fireContext.decrement, requesters: requesterArray });
-        getAllRequesters();
+        if (friendRequestNumber.data().requesters.find(element => element === requesterId)) {
+            const requesterArray = friendRequestNumber.data().requesters.filter(element => element !== requesterId);
+            friendRequestNumberRef.update({ counter: fireContext.decrement, requesters: requesterArray });
+        }
     }
 
     async function getAllFriends() {
@@ -162,14 +119,17 @@ export default function FriendsProvider(props: { users: [Users] }) {
     async function deleteFriend(friendId: string) {
         const userRef = fireContext.db.doc(`users/${fireContext.user.id}`);
         const user = await userRef.get();
-        const friendArray = user.data().friends.filter(element => element !== friendId);
-        userRef.update({ friendCounter: fireContext.decrement, friends: friendArray });
+        if (user.data().friends.find(element => element === friendId)) {
+            const friendArray = user.data().friends.filter(element => element !== friendId);
+            userRef.update({ friendCounter: fireContext.decrement, friends: friendArray });
+        }
 
         const friendRef = fireContext.db.doc(`users/${friendId}`);
         const friend = await friendRef.get();
-        const friendWithUserArray = friend.data().friends.filter(element => element !== fireContext.user.id);
-        friendRef.update({ friendCounter: fireContext.decrement, friends: friendWithUserArray });
-
+        if (friend.data().friends.find(element => element === fireContext.user.id)) {
+            const friendWithUserArray = friend.data().friends.filter(element => element !== fireContext.user.id);
+            friendRef.update({ friendCounter: fireContext.decrement, friends: friendWithUserArray });
+        }
         getAllFriends();
     }
 

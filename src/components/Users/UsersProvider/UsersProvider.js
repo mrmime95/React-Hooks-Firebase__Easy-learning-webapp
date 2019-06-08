@@ -30,6 +30,7 @@ export default function UsersProvider(props: { users: [Users] }) {
     });
     const fireContext = useContext(FirebaseContext);
     useEffect(() => {
+        fireContext.refreshFriends();
         getAllUsers();
     }, []);
 
@@ -56,8 +57,10 @@ export default function UsersProvider(props: { users: [Users] }) {
                     packages: doc.data().packagesNumber,
                     cards: doc.data().cardsNumber,
                     role: doc.data().role,
-                    requested: friendRequest.data().requesters
-                        ? friendRequest.data().requesters.find(element => element === fireContext.user.id)
+                    requested: friendRequest.data()
+                        ? friendRequest.data().requesters
+                            ? friendRequest.data().requesters.find(element => element === fireContext.user.id)
+                            : false
                         : false,
                 };
             })
@@ -66,15 +69,24 @@ export default function UsersProvider(props: { users: [Users] }) {
     }
 
     async function createFriendReques(requestedId: string) {
-        const friendRequestNumberRef = fireContext.db.doc(`friendRequestNumber/${requestedId}`);
+        const friendRequestNumberRef = fireContext.db.collection('friendRequestNumber').doc(requestedId);
         const batch = fireContext.db.batch();
         const friendRequestNumber = await friendRequestNumberRef.get();
-        const requesterArray = friendRequestNumber.data().requesters || [];
-        requesterArray.push(fireContext.user.id);
-        batch.update(friendRequestNumberRef, {
-            counter: fireContext.increment,
-            requesters: requesterArray,
-        });
+        if (friendRequestNumber.data() && friendRequestNumber.data().requesters) {
+            const requesterArray = friendRequestNumber.data().requesters;
+            requesterArray.push(fireContext.user.id);
+            batch.update(friendRequestNumberRef, {
+                counter: fireContext.increment,
+                requesters: requesterArray,
+                requestedId: requestedId,
+            });
+        } else {
+            batch.set(friendRequestNumberRef, {
+                counter: 1,
+                requesters: [fireContext.user.id],
+                requestedId: requestedId,
+            });
+        }
         batch.commit();
         getAllUsers();
     }
@@ -82,8 +94,13 @@ export default function UsersProvider(props: { users: [Users] }) {
     async function deleteFriendReques(requestedId: string) {
         const friendRequestNumberRef = fireContext.db.doc(`friendRequestNumber/${requestedId}`);
         const friendRequestNumber = await friendRequestNumberRef.get();
-        const requesterArray = friendRequestNumber.data().requesters.filter(element => element !== fireContext.user.id);
-        friendRequestNumberRef.update({ counter: fireContext.decrement, requesters: requesterArray });
+        if (friendRequestNumber.data().requesters.find(element => element === fireContext.user.id)) {
+            const requesterArray = friendRequestNumber
+                .data()
+                .requesters.filter(element => element !== fireContext.user.id);
+            friendRequestNumberRef.update({ counter: fireContext.decrement, requesters: requesterArray });
+        }
+        fireContext.refreshFriends();
         getAllUsers();
     }
 

@@ -22,13 +22,13 @@ function MenuItem(props) {
     const { item } = props;
 
     const fireContext = useContext(FirebaseContext);
-    if (item.withBadge) fireContext.getFriendRequestsNumber();
+    if (item.withBadge) fireContext.getFriendRequestNumber();
 
     return (
         <li className="menu-item">
             <NavLink to={item.route.path} activeClassName="active">
                 {item.withBadge ? (
-                    <IconWithBadge badgeValue={fireContext.user.friendRequestsNumber}>
+                    <IconWithBadge badgeValue={fireContext.requestNumber}>
                         <Octicon icon={item.Icon} className="icon" />
                     </IconWithBadge>
                 ) : (

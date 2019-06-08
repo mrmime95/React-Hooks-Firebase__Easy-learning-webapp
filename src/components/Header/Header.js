@@ -9,8 +9,8 @@ export default function Header(props) {
     if (context.isLoggedIn) {
         return (
             <div className="header">
-                <Link className="link" to="/account">
-                    Account
+                <Link className="link" to={`/user/${context.user.id}`}>
+                    {context.user.firstName + ' ' + context.user.lastName}
                 </Link>
                 <span className="link" onClick={context.doSignOut}>
                     Sign Out

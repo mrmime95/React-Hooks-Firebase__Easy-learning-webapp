@@ -50,7 +50,7 @@ export default function NewSharedPackage(props: {
                         return (
                             <li key={`li${word.cardId}`} className="line" data-for={`li${word.cardId}`} data-tip>
                                 <p className="word">{`${word.front.word}-${word.back.word}`}</p>
-                                {user.role === 'admin' || user.role === 'aproover' ? (
+                                {user.role === 'admin' || user.role === 'approver' ? (
                                     <Form
                                         initialValues={{
                                             correct: word.correct ? word.correct : 'unknow',

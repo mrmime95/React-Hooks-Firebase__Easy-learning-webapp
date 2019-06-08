@@ -11,7 +11,7 @@ button:focus {
     border-left: solid 5px #00a0d0; }
     .user-list .grid .grid-row.admin {
       border-left: solid 5px #e3163a; }
-    .user-list .grid .grid-row.aproover {
+    .user-list .grid .grid-row.approver {
       border-left: solid 5px #7cc253; }
     .user-list .grid .grid-row .column.profile-picture {
       flex: 1; }

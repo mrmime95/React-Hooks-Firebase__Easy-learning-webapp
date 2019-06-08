@@ -1,0 +1,25 @@
+@import '../../../utils.scss';
+.row-label {
+    display: flex;
+    justify-content: space-between;
+    .label {
+        margin-top: 5px;
+        display: inline-block;
+        padding: 0 15px 0 0;
+        text-align: left;
+        font-size: 11px;
+        color: $color-gray-label;
+        text-transform: uppercase;
+        font-weight: normal;
+        font-family: Lato;
+        width: 50%;
+    }
+    .value {
+        margin: 5px 0 0;
+        padding: 0 0 0 15px;
+        font-size: 13px;
+        font-family: Lato;
+        font-weight: bold;
+        width: 50%;
+    }
+}
