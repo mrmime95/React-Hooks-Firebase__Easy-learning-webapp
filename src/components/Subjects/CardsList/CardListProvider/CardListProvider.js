@@ -25,6 +25,7 @@ export default function CardListProvider(props) {
                 getCardsByPackageId,
                 createNewCardForPackage,
                 updateCard,
+                deleteCardById,
             }}
         >
             {props.children}
@@ -117,6 +118,23 @@ export default function CardListProvider(props) {
             })
             .catch(function(error) {
                 console.error('Error updating document: ', error);
+            });
+    }
+
+    function deleteCardById(cardId: string, packageId: string) {
+        fireContext
+            .deleteCardById(cardId)
+            .then(() => {
+                const batch = fireContext.db.batch();
+                const packageRef = fireContext.db.collection('packages').doc(packageId);
+                const userRef = fireContext.db.collection('users').doc(fireContext.user.id);
+                batch.update(packageRef, { cardsNumber: fireContext.decrement });
+                batch.update(userRef, { cardsNumber: fireContext.decrement });
+                batch.commit();
+                getCardsByPackageId(packageId);
+            })
+            .catch(error => {
+                console.error('Error removing document: ', error);
             });
     }
 

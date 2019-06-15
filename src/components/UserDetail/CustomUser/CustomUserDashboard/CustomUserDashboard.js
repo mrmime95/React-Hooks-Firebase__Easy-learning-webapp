@@ -10,7 +10,7 @@ function CustomUserDashboard() {
     if (context.customUser) {
         return (
             <div>
-                {/* <InfiniteScroll
+                <InfiniteScroll
                     pageStart={0}
                     loadMore={context.getNextPackages}
                     hasMore={context.hasMore}
@@ -31,9 +31,9 @@ function CustomUserDashboard() {
                             );
                         })
                     ) : (
-                        <div>There aren't any package shared with you...</div>
+                        <div>There aren't any packages...</div>
                     )}
-                </InfiniteScroll> */}
+                </InfiniteScroll>
             </div>
         );
     }

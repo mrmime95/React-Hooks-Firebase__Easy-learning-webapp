@@ -6,7 +6,7 @@ button:focus {
 
 .modal-container {
   display: none;
-  position: absolute;
+  position: fixed;
   width: 100%;
   height: 100%;
   top: 0;

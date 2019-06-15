@@ -24,6 +24,7 @@ export default function SubjectsProvider(props) {
                 setSelectedSubject,
                 updateSubject,
                 updatePackagesAtSubject,
+                deletePackageById,
             }}
         >
             {props.children}
@@ -94,14 +95,19 @@ export default function SubjectsProvider(props) {
 
     function createNewPackageForSubject(
         subjectId: string,
-        values: { packageName: string, publicForFriends: boolean, publicForEveryone: boolean }
+        values: {
+            packageName: string,
+            publicForEveryone: boolean,
+            tags: [{ id: string, text: string }],
+        }
     ) {
         const batch = fireContext.db.batch();
         const packagesRef = fireContext.db.collection('packages').doc();
         const userRef = fireContext.db.collection('users').doc(fireContext.user.id);
-
+        console.log(values.tags);
         batch.set(packagesRef, {
             ...values,
+            tags: values.tags.map(tag => tag.id),
             cardsNumber: 0,
             correctsNumber: 0,
             incorrectsNumber: 0,
@@ -137,12 +143,18 @@ export default function SubjectsProvider(props) {
     function updatePackagesAtSubject(
         subjectId: string,
         packId: string,
-        values: { packageName: string, publicForFriends: boolean, publicForEveryone: boolean }
+        values: {
+            packageName: string,
+            publicForFriends: boolean,
+            publicForEveryone: boolean,
+            tags: [{ id: string, text: string }],
+        }
     ) {
         fireContext.db
             .doc(`packages/${packId}`)
             .update({
                 ...values,
+                tags: values.tags.map(tag => tag.id),
                 createdAt: fireContext.getDateTime(),
             })
             .then(function() {
@@ -153,5 +165,60 @@ export default function SubjectsProvider(props) {
                 console.error('Error updating document: ', error);
             });
     }
+
+    async function deletePackageById(packageId: string) {
+        console.log('deletePackageById');
+
+        fireContext
+            .deletePackageById(packageId)
+            .then(() => {
+                const batch = fireContext.db.batch();
+                const userRef = fireContext.db.collection('users').doc(fireContext.user.id);
+                batch.update(userRef, { packagesNumber: fireContext.decrement });
+                fireContext.db
+                    .collection('cards')
+                    .where('packageId', '==', packageId)
+                    .get()
+                    .then(cards => {
+                        cards.forEach((card, index) => {
+                            deleteCardById(card.id, packageId);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error removing document: ', error);
+                    });
+                batch.commit();
+            })
+            .catch(error => {
+                console.error('Error removing document: ', error);
+            });
+
+        /*  fireContext
+            .deletePackageById(packageId)
+            .then(() => {
+                const batch = fireContext.db.batch();
+                const userRef = fireContext.db.collection('users').doc(fireContext.user.id);
+                batch.update(userRef, { packagesNumber: fireContext.increment });
+                batch.commit();
+                deleteCardById(packageId);
+            })
+            .catch(error => {
+                console.error('Error removing document: ', error);
+            }); */
+    }
     /* ---------------------------------------- */
+
+    function deleteCardById(cardId: string, packageId: string) {
+        fireContext
+            .deleteCardById(cardId)
+            .then(() => {
+                const batch = fireContext.db.batch();
+                const userRef = fireContext.db.collection('users').doc(fireContext.user.id);
+                batch.update(userRef, { cardsNumber: fireContext.decrement });
+                batch.commit();
+            })
+            .catch(error => {
+                console.error('Error removing document: ', error);
+            });
+    }
 }

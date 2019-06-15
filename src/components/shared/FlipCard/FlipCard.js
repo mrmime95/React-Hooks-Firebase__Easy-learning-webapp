@@ -37,6 +37,7 @@ export default function FlipCard(props: {
     interactiveStars: boolean,
 }) {
     const [state, setState] = useState({ editCardModalOpen: false, clicked: false });
+    const context = useContext(CardListContext);
     return (
         <div
             className={`flip-card ${props.workWithHover && 'work-with-hover'} ${props.workWithFocus &&
@@ -80,7 +81,12 @@ export default function FlipCard(props: {
                     <button className="btn btn-dark" onClick={() => setState({ ...state, editCardModalOpen: true })}>
                         <i className="far fa-edit" />
                     </button>
-                    <button className="btn btn-dark">
+                    <button
+                        className="btn btn-dark"
+                        onClick={() => {
+                            context.deleteCardById(props.card.id, props.packageId);
+                        }}
+                    >
                         <i className="far fa-trash-alt" />
                     </button>
                     <button className="btn btn-dark" disabled>

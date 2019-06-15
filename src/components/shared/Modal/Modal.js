@@ -6,6 +6,7 @@ import './Modal.css';
 const Modal = React.forwardRef(
     (props: { isOpen: boolean, className: string, children: React$node, handleClickOutside?: () => void }, ref) => {
         if (props.isOpen) {
+            document.getElementsByTagName('body')[0].setAttribute('style', 'overflow: hidden');
             return ReactDOM.createPortal(
                 <div className={`modal-container ${props.isOpen && 'open'} ${props.className}`}>
                     <ClickedOutsideChecker
@@ -18,6 +19,8 @@ const Modal = React.forwardRef(
                 </div>,
                 document.getElementById('modal-root')
             );
+        } else {
+            document.getElementsByTagName('body')[0].setAttribute('style', 'overflow: auto');
         }
         return null;
     }

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import AvatarCircle from '../AvatarCircle/AvatarCircle';
 import Octicon, { Alert, Check, X, Package } from '@githubprimer/octicons-react';
 import ReactTooltip from 'react-tooltip';
@@ -8,13 +8,25 @@ import { debounce } from '../../../utils';
 import Form from '../../shared/Form/Form';
 import Checkbox from '../../shared/Checkbox/Checkbox';
 import AutoSubmit from '../../shared/AutoSubmit/AutoSubmit';
+import FormTags from '../../shared/FormTags/FormTags';
+import Modal from '../../shared/Modal/Modal';
+import SelectInput from '../../shared/SelectInput/SelectInput';
+import NewSharedPackageProvider, { NewSharedPackageContext } from './NewSharedPackageProvider/NewSharedPackageProvider';
 
 import './NewSharedPackage.css';
 
 export default function NewSharedPackage(props: {
     user: { fullName: string, link: string, profilePicture?: string },
     package: {
-        title: string,
+        cardsNumber: number,
+        correctNumber: number,
+        createdBy: { fullName: string, createdAt: string, id: string },
+        incorrectsNumber: number,
+        packageName: string,
+        publicForEveryone: boolean,
+        publicForFriends: boolean,
+        subjectId: string,
+        tags: [string],
         words: [
             {
                 front: { example: string, image: string, imageUrl: string, word: string },
@@ -23,10 +35,19 @@ export default function NewSharedPackage(props: {
                 cardId: string,
             },
         ],
-        approved: boolean,
     },
 }) {
+    return (
+        <NewSharedPackageProvider>
+            <NewSharedPackageContent {...props} />
+        </NewSharedPackageProvider>
+    );
+}
+
+function NewSharedPackageContent(props) {
     const { user, db } = useContext(FirebaseContext);
+    const [savingModalOpen, setSavingModalOpen] = useState(false);
+    const context = useContext(NewSharedPackageContext);
 
     return (
         <div className="new-shared-package">
@@ -36,9 +57,19 @@ export default function NewSharedPackage(props: {
             />
             <div className="content">
                 <h3 className="name">{props.user.fullName}</h3>
+                <div className="tags">
+                    <FormTags
+                        name="tags"
+                        tags={props.package.tags.map(tag => {
+                            return { id: tag, text: tag };
+                        })}
+                        handleChange={() => {}}
+                        readOnly
+                    />
+                </div>
                 <div className="package-title">
                     <Octicon className="package" icon={Package} />
-                    <h2>{props.package.title}</h2>
+                    <h2>{props.package.packageName}</h2>
                 </div>
                 <ul className="words">
                     {props.package.words.map((word, index) => {
@@ -134,11 +165,91 @@ export default function NewSharedPackage(props: {
                     })}
                 </ul>
                 <div className="buttons">
-                    <button type="button" className="btn btn-outline-success">
+                    <button type="button" className="btn btn-outline-success" onClick={() => setSavingModalOpen(true)}>
                         Copy
                     </button>
                 </div>
             </div>
+            <Modal
+                isOpen={savingModalOpen}
+                handleClickOutside={() => {
+                    console.log('outside cLick');
+                    setSavingModalOpen(false);
+                }}
+                className="one-line-modal"
+            >
+                <div className="modal-title">Save to me into subject:</div>
+                <Form
+                    initialValues={{
+                        subjectName: null,
+                        packageName: props.package.packageName,
+                    }}
+                    onSubmit={values => {
+                        context.saveToUser(values, props.package);
+                        setSavingModalOpen(false);
+                    }}
+                >
+                    {(
+                        { handleChange, handleBlur, values, setFieldValue, setFieldTouched, errors, touched },
+                        FormRow
+                    ) => {
+                        return (
+                            <div className="modal-form">
+                                <div className="form-group select-input">
+                                    <SelectInput
+                                        label="Select/Add target subject:"
+                                        value={values.subjectNameSelect}
+                                        name="subjectName"
+                                        onChange={value => {
+                                            if (value.label) {
+                                                handleChange({
+                                                    target: {
+                                                        name: 'subjectName',
+                                                        value:
+                                                            value.value === value.label
+                                                                ? { id: null, value: value.value }
+                                                                : { id: value.value, value: value.label },
+                                                    },
+                                                });
+                                            }
+                                        }}
+                                        options={
+                                            context.subjects &&
+                                            context.subjects.map(subject => {
+                                                return { value: subject.id, label: subject.title };
+                                            })
+                                        }
+                                        placeholder="Select/Add target subject"
+                                    />
+                                </div>
+                                <div className="form-group select-input">
+                                    <label className="form-check-label" htmlFor="packageName">
+                                        Copy package as:
+                                    </label>
+                                    <input
+                                        id="packageName"
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="Package name"
+                                        name="packageName"
+                                        value={values.packageName}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                </div>
+                                <div className="modal-buttons">
+                                    <button type="submit" className="btn btn-primary">
+                                        Submit
+                                    </button>
+                                    <button type="button" className="btn btn-secondary" onClick={props.closeModal}>
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        );
+                    }}
+                </Form>
+            </Modal>
         </div>
     );
 

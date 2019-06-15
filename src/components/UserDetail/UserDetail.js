@@ -31,7 +31,7 @@ function UserDetail(props: { match: RouterMatch }) {
         );
     }
     return (
-        <CustomUserDetailProvider userId={props.match.params.id}>
+        <CustomUserDetailProvider loadSize={2} userId={props.match.params.id}>
             <InfoTabs className="custom-user-details" component={CustomUserDashboard} {...props}>
                 <CustomUserDetailsInfo />
             </InfoTabs>

@@ -1,7 +1,8 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Form from '../shared/Form/Form';
 import { FirebaseContext } from '../Firebase/FirebaseProvider';
 import { Redirect, withRouter } from 'react-router-dom';
+import FormTags from '../shared/FormTags/FormTags';
 
 export default withRouter(function SignUp(props: { history: any }) {
     const fireContext = useContext(FirebaseContext);
@@ -17,6 +18,7 @@ export default withRouter(function SignUp(props: { history: any }) {
                 password1: '',
                 password2: '',
                 birthDate: '',
+                tags: [],
             }}
         >
             {({ handleChange, handleBlur, values, setFieldValue, setFieldTouched, errors, touched }, FormRow) => {
@@ -37,6 +39,7 @@ export default withRouter(function SignUp(props: { history: any }) {
                                     placeholder="First Name"
                                     className="form-control"
                                     autoFocus
+                                    required
                                 />
                             </div>
                         </div>
@@ -54,6 +57,7 @@ export default withRouter(function SignUp(props: { history: any }) {
                                     placeholder="Last Name"
                                     className="form-control"
                                     autoFocus
+                                    required
                                 />
                             </div>
                         </div>
@@ -70,6 +74,7 @@ export default withRouter(function SignUp(props: { history: any }) {
                                     onBlur={handleBlur}
                                     placeholder="Email"
                                     className="form-control"
+                                    required
                                 />
                             </div>
                         </div>
@@ -86,6 +91,7 @@ export default withRouter(function SignUp(props: { history: any }) {
                                     onBlur={handleBlur}
                                     placeholder="Password"
                                     className="form-control"
+                                    required
                                 />
                             </div>
                         </div>
@@ -102,6 +108,7 @@ export default withRouter(function SignUp(props: { history: any }) {
                                     onBlur={handleBlur}
                                     placeholder="Password"
                                     className="form-control"
+                                    required
                                 />
                             </div>
                         </div>
@@ -117,7 +124,16 @@ export default withRouter(function SignUp(props: { history: any }) {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     className="form-control"
+                                    required
                                 />
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="birthDate" className="col-sm-3 control-label">
+                                Your tags
+                            </label>
+                            <div className="col-sm-9">
+                                <FormTags name="tags" tags={values.tags} handleChange={handleChange} />
                             </div>
                         </div>
                         <div className="form-group">

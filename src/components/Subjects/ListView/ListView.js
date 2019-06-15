@@ -3,6 +3,7 @@ import Modal from '../../shared/Modal/Modal';
 import { SubjectsContext } from '../SubjectsProvider/SubjectsProvider';
 import { CardListContext } from '../CardsList/CardListProvider/CardListProvider';
 import Form from '../../shared/Form/Form';
+import FormTags from '../../shared/FormTags/FormTags';
 import './ListView.css';
 
 export default function ListView(props: {
@@ -99,8 +100,8 @@ function ListSubject(props: {
                 <Form
                     initialValues={{
                         packageName: '',
-                        publicForFriends: false,
                         publicForEveryone: false,
+                        tags: [],
                     }}
                     onSubmit={values => {
                         context.createNewPackageForSubject(props.subject.id, values);
@@ -125,20 +126,6 @@ function ListSubject(props: {
                                         onBlur={handleBlur}
                                     />
                                 </div>
-                                <div className="checkbox">
-                                    <input
-                                        className="form-check-input"
-                                        type="checkbox"
-                                        value={values.publicForFriends}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        id="publicForFriends"
-                                        name="publicForFriends"
-                                    />
-                                    <label className="form-check-label" htmlFor="publicForFriends">
-                                        Public for firends
-                                    </label>
-                                </div>
 
                                 <div className="checkbox">
                                     <input
@@ -153,6 +140,9 @@ function ListSubject(props: {
                                     <label className="form-check-label" htmlFor="publicForEveryone">
                                         Public for everyone
                                     </label>
+                                </div>
+                                <div className="form-group form-tags">
+                                    <FormTags name="tags" tags={values.tags} handleChange={handleChange} />
                                 </div>
                                 <div className="modal-buttons">
                                     <button type="submit" className="btn btn-primary">
@@ -224,7 +214,7 @@ function ListSubject(props: {
 function ListPacks(props: {
     context: any,
     onClick: string => {},
-    pack: { id: string, packageName: string, publicForFriends: boolean, publicForEveryone: boolean },
+    pack: { id: string, packageName: string, publicForFriends: boolean, publicForEveryone: boolean, tags: [string] },
     subjectId: string,
 }) {
     const { context, pack } = props;
@@ -251,7 +241,12 @@ function ListPacks(props: {
                 <button className="btn btn-dark" onClick={() => setState({ ...state, editPackageModalOpen: true })}>
                     <i className="far fa-edit" />
                 </button>
-                <button className="btn btn-dark">
+                <button
+                    className="btn btn-dark"
+                    onClick={() => {
+                        context.deletePackageById(pack.id);
+                    }}
+                >
                     <i className="far fa-trash-alt" />
                 </button>
                 <button className="btn btn-dark">
@@ -263,8 +258,10 @@ function ListPacks(props: {
                 <Form
                     initialValues={{
                         packageName: pack.packageName,
-                        publicForFriends: pack.publicForFriends,
                         publicForEveryone: pack.publicForEveryone,
+                        tags: pack.tags.map(tag => {
+                            return { id: tag, text: tag };
+                        }),
                     }}
                     onSubmit={values => {
                         context.updatePackagesAtSubject(props.subjectId, pack.id, values);
@@ -292,21 +289,6 @@ function ListPacks(props: {
                                     <input
                                         className="form-check-input"
                                         type="checkbox"
-                                        value={values.publicForFriends}
-                                        defaultChecked={values.publicForFriends}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        id="publicForFriends"
-                                        name="publicForFriends"
-                                    />
-                                    <label className="form-check-label" htmlFor="publicForFriends">
-                                        Public for friends
-                                    </label>
-                                </div>
-                                <div className="checkbox">
-                                    <input
-                                        className="form-check-input"
-                                        type="checkbox"
                                         value={values.publicForEveryone}
                                         defaultChecked={values.publicForEveryone}
                                         onChange={handleChange}
@@ -317,6 +299,9 @@ function ListPacks(props: {
                                     <label className="form-check-label" htmlFor="publicForEveryone">
                                         Public for everyone
                                     </label>
+                                </div>
+                                <div className="form-group form-tags">
+                                    <FormTags name="tags" tags={values.tags} handleChange={handleChange} />
                                 </div>
                                 <div className="modal-buttons">
                                     <button type="submit" className="btn btn-primary">

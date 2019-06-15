@@ -7,9 +7,8 @@ export default function DashboardProvider(props: { loadSize: number }) {
     const [state, setState] = useState({
         dashboardFlow: [],
         lastVisible: null,
-        hasMore: true,
+        hasMore: false,
     });
-    const [loading, setLoading] = useState(true);
     const [friends, setFriends] = useState([]);
     const fireContext = useContext(FirebaseContext);
     useEffect(() => {
@@ -19,7 +18,7 @@ export default function DashboardProvider(props: { loadSize: number }) {
     }, []);
 
     return (
-        <DashboardContext.Provider value={{ ...state, loading, getFirstPackages, getNextPackages }}>
+        <DashboardContext.Provider value={{ ...state, getFirstPackages, getNextPackages }}>
             {props.children}
         </DashboardContext.Provider>
     );
@@ -30,25 +29,28 @@ export default function DashboardProvider(props: { loadSize: number }) {
                 .doc(fireContext.user.id)
                 .get();
             if (userData.data().friends) {
-                setFriends([...userData.data().friends, fireContext.user.id]);
+                setFriends([...userData.data().friends]);
             } else {
-                setFriends([fireContext.user.id]);
+                setFriends([]);
             }
             resolve();
         });
     }
 
     async function getFirstPackages() {
-        setLoading(true);
         const firstRef = fireContext.db
             .collection('packages')
-            .orderBy('subjectId')
+            .orderBy('createdBy.createdAt', 'desc')
             .limit(props.loadSize);
 
         const first = await firstRef.get();
         const lastVisible = first.docs[first.docs.length - 1];
-        const dashboardFlow = first.docs.filter(async doc => friends.includes(doc.data().createdBy.id));
 
+        const hasMore = first.docs.length === props.loadSize;
+
+        const dashboardFlow = first.docs.filter(doc => {
+            return friends.includes(doc.data().createdBy.id) || doc.data().publicForEveryone;
+        });
         const savableDashboardFlow = await Promise.all(
             dashboardFlow.map(async doc => {
                 const cards = await fireContext.getCardsByPackageId(doc.id);
@@ -62,30 +64,31 @@ export default function DashboardProvider(props: { loadSize: number }) {
                         };
                     })
                 );
-                return { package: { title: doc.data().packageName, words }, user: doc.data().createdBy };
+                return { package: { ...doc.data(), words }, user: doc.data().createdBy };
             })
         );
         setState({
             ...state,
             dashboardFlow: savableDashboardFlow,
             lastVisible,
-            hasMore: savableDashboardFlow.length === props.loadSize,
+            hasMore: hasMore,
         });
-        setLoading(false);
     }
 
     async function getNextPackages() {
-        setLoading(true);
         const nextRef = fireContext.db
             .collection('packages')
-            .orderBy('subjectId')
+            .orderBy('createdBy.createdAt', 'desc')
             .startAfter(state.lastVisible)
             .limit(props.loadSize);
 
         const next = await nextRef.get();
         const lastVisible = next.docs[next.docs.length - 1];
+
+        const hasMore = next.docs.length === props.loadSize;
+
         const dashboardFlowNext = next.docs.filter(doc => {
-            return friends.includes(doc.data().createdBy.id);
+            return friends.includes(doc.data().createdBy.id) || doc.data().publicForEveryone;
         });
 
         const savableDashboardFlow = await Promise.all(
@@ -101,11 +104,11 @@ export default function DashboardProvider(props: { loadSize: number }) {
                         };
                     })
                 );
-                return { package: { title: doc.data().packageName, words }, user: doc.data().createdBy };
+                return { package: { ...doc.data(), words }, user: doc.data().createdBy };
             })
         );
         const dashboardFlow = [...state.dashboardFlow, ...savableDashboardFlow];
-        setState({ ...state, dashboardFlow, lastVisible, hasMore: savableDashboardFlow.length === props.loadSize });
-        setLoading(false);
+
+        setState({ ...state, dashboardFlow, lastVisible, hasMore: hasMore });
     }
 }

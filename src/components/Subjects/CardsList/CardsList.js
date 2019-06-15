@@ -14,13 +14,7 @@ export default function CardsList() {
     });
     const subjectContext = useContext(SubjectsContext);
     const cardListContext = useContext(CardListContext);
-    const {
-        cardsNumber,
-        correctsNumber,
-        incorrectsNumber,
-        publicForEveryone,
-        publicForFriends,
-    } = cardListContext.packageInformations;
+    const { cardsNumber, correctsNumber, incorrectsNumber, publicForEveryone } = cardListContext.packageInformations;
     return (
         <div className="cards-list">
             {subjectContext.selectedPackageId !== '' && (
@@ -28,11 +22,6 @@ export default function CardsList() {
                     <div className="package-ingormations">
                         {publicForEveryone && (
                             <p className="public-for-everyone">
-                                <i className="fab fa-angellist" />
-                            </p>
-                        )}
-                        {publicForFriends && (
-                            <p className="public-for-friends">
                                 <i className="fab fa-creative-commons-share" />
                             </p>
                         )}

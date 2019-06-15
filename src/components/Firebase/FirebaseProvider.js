@@ -10,9 +10,11 @@ export default class FirebaseProvider extends Component {
         user: null,
         requestNumber: 0,
         requesters: [],
+        suggestions: [],
     };
 
     componentDidMount() {
+        this.getSuggestions();
         this.authUser();
     }
     render() {
@@ -36,6 +38,13 @@ export default class FirebaseProvider extends Component {
                     getDateTime: this.getDateTime,
                     getAllFriendsId: this.getAllFriendsId,
                     refreshFriends: this.refreshFriends,
+                    createNewTag: this.createNewTag,
+                    getSuggestions: this.getSuggestions,
+                    copyNewCardForPackage: this.copyNewCardForPackage,
+                    copyPackage: this.copyPackage,
+                    createNewSubject: this.createNewSubject,
+                    deleteCardById: this.deleteCardById,
+                    deletePackageById: this.deletePackageById,
                 }}
             >
                 {this.props.children}
@@ -74,6 +83,7 @@ export default class FirebaseProvider extends Component {
             subjectsNumber: number,
             packagesNumber: number,
             cardsNumber: number,
+            tags?: [string],
         }
     ) => {
         db.doc(`users/${uid}`)
@@ -89,6 +99,7 @@ export default class FirebaseProvider extends Component {
                 packagesNumber: 0,
                 role: 'user',
                 subjectsNumber: 0,
+                tags: values.tags || [],
             })
             .then(() => {
                 console.log('User Saved');
@@ -234,5 +245,126 @@ export default class FirebaseProvider extends Component {
             ':' +
             today.getSeconds()
         );
+    };
+
+    createNewTag = (tag: { id: string, text: string }) => {
+        if (!this.state.suggestions.find(suggest => suggest.id === tag.id)) {
+            db.collection(`tags`)
+                .doc(tag.id)
+                .set({ ...tag })
+                .then(() => {
+                    console.log('Tag Created');
+                    const suggestions = this.state.suggestions;
+                    suggestions.push({ ...tag });
+                    this.setState({ suggestions });
+                })
+                .catch(error => {
+                    console.log('Got error: ', error);
+                });
+        }
+    };
+
+    getSuggestions = () => {
+        db.collection('tags')
+            .get()
+            .then(querySnapshot => {
+                const suggestions = [];
+                querySnapshot.forEach(doc => {
+                    suggestions.push({ ...doc.data() });
+                });
+                this.setState({ suggestions });
+            });
+    };
+    /* ----------Copying---------- */
+
+    copyNewCardForPackage = (
+        packageId,
+        front: { imageUrl: string, word: string, example: string },
+        back: { imageUrl: string, word: string, example: string },
+        correct: string,
+        isLast: boolean
+    ) => {
+        const batch = db.batch();
+        const cardsRef = db.collection('cards');
+        const userRef = db.collection('users').doc(this.state.user.id);
+        const packageRef = db.collection('packages').doc(packageId);
+
+        cardsRef
+            .add({
+                front,
+                back,
+                packageId,
+                knowledge: 1,
+                correct: correct || null,
+                createdAt: this.getDateTime(),
+            })
+            .then(docRef => {
+                console.log('Document written with ID: ', docRef.id);
+                if (isLast) {
+                    alert('copy done');
+                }
+            })
+            .catch(error => {
+                console.error('Error adding document: ', error);
+            });
+        batch.update(packageRef, { cardsNumber: increment });
+        batch.update(userRef, { cardsNumber: increment });
+        batch.commit();
+    };
+
+    copyPackage = (values: {
+        packageName: string,
+        publicForEveryone: boolean,
+        tags: [string],
+        cardsNumber: number,
+        correctsNumber: number,
+        incorrectsNumber: number,
+        subjectId: string,
+        createdBy: {
+            id: string,
+            fullName: string,
+            createdAt: string,
+        },
+    }) => {
+        const batch = db.batch();
+        const packagesRef = db.collection('packages').doc();
+        const userRef = db.collection('users').doc(this.state.user.id);
+
+        batch.set(packagesRef, {
+            ...values,
+        });
+        batch.update(userRef, { packagesNumber: increment });
+        batch.commit();
+        return packagesRef.id;
+    };
+
+    createNewSubject = (subjectName: string) => {
+        const batch = db.batch();
+        const subjectsRef = db.collection('subjects').doc();
+        const userRef = db.collection('users').doc(this.state.user.id);
+        batch.set(subjectsRef, {
+            subjectName,
+            userId: this.state.user.id,
+            createdAt: this.getDateTime(),
+        });
+        batch.update(userRef, { subjectsNumber: increment });
+        batch.commit();
+        return subjectsRef;
+    };
+
+    /* ------------------------------ */
+
+    /* --------------delete------------ */
+    deleteCardById = cardId => {
+        return db
+            .collection('cards')
+            .doc(cardId)
+            .delete();
+    };
+    deletePackageById = packId => {
+        return db
+            .collection('packages')
+            .doc(packId)
+            .delete();
     };
 }
