@@ -69,11 +69,19 @@ function ListSubject(props: {
                     <button className="btn btn-dark" onClick={() => setState({ ...state, editSubjectModalOpen: true })}>
                         <i className="far fa-edit" />
                     </button>
-                    <button className="btn btn-dark" onClick={() => setState({ ...state, editSubjectModalOpen: true })}>
+                    <button className="btn btn-dark" onClick={() => context.deleteSubjectById(props.subject.id)}>
                         <i className="far fa-trash-alt" />
                     </button>
-                    <button className="btn btn-dark">
+                    <button className="btn btn-dark upload-button">
                         <i className="fas fa-file-upload" />
+                        <input
+                            type="file"
+                            accept=".xlsx, .xls, .csv"
+                            name="fileuploader"
+                            onChange={e => context.fileChangedHandler(e, props.subject.id)}
+                            className="form-control"
+                            placeholder="Upload a file"
+                        />
                     </button>
                 </div>
             </div>
@@ -244,12 +252,17 @@ function ListPacks(props: {
                 <button
                     className="btn btn-dark"
                     onClick={() => {
-                        context.deletePackageById(pack.id);
+                        context.deletePackageById(pack.id, props.subjectId);
                     }}
                 >
                     <i className="far fa-trash-alt" />
                 </button>
-                <button className="btn btn-dark">
+                <button
+                    className="btn btn-dark"
+                    onClick={() => {
+                        context.downloadPackage(pack.id);
+                    }}
+                >
                     <i className="fas fa-file-download" />
                 </button>
             </div>

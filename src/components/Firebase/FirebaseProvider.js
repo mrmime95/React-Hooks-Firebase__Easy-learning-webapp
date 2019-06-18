@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { auth, db, increment, decrement, storage } from './setup';
+import { auth, db, increment, decrement, storage, googleProvider } from './setup';
 export const FirebaseContext = React.createContext();
 export const FirebaseConsumer = FirebaseContext.Consumer;
 
@@ -28,6 +28,7 @@ export default class FirebaseProvider extends Component {
                     decrement,
                     doCreateUserWithEmailAndPassword: this.doCreateUserWithEmailAndPassword,
                     doSignInWithEmailAndPassword: this.doSignInWithEmailAndPassword,
+                    doCreateUserWithGoogle: this.doCreateUserWithGoogle,
                     doSignOut: this.doSignOut,
                     authUser: this.authUser,
                     createNewUser: this.createNewUser,
@@ -45,6 +46,7 @@ export default class FirebaseProvider extends Component {
                     createNewSubject: this.createNewSubject,
                     deleteCardById: this.deleteCardById,
                     deletePackageById: this.deletePackageById,
+                    deleteSubjectById: this.deleteSubjectById,
                 }}
             >
                 {this.props.children}
@@ -55,6 +57,7 @@ export default class FirebaseProvider extends Component {
         auth.onAuthStateChanged(user => {
             if (user && !user.isAnonymous) {
                 const { uid } = user;
+                console.log(user);
                 this.getCurrentUser(uid);
             } else {
                 this.setState({ authReady: true, isLoggedIn: false, user: null });
@@ -69,6 +72,11 @@ export default class FirebaseProvider extends Component {
     doSignInWithEmailAndPassword = (email, password) => {
         return auth.signInWithEmailAndPassword(email, password);
     };
+
+    doCreateUserWithGoogle = () => {
+        return auth.signInWithPopup(googleProvider);
+    };
+
     doSignOut = () => {
         return auth.signOut();
     };
@@ -99,7 +107,7 @@ export default class FirebaseProvider extends Component {
                 packagesNumber: 0,
                 role: 'user',
                 subjectsNumber: 0,
-                tags: values.tags || [],
+                tags: values.tags ? values.tags.map(tag => tag.id) : [],
             })
             .then(() => {
                 console.log('User Saved');
@@ -299,7 +307,6 @@ export default class FirebaseProvider extends Component {
                 createdAt: this.getDateTime(),
             })
             .then(docRef => {
-                console.log('Document written with ID: ', docRef.id);
                 if (isLast) {
                     alert('copy done');
                 }
@@ -365,6 +372,12 @@ export default class FirebaseProvider extends Component {
         return db
             .collection('packages')
             .doc(packId)
+            .delete();
+    };
+    deleteSubjectById = subjectId => {
+        return db
+            .collection('subjects')
+            .doc(subjectId)
             .delete();
     };
 }

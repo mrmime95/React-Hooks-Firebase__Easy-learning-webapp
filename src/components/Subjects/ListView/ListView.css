@@ -19,6 +19,17 @@ button:focus {
         position: absolute;
         right: 0;
         top: 0; }
+        .list .list-subject .subject-element:hover .subject-options .upload-button {
+          position: relative; }
+          .list .list-subject .subject-element:hover .subject-options .upload-button input[type='file'] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            padding: 0;
+            opacity: 0;
+            height: auto; }
     .list .list-subject .subject-element .text {
       width: 100%; }
       .list .list-subject .subject-element .text i {
