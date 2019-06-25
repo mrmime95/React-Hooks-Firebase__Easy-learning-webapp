@@ -5,7 +5,13 @@ export default function Checkbox({ className, label, name, handleChange, handleB
     return (
         <div className={`checkbox-field ${className || ''}`}>
             <label className="checkbox">
-                <input type="checkbox" name={name} onChange={handleChange} onBlur={handleBlur} checked={checked} />
+                <input
+                    type="checkbox"
+                    name={name}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    defaultChecked={checked}
+                />
                 <div className={`box ${checked ? 'checked' : ''}`}>
                     <Octicon icon={Check} className="icon" />
                 </div>

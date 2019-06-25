@@ -69,5 +69,19 @@
                 }
             }
         }
+
+        .package-tags {
+            position: absolute;
+            top: 0;
+            right: 60px;
+            transform: translateY(-50%);
+            border: 1px solid black;
+            background-color: white;
+            z-index: 1;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            overflow-y: scroll;
+        }
     }
 }

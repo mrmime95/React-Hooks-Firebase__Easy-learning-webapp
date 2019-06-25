@@ -1,0 +1,118 @@
+li {
+  list-style-type: none; }
+
+button:focus {
+  outline: none; }
+
+.custom-user-details,
+.current-user-details {
+  width: 305px; }
+  .custom-user-details .custom-user-details-info .name .text,
+  .custom-user-details .current-user-details-info .name .text,
+  .current-user-details .custom-user-details-info .name .text,
+  .current-user-details .current-user-details-info .name .text {
+    margin: 0;
+    font-size: 14px;
+    font-weight: normal;
+    text-transform: uppercase;
+    padding-bottom: 5px; }
+  .custom-user-details .custom-user-details-info .name .role,
+  .custom-user-details .current-user-details-info .name .role,
+  .current-user-details .custom-user-details-info .name .role,
+  .current-user-details .current-user-details-info .name .role {
+    text-transform: uppercase;
+    font-family: Lato;
+    font-size: 11px;
+    font-weight: bold; }
+  .custom-user-details .custom-user-details-info .name .avatar-circle,
+  .custom-user-details .current-user-details-info .name .avatar-circle,
+  .current-user-details .custom-user-details-info .name .avatar-circle,
+  .current-user-details .current-user-details-info .name .avatar-circle {
+    width: 150px;
+    margin: 15px;
+    height: 150px; }
+    .custom-user-details .custom-user-details-info .name .avatar-circle .monogram,
+    .custom-user-details .current-user-details-info .name .avatar-circle .monogram,
+    .current-user-details .custom-user-details-info .name .avatar-circle .monogram,
+    .current-user-details .current-user-details-info .name .avatar-circle .monogram {
+      font-size: 64px; }
+  .custom-user-details .custom-user-details-info .name .connections,
+  .custom-user-details .current-user-details-info .name .connections,
+  .current-user-details .custom-user-details-info .name .connections,
+  .current-user-details .current-user-details-info .name .connections {
+    margin-top: 10px; }
+    .custom-user-details .custom-user-details-info .name .connections .label,
+    .custom-user-details .current-user-details-info .name .connections .label,
+    .current-user-details .custom-user-details-info .name .connections .label,
+    .current-user-details .current-user-details-info .name .connections .label {
+      font-size: 12px;
+      display: block;
+      margin: 0;
+      font-weight: 400;
+      color: #333;
+      text-transform: uppercase; }
+    .custom-user-details .custom-user-details-info .name .connections .values .value,
+    .custom-user-details .current-user-details-info .name .connections .values .value,
+    .current-user-details .custom-user-details-info .name .connections .values .value,
+    .current-user-details .current-user-details-info .name .connections .values .value {
+      font-size: 16px;
+      color: #00a0d0;
+      margin: 0;
+      text-align: right; }
+  .custom-user-details .custom-user-details-info .description .element,
+  .custom-user-details .current-user-details-info .description .element,
+  .current-user-details .custom-user-details-info .description .element,
+  .current-user-details .current-user-details-info .description .element {
+    display: flex;
+    align-items: center; }
+    .custom-user-details .custom-user-details-info .description .element .icon,
+    .custom-user-details .current-user-details-info .description .element .icon,
+    .current-user-details .custom-user-details-info .description .element .icon,
+    .current-user-details .current-user-details-info .description .element .icon {
+      width: 20px;
+      height: 20px;
+      margin: 5px 10px 5px 0; }
+  .custom-user-details .custom-user-details-info .description .quote,
+  .custom-user-details .current-user-details-info .description .quote,
+  .current-user-details .custom-user-details-info .description .quote,
+  .current-user-details .current-user-details-info .description .quote {
+    text-indent: 47px;
+    font-size: 14px;
+    position: relative;
+    display: block;
+    padding: 1px 0 7px;
+    margin: 20px 0 0 0;
+    font-style: italic; }
+    .custom-user-details .custom-user-details-info .description .quote:before,
+    .custom-user-details .current-user-details-info .description .quote:before,
+    .current-user-details .custom-user-details-info .description .quote:before,
+    .current-user-details .current-user-details-info .description .quote:before {
+      content: '\201C';
+      position: absolute;
+      top: -5px;
+      left: -55px;
+      font-size: 87px;
+      line-height: 1.08;
+      font-family: 'PT Sans', sans-serif;
+      color: #00a0d0;
+      font-weight: 500; }
+  .custom-user-details .custom-user-details-info .row-label .value,
+  .custom-user-details .current-user-details-info .row-label .value,
+  .current-user-details .custom-user-details-info .row-label .value,
+  .current-user-details .current-user-details-info .row-label .value {
+    text-align: right;
+    font-size: 11px; }
+
+.tabs .filters {
+  display: flex;
+  flex-direction: column;
+  widows: 100%; }
+  .tabs .filters .filter-line {
+    display: flex;
+    flex-direction: row; }
+    .tabs .filters .filter-line label,
+    .tabs .filters .filter-line input {
+      flex: 1; }
+      .tabs .filters .filter-line label.for-checkbox,
+      .tabs .filters .filter-line input.for-checkbox {
+        flex: 4; }

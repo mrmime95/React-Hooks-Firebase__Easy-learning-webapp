@@ -73,9 +73,9 @@ function NewSharedPackageProvider(props: { children: React$Node }) {
             packageName: values.packageName,
             publicForEveryone: pack.publicForEveryone,
             tags: pack.tags,
-            cardsNumber: pack.tags,
-            correctsNumber: pack.tags,
-            incorrectsNumber: pack.tags,
+            cardsNumber: pack.cardsNumber,
+            correctsNumber: 0,
+            incorrectsNumber: 0,
             subjectId,
             createdBy: {
                 id: fireContext.user.id,

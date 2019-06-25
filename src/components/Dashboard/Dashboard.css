@@ -1,2 +1,16 @@
 .dashboard .new-shared-package {
   width: 60%; }
+
+.dashboard .filters {
+  display: flex;
+  flex-direction: column;
+  widows: 100%; }
+  .dashboard .filters .filter-line {
+    display: flex;
+    flex-direction: row; }
+    .dashboard .filters .filter-line label,
+    .dashboard .filters .filter-line input {
+      flex: 1; }
+      .dashboard .filters .filter-line label.for-checkbox,
+      .dashboard .filters .filter-line input.for-checkbox {
+        flex: 4; }

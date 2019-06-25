@@ -4,7 +4,7 @@ import Select from 'react-select';
 export default function SimpleSelect(props: {
     value: [{ value: string, label: string }],
     name: string,
-    onChange: () => void,
+    handleChange: () => void,
     onBlur?: () => void,
     options: any,
     className?: string,
@@ -13,7 +13,7 @@ export default function SimpleSelect(props: {
     label: string,
 }) {
     return (
-        <div>
+        <div className={props.className && props.className}>
             {props.label && (
                 <label htmlFor={`${props.name}`} className="group-label">
                     {props.label}
@@ -21,28 +21,36 @@ export default function SimpleSelect(props: {
             )}
             {props.options ? (
                 <Select
+                    defaultValue={props.value}
                     id={props.name}
                     options={props.options}
-                    onChange={props.onChange}
+                    onChange={data => {
+                        props.handleChange({
+                            target: { name: props.name, value: data },
+                        });
+                    }}
                     onBlur={props.onBlur && props.onBlur}
-                    defaultValue={props.value}
-                    className={props.className && props.className}
                     placeholder={props.placeholder && props.placeholder}
                     isDisabled={props.isDisabled}
                     getValue={value => {
                         console.log(value);
                     }}
+                    type="text"
                 />
             ) : (
                 <Select
                     id={props.name}
                     isLoading
-                    onChange={props.onChange}
+                    onChange={data => {
+                        props.handleChange({
+                            target: { name: props.name, value: data.value },
+                        });
+                    }}
                     onBlur={props.onBlur && props.onBlur}
                     defaultValue={props.value}
-                    className={props.className && props.className}
                     placeholder={props.placeholder && props.placeholder}
                     isDisabled={props.isDisabled}
+                    type="text"
                 />
             )}
         </div>

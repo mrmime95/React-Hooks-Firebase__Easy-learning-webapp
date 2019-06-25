@@ -45,10 +45,10 @@ export default function NewSharedPackage(props: {
 }
 
 function NewSharedPackageContent(props) {
-    const { user, db } = useContext(FirebaseContext);
+    const { user, db, increment, decrement } = useContext(FirebaseContext);
     const [savingModalOpen, setSavingModalOpen] = useState(false);
     const context = useContext(NewSharedPackageContext);
-
+    console.log(props);
     return (
         <div className="new-shared-package">
             <AvatarCircle
@@ -67,6 +67,21 @@ function NewSharedPackageContent(props) {
                         readOnly
                     />
                 </div>
+                <div className="package-ingormations">
+                    {props.package.publicForEveryone && (
+                        <p className="public-for-everyone">
+                            <i className="fab fa-creative-commons-share" />
+                        </p>
+                    )}
+                    <p className="cards-number">cards number: {props.package.cardsNumber}</p>
+                    <p className="correction">
+                        correct: {+((props.package.correctsNumber * 100) / props.package.cardsNumber || 0).toFixed(2)}%
+                    </p>
+                    <p className="incorrection">
+                        incorrect:{' '}
+                        {+((props.package.incorrectsNumber * 100) / props.package.cardsNumber || 0).toFixed(2)}%
+                    </p>
+                </div>
                 <div className="package-title">
                     <Octicon className="package" icon={Package} />
                     <h2>{props.package.packageName}</h2>
@@ -74,14 +89,16 @@ function NewSharedPackageContent(props) {
                 <ul className="words">
                     {props.package.words.map((word, index) => {
                         const submit: (data: SearchData<Filters>) => void = debounce(data => {
+                            console.log(props.package);
                             if (word.cardId) {
-                                changeCorrectOfCard(word.cardId, data.correct);
+                                changeCorrectOfCard(word.cardId, data.correct, props.package.id);
                             }
                         }, 300);
                         return (
                             <li key={`li${word.cardId}`} className="line" data-for={`li${word.cardId}`} data-tip>
                                 <p className="word">{`${word.front.word}-${word.back.word}`}</p>
-                                {user.role === 'admin' || user.role === 'approver' ? (
+                                {user.role === 'admin' ||
+                                (user.role === 'approver' && compareArrays(user.tags, props.package.tags)) ? (
                                     <Form
                                         initialValues={{
                                             correct: word.correct ? word.correct : 'unknow',
@@ -253,13 +270,45 @@ function NewSharedPackageContent(props) {
         </div>
     );
 
-    async function changeCorrectOfCard(cardId: string, value: number) {
+    async function changeCorrectOfCard(cardId: string, value: number, packageId: string) {
         const currentCardRef = db.doc(`cards/${cardId}`);
         const batch = db.batch();
-        console.log(value);
         batch.update(currentCardRef, {
             correct: value,
         });
+
+        console.log(packageId);
+
+        const currentPackageRef = db.doc(`packages/${packageId}`);
+        const currentCard = await currentCardRef.get();
+        if (currentCard.data().correct === 'correct') {
+            batch.update(currentPackageRef, {
+                correctsNumber: decrement,
+            });
+        }
+        if (currentCard.data().correct === 'incorrect') {
+            batch.update(currentPackageRef, {
+                incorrectsNumber: decrement,
+            });
+        }
+        if (value === 'correct') {
+            batch.update(currentPackageRef, {
+                correctsNumber: increment,
+            });
+        }
+        if (value === 'incorrect') {
+            batch.update(currentPackageRef, {
+                incorrectsNumber: increment,
+            });
+        }
+
         batch.commit();
+    }
+
+    function compareArrays(usersTags: [string], packagesTags: [string]) {
+        if (usersTags.length && packagesTags.length) {
+            return usersTags.filter(x => packagesTags.includes(x)).length !== 0;
+        }
+        return true;
     }
 }

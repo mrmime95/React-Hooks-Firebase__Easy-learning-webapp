@@ -9,6 +9,29 @@
         width: calc(100% - 60px);
         box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
         padding: 15px;
+        position: relative;
+        .package-ingormations {
+            position: absolute;
+            top: 0;
+            right: 10px;
+            transform: translateY(-50%);
+            border: 1px solid black;
+            background-color: white;
+            display: flex;
+            z-index: 1;
+            p {
+                margin: 0;
+                padding: 5px;
+                &.cards-number {
+                }
+                &.correction {
+                    color: green;
+                }
+                &.incorrection {
+                    color: red;
+                }
+            }
+        }
         .name {
             font-size: 20px;
             font-weight: 100;

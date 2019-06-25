@@ -3,7 +3,7 @@ import './FlipCard.css';
 import Modal from '../Modal/Modal';
 import Form from '../../shared/Form/Form';
 import PicureUploader from '../../shared/PicureUploader/PicureUploader';
-import { CardListContext } from '../../Subjects/CardsList/CardListProvider/CardListProvider';
+import { SubjectsContext } from '../../Subjects/SubjectsProvider/SubjectsProvider';
 import Octicon, { Alert, Check, X } from '@githubprimer/octicons-react';
 import Rater from 'react-rater';
 import 'react-rater/lib/react-rater.css';
@@ -37,7 +37,7 @@ export default function FlipCard(props: {
     interactiveStars: boolean,
 }) {
     const [state, setState] = useState({ editCardModalOpen: false, clicked: false });
-    const context = useContext(CardListContext);
+    const context = useContext(SubjectsContext);
     return (
         <div
             className={`flip-card ${props.workWithHover && 'work-with-hover'} ${props.workWithFocus &&
@@ -139,7 +139,7 @@ function EditCardModal(props: {
         },
     },
 }) {
-    const context = useContext(CardListContext);
+    const context = useContext(SubjectsContext);
     return (
         <Modal isOpen={props.isOpen} handleClickOutside={props.closeModal} className={props.className}>
             <div className="modal-title">Edit card</div>

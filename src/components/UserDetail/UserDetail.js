@@ -17,7 +17,7 @@ import AvatarCircle from '../shared/AvatarCircle/AvatarCircle';
 import InfoTabs from '../shared/InfoTabs/InfoTabs';
 import InfoBlock from '../shared/InfoBlock/InfoBlock';
 
-import './CurrentUserDetailsInfo.css';
+import './UserDetail.css';
 
 function UserDetail(props: { match: RouterMatch }) {
     const fireContext = useContext(FirebaseContext);
@@ -31,7 +31,7 @@ function UserDetail(props: { match: RouterMatch }) {
         );
     }
     return (
-        <CustomUserDetailProvider loadSize={2} userId={props.match.params.id}>
+        <CustomUserDetailProvider loadSize={5} userId={props.match.params.id} orderBy={['createdBy.createdAt', 'desc']}>
             <InfoTabs className="custom-user-details" component={CustomUserDashboard} {...props}>
                 <CustomUserDetailsInfo />
             </InfoTabs>
@@ -40,51 +40,55 @@ function UserDetail(props: { match: RouterMatch }) {
 }
 
 function CurrentUserDetailsInfo() {
-    const fireContext = useContext(FirebaseContext);
+    const context = useContext(CurrentUserDetailContext);
     return (
         <div className="current-user-details-info">
-            <InfoBlock className="name" title={fireContext.user.firstName + ' ' + fireContext.user.lastName}>
-                <AvatarCircle
-                    fullName={fireContext.user.firstName + ' ' + fireContext.user.lastName}
-                    profilePicture={fireContext.user.profilePictureURL}
-                />
-                <div className="connections">
-                    <p className="label">Role</p>
-                    <div className="values">
-                        <p className="value">{fireContext.user.role}</p>
+            {!context.loading ? (
+                <InfoBlock className="name" title={context.user.firstName + ' ' + context.user.lastName}>
+                    <AvatarCircle
+                        fullName={context.user.firstName + ' ' + context.user.lastName}
+                        profilePicture={context.user.profilePicture}
+                    />
+                    <div className="connections">
+                        <p className="label">Role</p>
+                        <div className="values">
+                            <p className="value">{context.user.role}</p>
+                        </div>
                     </div>
-                </div>
-                <div className="connections">
-                    <p className="label">Email</p>
-                    <div className="values">
-                        <p className="value">{fireContext.user.email}</p>
+                    <div className="connections">
+                        <p className="label">Email</p>
+                        <div className="values">
+                            <p className="value">{context.user.email}</p>
+                        </div>
                     </div>
-                </div>
-                <div className="connections">
-                    <p className="label">Friends number</p>
-                    <div className="values">
-                        <p className="value">{fireContext.user.friendCounter}</p>
+                    <div className="connections">
+                        <p className="label">Friends number</p>
+                        <div className="values">
+                            <p className="value">{context.user.friendCounter}</p>
+                        </div>
                     </div>
-                </div>
-                <div className="connections">
-                    <p className="label">Subjects number</p>
-                    <div className="values">
-                        <p className="value">{fireContext.user.subjectsNumber}</p>
+                    <div className="connections">
+                        <p className="label">Subjects number</p>
+                        <div className="values">
+                            <p className="value">{context.user.subjectsNumber}</p>
+                        </div>
                     </div>
-                </div>
-                <div className="connections">
-                    <p className="label">Packages number</p>
-                    <div className="values">
-                        <p className="value">{fireContext.user.packagesNumber}</p>
+                    <div className="connections">
+                        <p className="label">Packages number</p>
+                        <div className="values">
+                            <p className="value">{context.user.packagesNumber}</p>
+                        </div>
                     </div>
-                </div>
-                <div className="connections">
-                    <p className="label">Cards number</p>
-                    <div className="values">
-                        <p className="value">{fireContext.user.cardsNumber}</p>
+                    <div className="connections">
+                        <p className="label">Cards number</p>
+                        <div className="values">
+                            <p className="value">{context.user.cardsNumber}</p>
+                        </div>
                     </div>
-                </div>
-            </InfoBlock>
+                </InfoBlock>
+            ) : (
+                <div>Loading...</div>
+            )}
         </div>
     );
 }
@@ -101,7 +105,7 @@ function CustomUserDetailsInfo() {
                     >
                         <AvatarCircle
                             fullName={context.customUser.firstName + ' ' + context.customUser.lastName}
-                            profilePicture={context.customUser.profilePictureURL}
+                            profilePicture={context.customUser.profilePicture}
                         />
                         <div className="connections">
                             <p className="label">Role</p>

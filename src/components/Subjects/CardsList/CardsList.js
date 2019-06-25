@@ -3,8 +3,8 @@ import FlipCard from '../../shared/FlipCard/FlipCard';
 import Modal from '../../shared/Modal/Modal';
 import Form from '../../shared/Form/Form';
 import { SubjectsContext } from '../SubjectsProvider/SubjectsProvider';
-import { CardListContext } from './CardListProvider/CardListProvider';
 import PicureUploader from '../../shared/PicureUploader/PicureUploader';
+import FormTags from '../../shared/FormTags/FormTags';
 import './CardsList.css';
 
 export default function CardsList() {
@@ -12,12 +12,12 @@ export default function CardsList() {
         newCardModalOpen: false,
         editCardModalOpen: false,
     });
-    const subjectContext = useContext(SubjectsContext);
-    const cardListContext = useContext(CardListContext);
-    const { cardsNumber, correctsNumber, incorrectsNumber, publicForEveryone } = cardListContext.packageInformations;
+    const context = useContext(SubjectsContext);
+    const { cardsNumber, correctsNumber, incorrectsNumber, publicForEveryone, tags } = context.packageInformations;
+    console.log(context.packageInformations);
     return (
         <div className="cards-list">
-            {subjectContext.selectedPackageId !== '' && (
+            {context.selectedPackageId !== '' && (
                 <React.Fragment>
                     <div className="package-ingormations">
                         {publicForEveryone && (
@@ -26,9 +26,25 @@ export default function CardsList() {
                             </p>
                         )}
                         <p className="cards-number">cards number: {cardsNumber}</p>
-                        <p className="correction">correct: {(correctsNumber * 100) / cardsNumber || 0}%</p>
-                        <p className="incorrection">incorrect: {(incorrectsNumber * 100) / cardsNumber || 0}%</p>
+                        <p className="correction">
+                            correct: {+((correctsNumber * 100) / cardsNumber || 0).toFixed(2)}%
+                        </p>
+                        <p className="incorrection">
+                            incorrect: {+((incorrectsNumber * 100) / cardsNumber || 0).toFixed(2)}%
+                        </p>
                     </div>
+
+                    <div className="package-tags">
+                        <FormTags
+                            name="tags"
+                            tags={tags.map(tag => {
+                                return { id: tag, text: tag };
+                            })}
+                            handleChange={() => {}}
+                            readOnly
+                        />
+                    </div>
+
                     <button
                         className="new-card btn btn-success"
                         onClick={() => setState({ ...state, newCardModalOpen: true })}
@@ -36,19 +52,18 @@ export default function CardsList() {
                         <i className="fas fa-plus" />
                     </button>
                     <NewCardModal
-                        context={cardListContext}
                         isOpen={state.newCardModalOpen}
                         closeModal={closeModal}
                         className="big-modal"
-                        packageId={subjectContext.selectedPackageId}
+                        packageId={context.selectedPackageId}
                     />
-                    {!cardListContext.loading ? (
-                        cardListContext.cardsOfPackage[subjectContext.selectedPackageId].map((card, index) => {
+                    {!context.loading ? (
+                        context.cardsOfPackage[context.selectedPackageId].map((card, index) => {
                             return (
                                 <React.Fragment key={`Flipcard${index}`}>
                                     <FlipCard
                                         workWithHover
-                                        packageId={subjectContext.selectedPackageId}
+                                        packageId={context.selectedPackageId}
                                         card={card}
                                         editable
                                         stars
@@ -68,13 +83,8 @@ export default function CardsList() {
     }
 }
 
-function NewCardModal(props: {
-    packageId: string,
-    context: () => void,
-    closeModal: () => void,
-    isOpen: boolean,
-    className: string,
-}) {
+function NewCardModal(props: { packageId: string, closeModal: () => void, isOpen: boolean, className: string }) {
+    const context = useContext(SubjectsContext);
     return (
         <Modal isOpen={props.isOpen} handleClickOutside={props.closeModal} className={props.className}>
             <div className="modal-title">New card</div>
@@ -95,7 +105,7 @@ function NewCardModal(props: {
                 }}
                 onSubmit={values => {
                     console.log('New cardSubmiting');
-                    props.context.createNewCardForPackage(props.packageId, values.front, values.back);
+                    context.createNewCardForPackage(props.packageId, values.front, values.back);
                     props.closeModal();
                 }}
             >

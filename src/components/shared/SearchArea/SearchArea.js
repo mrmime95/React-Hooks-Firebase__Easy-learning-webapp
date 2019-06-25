@@ -1,47 +1,23 @@
 // @flow
 import React, { useState } from 'react';
-import Octicon from '@githubprimer/octicons-react';
 import Form from '../Form/Form';
-import FormItem from '../Form/FormItem/FormItem';
-import TextField from '../Form/fields/TextField/TextField';
 import IconWithBadge from '../IconWithBadge/IconWithBadge';
-import Combo from '../Form/fields/combo/Combo/Combo';
-import FilterIcon from '../../icons/FilterIcon';
-import AutoSubmit from '../Form/AutoSubmit';
+import SimpleSelect from '../SimpleSelect/SimpleSelect';
+import AutoSubmit from '../AutoSubmit/AutoSubmit';
 import { debounce } from '../../../utils';
-import { useTranslation } from 'react-i18next';
-
-import type { ComboOption } from '../Form/fields/Combo/Combo/Combo';
-import type { changeHandler, blurHandler, FormFieldProps } from '../Form/form-types';
 
 import './SearchArea.css';
 
-type SearchData<Filters> = {
-    searchTerm?: string,
-    sort: string,
-    [filter: $Keys<Filters>]: any,
-};
-
-export type FilterProps<Filters> = {
-    handleChange: changeHandler,
-    handleBlur?: blurHandler,
-    values: SearchData<Filters>,
-};
-
-type SearchAreaProps<Filters> = {
+export default function SearchArea(props: {
     sort: {
         options: ComboOption[],
     },
-    initialValues: SearchData<Filters>,
-    onSubmit: (searchData: SearchData<Filters>) => void,
-    children?: (props: FilterProps<Filters>) => React$Node,
-};
-
-export default function SearchArea<Filters>(props: SearchAreaProps<Filters>) {
+    initialValues: any,
+}) {
     const [filterVisible, setFilterVisible] = useState(false);
 
     const { children, initialValues } = props;
-    const submit: (data: SearchData<Filters>) => void = debounce(debounceCallback, 300);
+    const submit: data => void = debounce(debounceCallback, 300);
 
     return (
         <div className="search-area">
@@ -51,7 +27,7 @@ export default function SearchArea<Filters>(props: SearchAreaProps<Filters>) {
                     ...initialValues,
                 }}
             >
-                {({ handleChange, handleBlur, values, errors }: FormFieldProps<SearchData<any>>, FormRow) => {
+                {({ handleChange, handleBlur, values, errors }, FormRow) => {
                     return (
                         <div>
                             <FormRowSearchContainer
@@ -85,43 +61,38 @@ export default function SearchArea<Filters>(props: SearchAreaProps<Filters>) {
     }
 
     function debounceCallback(data: SearchData<Filters>) {
-        const sorting = data.sort.split('_');
-        const newData = { ...data, sort: sorting[0], sortAscending: sorting[1] === 'asc' };
+        const newData = { ...data };
         props.onSubmit(newData);
     }
 }
 
 function FormRowSearchContainer(props) {
     const { values, handleChange, handleBlur, FormRow, sort, children, toggleFilter } = props;
-    const filtered = Object.keys(values).filter(key => values[key] != null).length - 2;
-    const [t] = useTranslation();
     return (
         <FormRow className="search-container">
-            <TextField
-                className="search-field"
-                label={t('search-area.search')}
+            <input
                 name="searchTerm"
                 value={values.searchTerm}
-                handleChange={handleChange}
-                handleBlur={handleBlur}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className="form-control search-field"
+                placeholder="Search"
+                type="text"
             />
             {children && (
-                <FormItem className="filter-toggle" label={t('search-area.filter')}>
-                    <button className="filter-button" type="button" onClick={toggleFilter}>
-                        <IconWithBadge badgeValue={filtered}>
-                            <Octicon icon={FilterIcon} className="filter-icon" />
-                        </IconWithBadge>
-                    </button>
-                </FormItem>
+                <button className="filter-button" type="button" onClick={toggleFilter}>
+                    <IconWithBadge badgeValue={0}>
+                        <i className="fas fa-filter" />
+                    </IconWithBadge>
+                </button>
             )}
-            <Combo
-                label={t('search-area.sort')}
-                name="sort"
+            <SimpleSelect
                 value={values.sort}
-                className="sorting-combo"
+                name="sort"
                 handleChange={handleChange}
-                handleBlur={handleBlur}
+                onBlur={handleBlur}
                 options={sort.options}
+                className="sorting-combo"
             />
         </FormRow>
     );
