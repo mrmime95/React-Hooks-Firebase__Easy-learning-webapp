@@ -19,7 +19,7 @@ function CustomUserDashboard() {
                         sort: { value: 'created-at_desc', label: `created at-desc` },
                         minCards: null,
                         minCorrect: null,
-                        maxIncorrect: null,
+                        maxIncorrect: Number.POSITIVE_INFINITY,
                         publicsOnly: null,
                         tags: [],
                     }}
@@ -63,7 +63,7 @@ function CustomUserDashboard() {
                                     onBlur={handleBlur}
                                     className="form-control number-field"
                                 />
-                                <label htmlFor="maxIncorrect" className="for-checkbox">
+                                <label htmlFor="publicsOnly" className="for-checkbox">
                                     Show Publics Only
                                 </label>
                                 <Checkbox
@@ -76,7 +76,7 @@ function CustomUserDashboard() {
                                         });
                                     }}
                                     name="publicsOnly"
-                                    id="maxIncorrect"
+                                    id="publicsOnly"
                                     checked={values.publicsOnly}
                                 />
                             </div>

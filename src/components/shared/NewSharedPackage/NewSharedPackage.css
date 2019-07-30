@@ -69,7 +69,7 @@
             justify-content: space-between; }
             .new-shared-package .content .words .line .__react_component_tooltip.show .preview .flip-card {
               width: 100px;
-              height: 100px;
+              height: 150px;
               padding: 5px; }
     .new-shared-package .content .buttons {
       display: flex;

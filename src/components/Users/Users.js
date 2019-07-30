@@ -36,7 +36,7 @@ function UsersContent(props: { match: RouterMatch }) {
                             { label: 'picture', flex: 1 },
                             { label: 'personal data', flex: 3 },
                             { label: 'status', flex: 1 },
-                            { label: 'datas', flex: 2 },
+                            { label: 'data', flex: 2 },
                             { label: 'actions', flex: 2 },
                         ]}
                         createRow={(rowData: {
@@ -82,7 +82,7 @@ function UsersContent(props: { match: RouterMatch }) {
                                             <p>{rowData.role}</p>
                                         </GridColumn>
 
-                                        <GridColumn className="datas">
+                                        <GridColumn className="data">
                                             <GridColumn label="subjects">
                                                 <p className="subjects">{rowData.subjects}</p>
                                             </GridColumn>

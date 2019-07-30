@@ -107,6 +107,7 @@ export default function FriendsProvider(props: { users: [Users] }) {
                         packages: friendData.data().packagesNumber,
                         cards: friendData.data().cardsNumber,
                         role: friendData.data().role,
+                        profilePicture: friendData.data().profilePicture,
                     };
                 })
             );

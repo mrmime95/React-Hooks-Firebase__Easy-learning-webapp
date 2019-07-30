@@ -43,18 +43,18 @@ button:focus {
           font-weight: normal;
           line-height: 1.5;
           font-size: 12px; }
-      .user-list .grid .grid-row .column.datas {
+      .user-list .grid .grid-row .column.data {
         flex: 2; }
-        .user-list .grid .grid-row .column.datas .with-label {
+        .user-list .grid .grid-row .column.data .with-label {
           width: auto; }
-          .user-list .grid .grid-row .column.datas .with-label .label {
+          .user-list .grid .grid-row .column.data .with-label .label {
             margin: 0;
             width: calc(100% - 120px);
             display: block;
             line-height: 1.5;
             font-size: 12px;
             font-family: 'Lato', sans-serif; }
-          .user-list .grid .grid-row .column.datas .with-label p {
+          .user-list .grid .grid-row .column.data .with-label p {
             font-family: 'Lato', sans-serif;
             width: 120px;
             font-weight: normal;

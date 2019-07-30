@@ -26,7 +26,7 @@ function DashboardContainer(props) {
                     sort: { value: 'created-at_desc', label: `created at-desc` },
                     minCards: null,
                     minCorrect: null,
-                    maxIncorrect: null,
+                    maxIncorrect: 100,
                     publicsOnly: null,
                     tags: [],
                 }}

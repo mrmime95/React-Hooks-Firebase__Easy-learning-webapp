@@ -5,21 +5,19 @@
         position: relative;
         overflow: hidden;
         display: inline-block;
+        cursor: pointer;
         .upload-btn {
-            border: 2px solid gray;
-            color: gray;
-            background-color: white;
-            padding: 8px 20px;
-            border-radius: 8px;
-            font-size: 20px;
-            font-weight: bold;
+            border: 1px solid #ced4da;
+            border-radius: 0 4px 4px 0;
         }
         input[type='file'] {
-            font-size: 100px;
             position: absolute;
             left: 0;
             top: 0;
             opacity: 0;
+            height: 100%;
+            width: 100%;
+            cursor: pointer;
         }
     }
 }

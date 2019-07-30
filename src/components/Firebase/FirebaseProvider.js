@@ -47,6 +47,7 @@ export default class FirebaseProvider extends Component {
                     deleteCardById: this.deleteCardById,
                     deletePackageById: this.deletePackageById,
                     deleteSubjectById: this.deleteSubjectById,
+                    getCreatedBy: this.getCreatedBy,
                 }}
             >
                 {this.props.children}
@@ -189,8 +190,20 @@ export default class FirebaseProvider extends Component {
             .collection('users')
             .doc(this.state.user.id)
             .get();
-        console.log(thisUser.data());
         return thisUser.data().friends;
+    };
+
+    getCreatedBy = async (id: string) => {
+        const userById = await db
+            .collection('users')
+            .doc(id)
+            .get();
+        return {
+            fullName: userById.data().firstName + ' ' + userById.data().lastName,
+            link: '/user/' + id,
+            profilePicture: userById.data().profilePicture,
+            id: id,
+        };
     };
 
     getAllRequesters = async (uid: string) => {

@@ -96,7 +96,7 @@ export default function CustomUserDetailProvider(props: { loadSize: number, user
                         );
                         return {
                             package: { ...doc.data(), id: doc.id, words },
-                            user: { ...customUser, ...doc.data().createdBy },
+                            user: { ...customUser, ...doc.data().createdBy, link: '/user/' + customUser.id },
                         };
                     })
             );
@@ -150,7 +150,7 @@ export default function CustomUserDetailProvider(props: { loadSize: number, user
                         );
                         return {
                             package: { ...doc.data(), id: doc.id, words },
-                            user: { ...customUser, ...doc.data().createdBy },
+                            user: { ...customUser, ...doc.data().createdBy, link: '/user/' + customUser.id },
                         };
                     })
             );
@@ -199,7 +199,7 @@ export default function CustomUserDetailProvider(props: { loadSize: number, user
                         );
                         return {
                             package: { ...doc.data(), id: doc.id, words },
-                            user: { ...customUser, ...doc.data().createdBy },
+                            user: { ...customUser, ...doc.data().createdBy, link: '/user/' + customUser.id },
                         };
                     })
             );
@@ -251,7 +251,7 @@ export default function CustomUserDetailProvider(props: { loadSize: number, user
                         );
                         return {
                             package: { ...doc.data(), id: doc.id, words },
-                            user: { ...customUser, ...doc.data().createdBy },
+                            user: { ...customUser, ...doc.data().createdBy, link: '/user/' + customUser.id },
                         };
                     })
             );
@@ -271,7 +271,7 @@ export default function CustomUserDetailProvider(props: { loadSize: number, user
                 searchTerm: data.searchTerm || '',
                 minCards: data.minCards || 0,
                 minCorrect: data.minCorrect || 0,
-                maxIncorrect: data.maxIncorrect || 0,
+                maxIncorrect: data.maxIncorrect || Number.POSITIVE_INFINITY,
                 publicsOnly: data.publicsOnly || false,
                 tags: data.tags.map(tag => tag.text) || [],
             });

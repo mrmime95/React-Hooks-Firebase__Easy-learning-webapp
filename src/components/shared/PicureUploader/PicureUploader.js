@@ -14,6 +14,11 @@ export default function PicureUploader({
 }) {
     return (
         <div className={`picure-uploader ${className || ''}`}>
+            {label && (
+                <label htmlFor={`${nameUrl}`} className="group-label">
+                    {label}
+                </label>
+            )}
             <div className="input-group mb-3">
                 <input
                     name={nameUrl}
@@ -23,9 +28,10 @@ export default function PicureUploader({
                     className="form-control"
                     type="text"
                     placeholder="Add an Url"
+                    id={nameUrl}
                 />
                 <div className="upload-btn-wrapper">
-                    <button className="upload-btn">Upload a file</button>
+                    <button className="upload-btn btn btn-light">Upload a file</button>
                     <input
                         type="file"
                         name={nameImage}

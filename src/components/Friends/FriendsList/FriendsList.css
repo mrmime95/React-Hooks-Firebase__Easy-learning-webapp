@@ -43,18 +43,18 @@ button:focus {
           font-weight: normal;
           line-height: 1.5;
           font-size: 12px; }
-      .friends-list .grid .grid-row .column.datas {
+      .friends-list .grid .grid-row .column.data {
         flex: 2; }
-        .friends-list .grid .grid-row .column.datas .with-label {
+        .friends-list .grid .grid-row .column.data .with-label {
           width: auto; }
-          .friends-list .grid .grid-row .column.datas .with-label .label {
+          .friends-list .grid .grid-row .column.data .with-label .label {
             margin: 0;
             width: calc(100% - 120px);
             display: block;
             line-height: 1.5;
             font-size: 12px;
             font-family: 'Lato', sans-serif; }
-          .friends-list .grid .grid-row .column.datas .with-label p {
+          .friends-list .grid .grid-row .column.data .with-label p {
             font-family: 'Lato', sans-serif;
             width: 120px;
             font-weight: normal;

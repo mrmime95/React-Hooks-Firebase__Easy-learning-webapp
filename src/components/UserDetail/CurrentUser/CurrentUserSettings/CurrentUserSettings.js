@@ -67,7 +67,7 @@ function CurrentUserSettings() {
                                     }}
                                     onBlur={handleBlur}
                                     type="file"
-                                    className="form-control"
+                                    label="Profile picture"
                                     placeholder="Upload a picture"
                                 />
                                 <div className="form-group">

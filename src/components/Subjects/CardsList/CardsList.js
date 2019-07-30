@@ -151,8 +151,8 @@ function NewCardModal(props: { packageId: string, closeModal: () => void, isOpen
                                             }}
                                             onBlur={handleBlur}
                                             type="file"
-                                            className="form-control"
                                             placeholder="Upload a picture"
+                                            label="Add front picture"
                                         />
                                     </div>
                                     <div className="form-group word">
@@ -221,8 +221,8 @@ function NewCardModal(props: { packageId: string, closeModal: () => void, isOpen
                                             }}
                                             onBlur={handleBlur}
                                             type="file"
-                                            className="form-control"
                                             placeholder="Upload a picture"
+                                            label="Add back picture"
                                         />
                                     </div>
                                     <div className="form-group">

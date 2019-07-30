@@ -91,7 +91,8 @@ export default function DashboardProvider(props: { loadSize: number, orderBy: [s
                         };
                     })
                 );
-                return { package: { ...doc.data(), id: doc.id, words }, user: doc.data().createdBy };
+                const createdBy = await fireContext.getCreatedBy(doc.data().createdBy.id);
+                return { package: { ...doc.data(), id: doc.id, words }, user: createdBy };
             })
         );
         setState({
@@ -144,7 +145,8 @@ export default function DashboardProvider(props: { loadSize: number, orderBy: [s
                             };
                         })
                     );
-                    return { package: { ...doc.data(), id: doc.id, words }, user: doc.data().createdBy };
+                    const createdBy = await fireContext.getCreatedBy(doc.createdBy.id);
+                    return { package: { ...doc.data(), id: doc.id, words }, user: createdBy };
                 })
             );
             const dashboardFlow = [...state.dashboardFlow, ...savableDashboardFlow];
@@ -164,7 +166,7 @@ export default function DashboardProvider(props: { loadSize: number, orderBy: [s
                 searchTerm: data.searchTerm || '',
                 minCards: data.minCards || 0,
                 minCorrect: data.minCorrect || 0,
-                maxIncorrect: data.maxIncorrect || 0,
+                maxIncorrect: data.maxIncorrect || Number.POSITIVE_INFINITY,
                 publicsOnly: data.publicsOnly || false,
                 tags: data.tags.map(tag => tag.text) || [],
             });

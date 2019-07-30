@@ -12,6 +12,7 @@ import FormTags from '../../shared/FormTags/FormTags';
 import Modal from '../../shared/Modal/Modal';
 import SelectInput from '../../shared/SelectInput/SelectInput';
 import NewSharedPackageProvider, { NewSharedPackageContext } from './NewSharedPackageProvider/NewSharedPackageProvider';
+import { Link } from 'react-router-dom';
 
 import './NewSharedPackage.css';
 
@@ -51,10 +52,12 @@ function NewSharedPackageContent(props) {
     console.log(props);
     return (
         <div className="new-shared-package">
-            <AvatarCircle
-                fullName={props.user.fullName}
-                profilePicture={props.user.profilePicture && props.user.profilePicture}
-            />
+            <Link to={props.user.link}>
+                <AvatarCircle
+                    fullName={props.user.fullName}
+                    profilePicture={props.user.profilePicture && props.user.profilePicture}
+                />
+            </Link>
             <div className="content">
                 <h3 className="name">{props.user.fullName}</h3>
                 <div className="tags">
