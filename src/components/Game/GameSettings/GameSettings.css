@@ -1,0 +1,10 @@
+li {
+  list-style-type: none; }
+
+button:focus {
+  outline: none; }
+
+.game-settings .checkbox-container {
+  display: flex; }
+  .game-settings .checkbox-container .checkbox-field {
+    padding: 0 20px 0; }

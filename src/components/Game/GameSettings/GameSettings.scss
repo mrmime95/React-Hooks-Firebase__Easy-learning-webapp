@@ -1,0 +1,9 @@
+@import '../../../utils.scss';
+.game-settings {
+    .checkbox-container {
+        display: flex;
+        .checkbox-field {
+            padding: 0 20px 0;
+        }
+    }
+}

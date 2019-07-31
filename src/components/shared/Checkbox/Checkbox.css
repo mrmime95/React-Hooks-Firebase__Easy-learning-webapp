@@ -46,3 +46,12 @@ button:focus {
       text-transform: uppercase;
       font-weight: normal;
       margin-left: 15px; }
+    .checkbox-field .checkbox.read-only .box {
+      background-color: #d6d6d6;
+      border: 1px solid #999; }
+      .checkbox-field .checkbox.read-only .box:before {
+        background-color: #d6d6d6; }
+      .checkbox-field .checkbox.read-only .box .icon {
+        color: #999; }
+    .checkbox-field .checkbox.read-only .checkbox-label {
+      color: #999; }

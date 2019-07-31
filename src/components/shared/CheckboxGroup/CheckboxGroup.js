@@ -9,6 +9,7 @@ export default function CheckboxGroup(props: {
     onBlur: () => void,
     className?: string,
     label?: string,
+    readOnly?: boolean,
 }) {
     return (
         <div className={`checkbox-group ${props.className}`}>
@@ -27,6 +28,7 @@ export default function CheckboxGroup(props: {
                             checked={checked}
                             label={checkbox.label}
                             key={`Checbox${checkbox.id}`}
+                            readOnly={props.readOnly}
                         />
                     );
                 })}

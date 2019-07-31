@@ -8,6 +8,7 @@ export default function GameProvider(props: { children: React$Node }) {
     const [packages, setPackages] = useState([]);
     const [cards, setCards] = useState([]);
     const [showingCards, setShowingCards] = useState([]);
+    const [randomCards, setRandomCards] = useState([]);
     const [selectedElements, setSelectedElements] = useState({
         selectedHardnessIDs: [],
         selectedPackages: [],
@@ -24,6 +25,7 @@ export default function GameProvider(props: { children: React$Node }) {
                 cards,
                 showingCards,
                 gameStarted,
+                randomCards,
                 getPackagesOfSubjects,
                 changeGameStarted,
                 getPackagesBySubjectId,
@@ -31,6 +33,8 @@ export default function GameProvider(props: { children: React$Node }) {
                 filterCardsByKnowledge,
                 setToDefault,
                 onSubmit,
+                changeKwnowledgeOfCard,
+                setBack,
             }}
         >
             {props.children}
@@ -134,6 +138,7 @@ export default function GameProvider(props: { children: React$Node }) {
     }
     function changeGameStarted() {
         setGameStarted(!gameStarted);
+        getCardsRandomly(showingCards);
     }
 
     function setToDefault() {
@@ -146,5 +151,38 @@ export default function GameProvider(props: { children: React$Node }) {
             selectedPackages: [],
             selectedSubjects: [],
         });
+    }
+
+    function getCardsRandomly(
+        cards: Array<{
+            id?: string,
+            back: {
+                example: string,
+                image: string,
+                word: string,
+            },
+            front: {
+                example: string,
+                image: string,
+                word: string,
+            },
+            knowledge: number,
+            packageId: string,
+        }>
+    ) {
+        setRandomCards(cards.sort(() => Math.random() - 0.5));
+    }
+
+    async function changeKwnowledgeOfCard(cardId: string, value: number) {
+        const currentCardRef = fireContext.db.doc(`cards/${cardId}`);
+        const batch = fireContext.db.batch();
+        batch.update(currentCardRef, {
+            knowledge: value,
+        });
+        batch.commit();
+    }
+
+    function setBack() {
+        setToDefault();
     }
 }

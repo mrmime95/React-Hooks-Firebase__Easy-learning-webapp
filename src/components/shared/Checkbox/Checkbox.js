@@ -1,16 +1,16 @@
 import React from 'react';
 import './Checkbox.css';
 import Octicon, { Check } from '@githubprimer/octicons-react';
-export default function Checkbox({ className, label, name, handleChange, handleBlur, checked }) {
+export default function Checkbox({ className, label, name, handleChange, handleBlur, checked, readOnly }) {
     return (
         <div className={`checkbox-field ${className || ''}`}>
-            <label className="checkbox">
+            <label className={`checkbox ${readOnly ? 'read-only' : ''}`}>
                 <input
                     type="checkbox"
                     name={name}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    defaultChecked={checked}
+                    onChange={!readOnly ? handleChange : undefined}
+                    onBlur={!readOnly ? handleBlur : undefined}
+                    defaultChecked={checked || false}
                 />
                 <div className={`box ${checked ? 'checked' : ''}`}>
                     <Octicon icon={Check} className="icon" />

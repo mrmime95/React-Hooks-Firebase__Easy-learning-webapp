@@ -50,5 +50,20 @@
             font-weight: normal;
             margin-left: 15px;
         }
+        &.read-only {
+            .box {
+                background-color: #d6d6d6;
+                &:before {
+                    background-color: #d6d6d6;
+                }
+                border: 1px solid #999;
+                .icon {
+                    color: #999;
+                }
+            }
+            .checkbox-label {
+                color: #999;
+            }
+        }
     }
 }
