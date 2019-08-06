@@ -6,7 +6,7 @@ import { users } from '../../dummyData/Users';
 import GridWithPagination from '../shared/Grid/GridWithPagination/GridWithPagination';
 import GridColumn from '../shared/Grid/GridColumn/GridColumn';
 import AvatarCircle from '../shared/AvatarCircle/AvatarCircle';
-import { GridRow } from '../shared/Grid/GridRow/GridRow';
+import { LinkGridRow } from '../shared/Grid/GridRow/GridRow';
 import type { Match as RouterMatch } from 'react-router-dom';
 import { FirebaseContext } from '../Firebase/FirebaseProvider';
 import FriendsList from './FriendsList/FriendsList';
@@ -56,7 +56,11 @@ function FriendRequestsContent(props: { match: RouterMatch }) {
                         }) => {
                             if (rowData.id !== user.id) {
                                 return (
-                                    <GridRow key={`LinkGridRow${rowData.id}`} className={`${rowData.role}`}>
+                                    <LinkGridRow
+                                        linkTo={`/user/${rowData.id}`}
+                                        key={`LinkGridRow${rowData.id}`}
+                                        className={`${rowData.role}`}
+                                    >
                                         <GridColumn className="profile-picture">
                                             <AvatarCircle
                                                 profilePicture={rowData.profilePicture}
@@ -66,9 +70,7 @@ function FriendRequestsContent(props: { match: RouterMatch }) {
                                         <GridColumn className="name">
                                             <GridColumn className="name-content">
                                                 <GridColumn label="Name">
-                                                    <Link to={`/user/${rowData.id}`}>
-                                                        <p className="name-text">{rowData.name}</p>
-                                                    </Link>
+                                                    <p className="name-text">{rowData.name}</p>
                                                 </GridColumn>
                                                 <GridColumn label="E-mail">
                                                     <p className="email">{rowData.email}</p>
@@ -98,19 +100,25 @@ function FriendRequestsContent(props: { match: RouterMatch }) {
                                             <button
                                                 type="button"
                                                 className="btn btn-outline-primary"
-                                                onClick={() => context.acceptFriend(rowData.id)}
+                                                onClick={e => {
+                                                    e.preventDefault();
+                                                    context.acceptFriend(rowData.id);
+                                                }}
                                             >
                                                 Accept
                                             </button>
                                             <button
                                                 type="button"
                                                 className="btn btn-outline-primary"
-                                                onClick={() => context.deleteFriendReques(rowData.id)}
+                                                onClick={e => {
+                                                    e.preventDefault();
+                                                    context.deleteFriendReques(rowData.id);
+                                                }}
                                             >
                                                 Decide
                                             </button>
                                         </GridColumn>
-                                    </GridRow>
+                                    </LinkGridRow>
                                 );
                             }
                             return null;

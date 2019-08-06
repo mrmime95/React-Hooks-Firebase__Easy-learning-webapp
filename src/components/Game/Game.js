@@ -8,8 +8,10 @@ import './Game.css';
 export default function Game(props: {}) {
     return (
         <GameProvider myWords={myWords}>
-            <GameSettings />
-            <CardGame />
+            <div className="game">
+                <GameSettings />
+                <CardGame />
+            </div>
         </GameProvider>
     );
 }

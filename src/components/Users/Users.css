@@ -4,6 +4,24 @@ li {
 button:focus {
   outline: none; }
 
+.user-list .search-area .filter-container .filters {
+  flex-wrap: wrap;
+  width: 100%; }
+  .user-list .search-area .filter-container .filters .filter-line {
+    width: 100%;
+    display: flex;
+    justify-content: space-between; }
+    .user-list .search-area .filter-container .filters .filter-line .inputs {
+      justify-content: space-between;
+      display: flex;
+      width: 50%; }
+    .user-list .search-area .filter-container .filters .filter-line .checkboxes {
+      justify-content: space-between;
+      display: flex;
+      width: 50%; }
+  .user-list .search-area .filter-container .filters .filter-tags {
+    width: 100%; }
+
 .user-list .grid {
   font-family: 'Lato', sans-serif;
   margin-top: 20px; }

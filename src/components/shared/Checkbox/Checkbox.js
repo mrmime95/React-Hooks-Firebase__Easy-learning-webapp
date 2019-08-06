@@ -1,9 +1,10 @@
 import React from 'react';
 import './Checkbox.css';
 import Octicon, { Check } from '@githubprimer/octicons-react';
+import FormItem from '../formFields/FormItem/FormItem';
 export default function Checkbox({ className, label, name, handleChange, handleBlur, checked, readOnly }) {
     return (
-        <div className={`checkbox-field ${className || ''}`}>
+        <FormItem className={`checkbox-field ${className || ''}`}>
             <label className={`checkbox ${readOnly ? 'read-only' : ''}`}>
                 <input
                     type="checkbox"
@@ -17,6 +18,6 @@ export default function Checkbox({ className, label, name, handleChange, handleB
                 </div>
                 <span className="checkbox-label">{label}</span>
             </label>
-        </div>
+        </FormItem>
     );
 }

@@ -34,7 +34,9 @@
         "react-transition-group": "^2.8.0",
         "react-use-form-state": "^0.9.0",
         "recompose": "^0.30.0",
-        "shallowequal": "^1.1.0"
+        "shallowequal": "^1.1.0",
+        "underscore": "^1.9.1",
+        "unique-concat": "^0.2.2"
     },
     "scripts": {
         "test": "react-scripts test",

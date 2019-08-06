@@ -5,6 +5,28 @@ button:focus {
   outline: none; }
 
 .card-game {
-  min-height: calc(100vh - 140px);
-  max-height: calc(100vh - 140px);
-  overflow: hidden; }
+  border: 1px solid black;
+  width: 70%;
+  min-height: calc(100vh - 150px); }
+  .card-game .game-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%; }
+    .card-game .game-container .informations {
+      height: 40px; }
+    .card-game .game-container .cards-list {
+      padding: 0;
+      overflow: hidden;
+      width: 100%;
+      display: flex;
+      height: calc(100% - 50px); }
+      .card-game .game-container .cards-list .card-container {
+        width: 100%;
+        flex: 1 0 100%;
+        margin: 0 auto;
+        text-align: center;
+        transition: transform 0.2s ease;
+        height: 100%; }
+        .card-game .game-container .cards-list .card-container .flip-card {
+          height: 100%;
+          max-width: unset; }

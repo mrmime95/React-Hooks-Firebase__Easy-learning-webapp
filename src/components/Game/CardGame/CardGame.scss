@@ -1,6 +1,35 @@
 @import '../../../utils.scss';
 .card-game {
-    min-height: calc(100vh - 140px);
-    max-height: calc(100vh - 140px);
-    overflow: hidden;
+    border: 1px solid black;
+    width: 70%;
+    min-height: calc(100vh - 150px);
+    .game-container {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        .informations {
+            height: 40px;
+            p {
+            }
+        }
+        .cards-list {
+            padding: 0;
+            overflow: hidden;
+            width: 100%;
+            display: flex;
+            height: calc(100% - 50px);
+            .card-container {
+                width: 100%;
+                flex: 1 0 100%;
+                margin: 0 auto;
+                text-align: center;
+                transition: transform 0.2s ease;
+                height: 100%;
+                .flip-card {
+                    height: 100%;
+                    max-width: unset;
+                }
+            }
+        }
+    }
 }

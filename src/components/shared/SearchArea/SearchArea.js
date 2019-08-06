@@ -13,6 +13,7 @@ export default function SearchArea(props: {
         options: ComboOption[],
     },
     initialValues: any,
+    isLoading?: boolean,
 }) {
     const [filterVisible, setFilterVisible] = useState(false);
 
@@ -26,6 +27,7 @@ export default function SearchArea(props: {
                     searchTerm: '',
                     ...initialValues,
                 }}
+                className={!props.isLoading ? 'show' : 'hide'}
             >
                 {({ handleChange, handleBlur, values, errors }, FormRow) => {
                     return (
@@ -53,6 +55,8 @@ export default function SearchArea(props: {
                     );
                 }}
             </Form>
+
+            <div className={props.isLoading ? 'show' : 'hide'}>Loading...</div>
         </div>
     );
 

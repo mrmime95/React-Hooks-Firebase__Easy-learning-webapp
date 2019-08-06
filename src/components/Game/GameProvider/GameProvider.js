@@ -35,6 +35,7 @@ export default function GameProvider(props: { children: React$Node }) {
                 onSubmit,
                 changeKwnowledgeOfCard,
                 setBack,
+                callHandleChange,
             }}
         >
             {props.children}
@@ -96,15 +97,12 @@ export default function GameProvider(props: { children: React$Node }) {
         const listOfCards = [];
         listOfResults.map(value1 => value1.map(value2 => listOfCards.push(value2)));
         setCards(listOfCards);
-        setShowingCards(listOfCards);
     }
 
     async function filterCardsByKnowledge(cardKnowledge: [string]) {
         if (cardKnowledge.length) {
             const listOfShowingCards = cards.filter(card => cardKnowledge.includes(String(card.knowledge)));
             setShowingCards(listOfShowingCards);
-        } else {
-            setShowingCards(cards);
         }
     }
 
@@ -180,6 +178,27 @@ export default function GameProvider(props: { children: React$Node }) {
             knowledge: value,
         });
         batch.commit();
+    }
+
+    function callHandleChange(callback) {
+        callback({
+            target: {
+                name: 'hardnessIDs',
+                value: [],
+            },
+        });
+        callback({
+            target: {
+                name: 'packages',
+                value: [],
+            },
+        });
+        callback({
+            target: {
+                name: 'subjects',
+                value: [],
+            },
+        });
     }
 
     function setBack() {

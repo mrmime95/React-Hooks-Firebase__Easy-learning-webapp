@@ -275,7 +275,6 @@ function EditCardModal(props: {
                                             }}
                                             onBlur={handleBlur}
                                             type="file"
-                                            className="form-control"
                                             placeholder="Upload a picture"
                                         />
                                     </div>

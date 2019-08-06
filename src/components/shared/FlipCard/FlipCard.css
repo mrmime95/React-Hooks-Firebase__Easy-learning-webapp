@@ -38,7 +38,7 @@
       .flip-card .flip-card-content .front .text-container,
       .flip-card .flip-card-content .back .text-container {
         font-size: 100%;
-        height: 100%;
+        height: 50%;
         padding: 5% 2%; }
         .flip-card .flip-card-content .front .text-container .title,
         .flip-card .flip-card-content .back .text-container .title {

@@ -4,19 +4,23 @@ import React, { useContext, useState } from 'react';
 import UsersProvider, { UsersContext } from './UsersProvider/UsersProvider';
 import { users } from '../../dummyData/Users';
 import GridWithPagination from '../shared/Grid/GridWithPagination/GridWithPagination';
+import Grid from '../shared/Grid/Grid';
 import GridColumn from '../shared/Grid/GridColumn/GridColumn';
 import AvatarCircle from '../shared/AvatarCircle/AvatarCircle';
-import { GridRow } from '../shared/Grid/GridRow/GridRow';
+import { LinkGridRow } from '../shared/Grid/GridRow/GridRow';
 import type { Match as RouterMatch } from 'react-router-dom';
 import { FirebaseContext } from '../Firebase/FirebaseProvider';
-import { Link } from 'react-router-dom';
+import SearchArea from '../shared/SearchArea/SearchArea';
+import Checkbox from '../shared/Checkbox/Checkbox';
+import FormTags from '../shared/FormTags/FormTags';
+import TextField from '../shared/formFields/TextField/TextField';
 
 import './Users.css';
 
 export default function Users(props) {
     return (
         <div className="list">
-            <UsersProvider users={users}>
+            <UsersProvider>
                 <UsersContent {...props} />
             </UsersProvider>
         </div>
@@ -28,10 +32,120 @@ function UsersContent(props: { match: RouterMatch }) {
     const { user } = useContext(FirebaseContext);
     return (
         <div className="user-list">
+            <h3>Users</h3>
+            <SearchArea
+                onSubmit={context.onSearch}
+                initialValues={{
+                    sort: sortOptions()[0],
+                    minCards: null,
+                    minPacks: null,
+                    minSubjects: null,
+                    admins: false,
+                    approvers: false,
+                    users: true,
+                    tags: [],
+                }}
+                sort={{
+                    options: sortOptions(),
+                }}
+                isLoading={context.isLoading}
+            >
+                {({ values, handleChange, handleBlur }: FilterProps<Filters>) => (
+                    <div className="filters">
+                        <div className="filter-line">
+                            <div className="inputs">
+                                <TextField
+                                    label="Minimum cards number"
+                                    className="number-field"
+                                    name="minCards"
+                                    value={values.minCards}
+                                    handleChange={handleChange}
+                                    handleBlur={handleBlur}
+                                    type="number"
+                                    min="0"
+                                    max="100"
+                                    placeholder="Minimum cards number"
+                                />
+                                <TextField
+                                    label="Minimum packages number"
+                                    className="number-field"
+                                    name="minPacks"
+                                    value={values.minPacks}
+                                    handleChange={handleChange}
+                                    handleBlur={handleBlur}
+                                    type="number"
+                                    min="0"
+                                    max="100"
+                                    placeholder="Minimum packages number"
+                                />
+                                <TextField
+                                    label="Minimum subjects number"
+                                    className="number-field"
+                                    name="minSubjects"
+                                    value={values.minSubjects}
+                                    handleChange={handleChange}
+                                    handleBlur={handleBlur}
+                                    type="number"
+                                    min="0"
+                                    max="100"
+                                    placeholder="Minimum subjects number"
+                                />
+                            </div>
+                            <div className="checkboxes">
+                                <Checkbox
+                                    handleChange={e => {
+                                        handleChange({
+                                            target: {
+                                                name: 'users',
+                                                value: e.target.checked,
+                                            },
+                                        });
+                                    }}
+                                    name="users"
+                                    id="users"
+                                    checked={values.users}
+                                    label="Show users"
+                                />
+
+                                <Checkbox
+                                    handleChange={e => {
+                                        handleChange({
+                                            target: {
+                                                name: 'approvers',
+                                                value: e.target.checked,
+                                            },
+                                        });
+                                    }}
+                                    name="approvers"
+                                    id="approvers"
+                                    checked={values.approvers}
+                                    label="Show approvers"
+                                />
+                                <Checkbox
+                                    handleChange={e => {
+                                        handleChange({
+                                            target: {
+                                                name: 'admins',
+                                                value: e.target.checked,
+                                            },
+                                        });
+                                    }}
+                                    name="admins"
+                                    id="admins"
+                                    checked={values.admins}
+                                    label="Show admins"
+                                />
+                            </div>
+                        </div>
+                        <div className="filer-tags">
+                            <FormTags name="tags" tags={values.tags} handleChange={handleChange} />
+                        </div>
+                    </div>
+                )}
+            </SearchArea>
             <div className="grid-area">
-                <h3>Users:</h3>
                 {context.users.length !== 0 ? (
-                    <GridWithPagination
+                    <Grid
                         headerConfig={[
                             { label: 'picture', flex: 1 },
                             { label: 'personal data', flex: 3 },
@@ -55,7 +169,11 @@ function UsersContent(props: { match: RouterMatch }) {
                             const [deleted, setDeleted] = useState(!rowData.requested);
                             if (rowData.id !== user.id) {
                                 return (
-                                    <GridRow key={`LinkGridRow${rowData.id}`} className={`${rowData.role}`}>
+                                    <LinkGridRow
+                                        linkTo={`/user/${rowData.id}`}
+                                        key={`LinkGridRow${rowData.id}`}
+                                        className={`${rowData.role}`}
+                                    >
                                         <GridColumn className="profile-picture">
                                             <AvatarCircle
                                                 profilePicture={rowData.profilePicture}
@@ -65,9 +183,7 @@ function UsersContent(props: { match: RouterMatch }) {
                                         <GridColumn className="name">
                                             <GridColumn className="name-content">
                                                 <GridColumn label="Name">
-                                                    <Link to={`/user/${rowData.id}`}>
-                                                        <p className="name-text">{rowData.name}</p>
-                                                    </Link>
+                                                    <p className="name-text">{rowData.name}</p>
                                                 </GridColumn>
                                                 <GridColumn label="E-mail">
                                                     <p className="email">{rowData.email}</p>
@@ -98,9 +214,10 @@ function UsersContent(props: { match: RouterMatch }) {
                                                 <h5>Is your friend</h5>
                                             ) : rowData.requested ? (
                                                 <button
-                                                    type="button"
+                                                    type="submit"
                                                     className="btn btn-outline-primary"
-                                                    onClick={() => {
+                                                    onClick={e => {
+                                                        e.preventDefault();
                                                         setDeleted(true);
                                                         setSent(false);
                                                         context.deleteFriendReques(rowData.id);
@@ -111,9 +228,10 @@ function UsersContent(props: { match: RouterMatch }) {
                                                 </button>
                                             ) : (
                                                 <button
-                                                    type="button"
+                                                    type="submit"
                                                     className="btn btn-outline-primary"
-                                                    onClick={() => {
+                                                    onClick={e => {
+                                                        e.preventDefault();
                                                         setSent(true);
                                                         setDeleted(false);
                                                         context.createFriendReques(rowData.id);
@@ -146,7 +264,7 @@ function UsersContent(props: { match: RouterMatch }) {
                                                 </React.Fragment>
                                             )}
                                         </GridColumn>
-                                    </GridRow>
+                                    </LinkGridRow>
                                 );
                             }
                             return null;
@@ -154,9 +272,24 @@ function UsersContent(props: { match: RouterMatch }) {
                         data={context.users}
                     />
                 ) : (
-                    <div>Loading...</div>
+                    <div>No user to show...</div>
                 )}
             </div>
         </div>
     );
+}
+
+function sortOptions() {
+    return [
+        { value: 'name_desc', label: `name-desc` },
+        { value: 'name_asc', label: `name-asc` },
+        { value: 'words-number_desc', label: `words number-desc` },
+        { value: 'words-number_asc', label: `words number-asc` },
+        { value: 'status_desc', label: `status-desc` },
+        { value: 'status_asc', label: `status-asc` },
+        { value: 'packages-number_desc', label: `packages number-desc` },
+        { value: 'packages-number_asc', label: `packages number-asc` },
+        { value: 'subjects-number_desc', label: `subjects number-desc` },
+        { value: 'subjects-number_asc', label: `subjects number-asc` },
+    ];
 }

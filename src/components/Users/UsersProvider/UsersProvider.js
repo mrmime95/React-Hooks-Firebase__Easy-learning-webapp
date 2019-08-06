@@ -17,33 +17,33 @@ type Users = {
     id: number,
 };
 
-export default function UsersProvider(props: { users: [Users] }) {
+export default function UsersProvider(props) {
     const [state, setState] = useState({
-        pageSize: defaultPageSize,
+        /*  pageSize: defaultPageSize,
         pageOfUsers: getAPageOfContent(1, defaultPageSize, props.users.sort(sortFn(defaultSortBy, defaultAscending))),
         activePage: 1,
         filteredUsers: props.users.sort(sortFn(defaultSortBy, defaultAscending)),
         numberOfFilteredUsers: props.users.length,
         sort: defaultSortBy,
-        sortAscending: defaultAscending,
+        sortAscending: defaultAscending, */
         users: [],
+        isLoading: false,
     });
     const fireContext = useContext(FirebaseContext);
     useEffect(() => {
         fireContext.refreshFriends();
-        getAllUsers();
     }, []);
 
     return (
-        <UsersContext.Provider value={{ ...state, onSearch, onPagingChange, createFriendReques, deleteFriendReques }}>
+        <UsersContext.Provider value={{ ...state, onSearch, createFriendReques, deleteFriendReques }}>
             {props.children}
         </UsersContext.Provider>
     );
 
-    async function getAllUsers() {
-        const allUsers = await fireContext.db.collection('users').get();
+    async function getFilteredUsers(filteredUsersRef) {
+        const filteredUsers = await filteredUsersRef.get();
         const returnableUsers = await Promise.all(
-            allUsers.docs.map(async doc => {
+            filteredUsers.docs.map(async doc => {
                 const friendRequest = await fireContext.db
                     .collection('friendRequestNumber')
                     .doc(doc.id)
@@ -66,7 +66,7 @@ export default function UsersProvider(props: { users: [Users] }) {
                 };
             })
         );
-        setState({ ...state, users: returnableUsers });
+        return returnableUsers;
     }
 
     async function createFriendReques(requestedId: string) {
@@ -89,7 +89,6 @@ export default function UsersProvider(props: { users: [Users] }) {
             });
         }
         batch.commit();
-        getAllUsers();
     }
 
     async function deleteFriendReques(requestedId: string) {
@@ -102,49 +101,80 @@ export default function UsersProvider(props: { users: [Users] }) {
             friendRequestNumberRef.update({ counter: fireContext.decrement, requesters: requesterArray });
         }
         fireContext.refreshFriends();
-        getAllUsers();
     }
 
-    function onPagingChange(newState: { activePage: number, pageSize: number }) {
+    async function onSearch(data: SearchData) {
+        setState({ ...state, isLoading: true, users: [] });
+        let usersCollectionRef = fireContext.db.collection(`users`);
+        const ordBy = getOrder(data.sort.value);
+        let adminRolesCollection = [];
+        if (data.admins) {
+            adminRolesCollection = await getFilteredUsers(usersCollectionRef.where('role', '==', 'admin'));
+        }
+        let userRolesCollection = [];
+        if (data.users) {
+            userRolesCollection = await getFilteredUsers(usersCollectionRef.where('role', '==', 'user'));
+        }
+        let approverRolesCollection = [];
+        if (data.approvers) {
+            approverRolesCollection = await getFilteredUsers(usersCollectionRef.where('role', '==', 'approver'));
+        }
+
+        const users = [...adminRolesCollection, ...userRolesCollection, ...approverRolesCollection]
+            .sort(sortFn(ordBy[0], ordBy[1]))
+            .filter(filterByMinCardsFn(data.minCards))
+            .filter(filterByMinPacksFn(data.minPacks))
+            .filter(filterByMinSubjectsFn(data.minSubjects));
         setState({
             ...state,
-            activePage: newState.activePage,
-            pageSize: newState.pageSize,
-            pageOfUsers: getAPageOfContent(newState.activePage, newState.pageSize, state.filteredUsers),
+            users,
+            isLoading: false,
         });
     }
 
-    function onSearch(data: SearchData) {
-        let filtered = props.users
-            .filter(filterByNameFn(data.searchTerm))
-            .filter(filterByRolesFn(data.roles))
-            .filter(filterByStatusesFn(data.statuses))
-            .sort(sortFn(data.sort, data.sortAscending));
+    function getOrder(sort: string): [string, string] {
+        const sortArray = sort.split('_');
+        let sortBy;
+        switch (sortArray[0]) {
+            case 'name':
+                sortBy = 'name';
+                break;
+            case 'status':
+                sortBy = 'role';
+                break;
+            case 'words-number':
+                sortBy = 'cards';
+                break;
+            case 'packages-name':
+                sortBy = 'packages';
+                break;
+            case 'subjects-number':
+                sortBy = 'subjects';
+                break;
+            default:
+                sortBy = 'name';
+                break;
+        }
 
-        setState({
-            ...state,
-            filteredUsers: filtered,
-            pageOfUsers: getAPageOfContent(1, state.pageSize, filtered),
-            numberOfFilteredUsers: filtered.length,
-            activePage: 1,
-            sort: data.sort,
-            sortAscending: data.sortAscending,
-        });
+        return [sortBy, sortArray[1] === 'asc'];
     }
 }
 
-function filterByNameFn(name: string) {
-    return row => row.name.toUpperCase().indexOf(name.toUpperCase()) >= 0;
+function filterByMinCardsFn(minCardsNumber: number) {
+    return user => {
+        return user.cards >= minCardsNumber;
+    };
 }
-function filterByRolesFn(roles: [string]) {
-    if (roles === null) return user => user;
-    return user => roles.findIndex(role => role.toUpperCase() === user.role.toUpperCase()) >= 0;
+function filterByMinPacksFn(minPacksNumber: number) {
+    return user => {
+        return user.packages >= minPacksNumber;
+    };
 }
-function filterByStatusesFn(statuses: [string]) {
-    if (statuses === null) return user => user;
-    return user => statuses.findIndex(status => status.toUpperCase() === user.status.toUpperCase()) >= 0;
+function filterByMinSubjectsFn(minSubjectsNumber: number) {
+    return user => {
+        return user.subjects >= minSubjectsNumber;
+    };
 }
-
 function sortFn(by: string, ascending: boolean) {
     return (firstElement: any, secondElement: any) =>
         ascending

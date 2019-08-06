@@ -38,7 +38,7 @@ $navbar-height: $header-height;
             }
         }
         .right-panel {
-            width: 100%;
+            width: calc(100% - 100px);
         }
 
         .main {

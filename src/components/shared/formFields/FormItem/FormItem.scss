@@ -1,0 +1,49 @@
+@import '../../../../utils.scss';
+
+.form-item {
+    margin-bottom: 15px;
+    padding: 6px 12px;
+    .label {
+        display: block;
+        font-family: 'Lato', sans-serif;
+        font-size: 11px;
+        color: $color-gray-label;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+        position: relative;
+    }
+
+    &.required {
+        label:after {
+            content: '*';
+            color: #e3163a;
+            margin-left: 5px;
+            font-size: 17px;
+            position: absolute;
+            top: -3px;
+        }
+    }
+
+    select {
+        -webkit-appearance: none;
+    }
+
+    input,
+    select,
+    textarea {
+        width: 100%;
+        font-size: 14px;
+        background-color: #ffffff;
+        height: $form-input-height;
+        border-radius: 0;
+        border: solid 1px $color-gray-label;
+        padding: 6px 12px;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        &:focus {
+            color: $color-text-main-focused;
+            border-color: #80bdff;
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+    }
+}

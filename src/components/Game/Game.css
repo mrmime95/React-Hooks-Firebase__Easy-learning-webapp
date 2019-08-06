@@ -1,0 +1,9 @@
+li {
+  list-style-type: none; }
+
+button:focus {
+  outline: none; }
+
+.game {
+  display: flex;
+  justify-content: space-between; }

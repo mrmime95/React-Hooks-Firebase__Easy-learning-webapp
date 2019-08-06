@@ -43,7 +43,7 @@
         &.show {
             opacity: 1;
             visibility: visible;
-            height: 100px;
+            height: auto;
         }
 
         &.hide {
@@ -66,10 +66,6 @@
         .filter-container {
             .form-item {
                 flex: 0 0 50%;
-            }
-
-            &.show {
-                height: 50px;
             }
         }
     }
@@ -107,5 +103,11 @@
                 flex: 0 0 33.333333%;
             }
         }
+    }
+    & > .show {
+        display: block;
+    }
+    & > .hide {
+        display: none;
     }
 }

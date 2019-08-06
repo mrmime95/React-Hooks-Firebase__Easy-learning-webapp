@@ -67,6 +67,7 @@ export default function GameSettings(props: {}) {
                                         return { value: pack.id, label: pack.title };
                                     })
                                 }
+                                isDisabled={values.hardnessIDs.length !== 0}
                                 placeholder="Select packages"
                             />
                             <FieldArray

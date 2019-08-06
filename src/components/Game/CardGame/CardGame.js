@@ -12,20 +12,32 @@ export default function CardGame(props: {}) {
     return (
         <div className="card-game">
             {gameStarted ? (
-                <div id="carouselExampleControls" className="carousel slide" data-ride="carousel">
-                    <div className="carousel-inner">
+                <div className="game-container">
+                    <div className="informations">
+                        {activeIndex < randomCards.length && (
+                            <p className="per-card">
+                                {activeIndex + 1} out of {randomCards.length}
+                            </p>
+                        )}
+                    </div>
+                    <div className="cards-list">
                         {randomCards && randomCards.length ? (
                             activeIndex < randomCards.length ? (
                                 randomCards.map((card, index) => {
                                     return (
                                         <div
-                                            className={`carousel-item card-container ${index === activeIndex &&
-                                                'active'}`}
+                                            className={`card-container ${index === activeIndex && 'active'} `}
+                                            style={{
+                                                transform: `translateX(${
+                                                    activeIndex === index
+                                                        ? index * -100
+                                                        : activeIndex > index
+                                                        ? (index + 1) * -100
+                                                        : 0
+                                                }%)`,
+                                            }}
                                             key={`flipcard${card.id}`}
                                         >
-                                            <p>
-                                                {index + 1} out of {randomCards.length}
-                                            </p>
                                             <FlipCard
                                                 workWithFocus
                                                 card={card}
@@ -43,6 +55,9 @@ export default function CardGame(props: {}) {
                             ) : (
                                 <div className="finished-card-game">
                                     <p>Over</p>
+                                    <button className="btn btn-primary" onClick={setBack}>
+                                        Replay
+                                    </button>
                                     <button className="btn btn-primary" onClick={setBack}>
                                         Back to game setup
                                     </button>

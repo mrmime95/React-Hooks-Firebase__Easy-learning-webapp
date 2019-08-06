@@ -144,21 +144,7 @@ export default function FriendsProvider(props: { users: [Users] }) {
     }
 
     function onSearch(data: SearchData) {
-        let filtered = props.users
-            .filter(filterByNameFn(data.searchTerm))
-            .filter(filterByRolesFn(data.roles))
-            .filter(filterByStatusesFn(data.statuses))
-            .sort(sortFn(data.sort, data.sortAscending));
-
-        setState({
-            ...state,
-            filteredUsers: filtered,
-            pageOfUsers: getAPageOfContent(1, state.pageSize, filtered),
-            numberOfFilteredUsers: filtered.length,
-            activePage: 1,
-            sort: data.sort,
-            sortAscending: data.sortAscending,
-        });
+        console.log(data);
     }
 }
 
