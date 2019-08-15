@@ -3,35 +3,29 @@ import { FirebaseContext } from '../../Firebase/FirebaseProvider';
 
 export const FriendsContext = React.createContext();
 
-const defaultPageSize = 10;
-const defaultSortBy = 'name';
-const defaultAscending = true;
-
-type Users = {
-    name: string,
-    role: string,
-    status: string,
-    created: string,
-    changed: string,
-    lastActivity: string,
-    id: number,
+const defaultFilters = {
+    order: ['name', 'asc'],
+    searchTerm: '',
+    minCards: 0,
+    minPacks: 0,
+    minSubjects: 0,
+    roles: [],
+    tags: [],
 };
 
 export default function FriendsProvider(props: { users: [Users] }) {
     const [state, setState] = useState({
-        pageSize: defaultPageSize,
-        pageOfUsers: getAPageOfContent(1, defaultPageSize, props.users.sort(sortFn(defaultSortBy, defaultAscending))),
-        activePage: 1,
-        filteredUsers: props.users.sort(sortFn(defaultSortBy, defaultAscending)),
-        numberOfFilteredUsers: props.users.length,
-        sort: defaultSortBy,
-        sortAscending: defaultAscending,
         friends: [],
+        isLoading: false,
     });
+    const [filters, setFilters] = useState(defaultFilters);
     const fireContext = useContext(FirebaseContext);
     useEffect(() => {
         getAllFriends();
     }, []);
+    useEffect(() => {
+        getAllFriends();
+    }, [filters]);
 
     return (
         <FriendsContext.Provider
@@ -108,10 +102,19 @@ export default function FriendsProvider(props: { users: [Users] }) {
                         cards: friendData.data().cardsNumber,
                         role: friendData.data().role,
                         profilePicture: friendData.data().profilePicture,
+                        tags: friendData.data().tags,
                     };
                 })
             );
-            setState({ ...state, friends: requesterUsers });
+            const showFriends = (requesterUsers || [])
+                .filter(filterByUserNameFn(filters.searchTerm))
+                .filter(filterByMinCardsFn(filters.minCards))
+                .filter(filterByMinPacksFn(filters.minPacks))
+                .filter(filterByMinSubjectsFn(filters.minSubjects))
+                .filter(filterByRoles(filters.roles))
+                .filter(filterByTags(filters.tags))
+                .sort(sortFn(filters.order[0], filters.order[1]));
+            setState({ ...state, friends: showFriends });
         } else {
             setState({ ...state, friends: [] });
         }
@@ -143,23 +146,92 @@ export default function FriendsProvider(props: { users: [Users] }) {
         });
     }
 
-    function onSearch(data: SearchData) {
-        console.log(data);
+    async function onSearch(data: SearchData) {
+        setState({ ...state, friends: [] });
+
+        const ordBy = getOrder(data.sort.value);
+        const roles = [];
+        if (data.users) {
+            roles.push('user');
+        }
+        if (data.approvers) {
+            roles.push('approver');
+        }
+        if (data.admins) {
+            roles.push('admin');
+        }
+        setFilters({
+            order: ordBy,
+            searchTerm: data.searchTerm || '',
+            minCards: data.minCards || 0,
+            minPacks: data.minPacks || 0,
+            minSubjects: data.minSubjects || 0,
+            roles,
+            tags: data.tags.map(tag => tag.text) || [],
+        });
+    }
+
+    function getOrder(sort: string): [string, string] {
+        const sortArray = sort.split('_');
+        let sortBy;
+        switch (sortArray[0]) {
+            case 'name':
+                sortBy = 'name';
+                break;
+            case 'status':
+                sortBy = 'role';
+                break;
+            case 'words-number':
+                sortBy = 'cards';
+                break;
+            case 'packages-name':
+                sortBy = 'packages';
+                break;
+            case 'subjects-number':
+                sortBy = 'subjects';
+                break;
+            default:
+                sortBy = 'name';
+                break;
+        }
+
+        return [sortBy, sortArray[1] === 'asc'];
     }
 }
 
-function filterByNameFn(name: string) {
-    return row => row.name.toUpperCase().indexOf(name.toUpperCase()) >= 0;
-}
-function filterByRolesFn(roles: [string]) {
-    if (roles === null) return user => user;
-    return user => roles.findIndex(role => role.toUpperCase() === user.role.toUpperCase()) >= 0;
-}
-function filterByStatusesFn(statuses: [string]) {
-    if (statuses === null) return user => user;
-    return user => statuses.findIndex(status => status.toUpperCase() === user.status.toUpperCase()) >= 0;
+function filterByUserNameFn(name: string) {
+    return user => {
+        return user.name.toUpperCase().indexOf(name.toUpperCase()) >= 0;
+    };
 }
 
+function filterByMinCardsFn(minCardsNumber: number) {
+    return user => {
+        return user.cards >= minCardsNumber;
+    };
+}
+
+function filterByRoles(roles: string[]) {
+    return user => {
+        return roles.includes(user.role);
+    };
+}
+
+function filterByTags(tags: string[]) {
+    return user => {
+        return tags.every(tag => user.tags.includes(tag));
+    };
+}
+function filterByMinPacksFn(minPacksNumber: number) {
+    return user => {
+        return user.packages >= minPacksNumber;
+    };
+}
+function filterByMinSubjectsFn(minSubjectsNumber: number) {
+    return user => {
+        return user.subjects >= minSubjectsNumber;
+    };
+}
 function sortFn(by: string, ascending: boolean) {
     return (firstElement: any, secondElement: any) =>
         ascending

@@ -145,7 +145,7 @@ export default function DashboardProvider(props: { loadSize: number, orderBy: [s
                             };
                         })
                     );
-                    const createdBy = await fireContext.getCreatedBy(doc.createdBy.id);
+                    const createdBy = await fireContext.getCreatedBy(doc.data().createdBy.id);
                     return { package: { ...doc.data(), id: doc.id, words }, user: createdBy };
                 })
             );
@@ -156,7 +156,6 @@ export default function DashboardProvider(props: { loadSize: number, orderBy: [s
     }
 
     function onSearch(data) {
-        console.log(data);
         const ordBy = getOrder(data.sort.value);
         setState({ dashboardFlow: [], lastVisible: null, hasMore: false });
         if (orderBy[0] !== ordBy[0] || orderBy[1] !== ordBy[1]) {
@@ -210,7 +209,6 @@ export default function DashboardProvider(props: { loadSize: number, orderBy: [s
 
 function filterByPackageNameFn(name: string) {
     return row => {
-        console.log(row.data());
         return (
             row
                 .data()
@@ -246,9 +244,7 @@ function filterByPublicsFn(publicsOnly: boolean) {
 }
 
 function filterByTagsFn(tags: [string]) {
-    if (tags.length === 0) return row => row;
     return row => {
-        console.log(row.data().tags);
-        return tags.findIndex(tag => tag.toUpperCase() === row.data().tags.toUpperCase()) >= 0;
+        return tags.every(tag => row.data().tags.includes(tag));
     };
 }

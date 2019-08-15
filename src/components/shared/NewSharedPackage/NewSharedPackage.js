@@ -49,7 +49,6 @@ function NewSharedPackageContent(props) {
     const { user, db, increment, decrement } = useContext(FirebaseContext);
     const [savingModalOpen, setSavingModalOpen] = useState(false);
     const context = useContext(NewSharedPackageContext);
-    console.log(props);
     return (
         <div className="new-shared-package">
             <Link to={props.user.link}>
@@ -217,7 +216,6 @@ function NewSharedPackageContent(props) {
                             <div className="modal-form">
                                 <div className="form-group select-input">
                                     <SelectInput
-                                        label="Select/Add target subject:"
                                         value={values.subjectNameSelect}
                                         name="subjectName"
                                         onChange={value => {

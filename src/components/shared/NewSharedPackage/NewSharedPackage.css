@@ -75,7 +75,102 @@
       display: flex;
       justify-content: flex-end; }
 
-.modal-container.one-line-modal .modal-content .modal-form .form-group.select-input {
+.modal-container.one-line-modal .modal-content .modal-form {
   width: 100%;
   margin: 0;
   padding: 0 0 20px; }
+
+/* 
+.modal-container.one-line-modal .modal-content {
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+    max-height: 100vh;
+    overflow: scroll;
+    .modal-form .form-group.select-input {
+        width: 100%;
+        margin: 0;
+        padding: 0 0 20px;
+    }
+    .form {
+        position: relative;
+        z-index: 1;
+        background: #ffffff;
+        max-width: 360px;
+        input {
+            font-family: 'Roboto', sans-serif;
+            outline: 0;
+            background: #f2f2f2;
+            width: 100%;
+            border: 0;
+            margin: 0 0 15px;
+            padding: 15px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        #customBtn {
+            display: inline-block;
+            background: white;
+            color: #444;
+            width: 190px;
+            border-radius: 5px;
+            border: thin solid #888;
+            box-shadow: 1px 1px 1px grey;
+            white-space: nowrap;
+            &:hover {
+                cursor: pointer;
+            }
+            .label {
+                font-family: serif;
+                font-weight: normal;
+            }
+            .icon {
+                background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png')
+                    no-repeat;
+                background-size: contain;
+                display: inline-block;
+                vertical-align: middle;
+                width: 42px;
+                height: 42px;
+            }
+            .buttonText {
+                display: inline-block;
+                vertical-align: middle;
+                padding-left: 42px;
+                padding-right: 42px;
+                font-size: 14px;
+                font-weight: bold;
+                font-family: 'Roboto', sans-serif;
+            }
+        }
+
+        button {
+            font-family: 'Roboto', sans-serif;
+            text-transform: uppercase;
+            outline: 0;
+            background: #4caf50;
+            width: 100%;
+            border: 0;
+            padding: 15px;
+            margin: 0 0 15px;
+            color: #ffffff;
+            font-size: 14px;
+            -webkit-transition: all 0.3 ease;
+            transition: all 0.3 ease;
+            cursor: pointer;
+            &:hover,
+            &:active,
+            &:focus {
+                background: #43a047;
+            }
+        }
+        .message {
+            margin: 15px 0 0;
+            color: #b3b3b3;
+            font-size: 12px;
+            a {
+                color: #4caf50;
+                text-decoration: none;
+            }
+        }
+    }
+}
+ */

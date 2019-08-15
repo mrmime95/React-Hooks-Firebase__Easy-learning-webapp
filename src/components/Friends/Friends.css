@@ -27,9 +27,9 @@ button:focus {
         max-width: 66%;
         padding-left: 20px; }
     @media only screen and (min-width: 992px) {
-      .friend-requests-list .grid .grid-row .column.status {
+      .friend-requests-list .grid .grid-row .column.tags {
         padding: 0 23px;
-        flex: 1; }
+        flex: 2; }
       .friend-requests-list .grid .grid-row .column.name-content .with-label {
         width: auto; }
         .friend-requests-list .grid .grid-row .column.name-content .with-label .label {

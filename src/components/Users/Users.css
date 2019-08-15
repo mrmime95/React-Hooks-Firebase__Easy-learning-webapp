@@ -45,9 +45,9 @@ button:focus {
         max-width: 66%;
         padding-left: 20px; }
     @media only screen and (min-width: 992px) {
-      .user-list .grid .grid-row .column.status {
+      .user-list .grid .grid-row .column.tags {
         padding: 0 23px;
-        flex: 1; }
+        flex: 2; }
       .user-list .grid .grid-row .column.name-content .with-label {
         width: auto; }
         .user-list .grid .grid-row .column.name-content .with-label .label {

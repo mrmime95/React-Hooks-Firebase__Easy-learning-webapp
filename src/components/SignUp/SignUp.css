@@ -1,9 +1,9 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
-.login-page {
+.signup-page {
   width: 100%;
   padding: 8% 0 0;
   margin: auto; }
-  .login-page .form {
+  .signup-page .form {
     position: relative;
     z-index: 1;
     background: #ffffff;
@@ -12,7 +12,7 @@
     padding: 45px;
     text-align: center;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24); }
-    .login-page .form input {
+    .signup-page .form input {
       font-family: 'Roboto', sans-serif;
       outline: 0;
       background: #f2f2f2;
@@ -22,7 +22,9 @@
       padding: 15px;
       box-sizing: border-box;
       font-size: 14px; }
-    .login-page .form #customBtn {
+    .signup-page .form .tags {
+      margin: 0 0 15px; }
+    .signup-page .form #customBtn {
       display: inline-block;
       background: white;
       color: #444;
@@ -31,19 +33,19 @@
       border: thin solid #888;
       box-shadow: 1px 1px 1px grey;
       white-space: nowrap; }
-      .login-page .form #customBtn:hover {
+      .signup-page .form #customBtn:hover {
         cursor: pointer; }
-      .login-page .form #customBtn .label {
+      .signup-page .form #customBtn .label {
         font-family: serif;
         font-weight: normal; }
-      .login-page .form #customBtn .icon {
+      .signup-page .form #customBtn .icon {
         background: url("https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png") no-repeat;
         background-size: contain;
         display: inline-block;
         vertical-align: middle;
         width: 42px;
         height: 42px; }
-      .login-page .form #customBtn .buttonText {
+      .signup-page .form #customBtn .buttonText {
         display: inline-block;
         vertical-align: middle;
         padding-left: 42px;
@@ -52,7 +54,7 @@
         font-weight: bold;
         /* Use the Roboto font that is loaded in the <head> */
         font-family: 'Roboto', sans-serif; }
-    .login-page .form button {
+    .signup-page .form button {
       font-family: 'Roboto', sans-serif;
       text-transform: uppercase;
       outline: 0;
@@ -66,13 +68,13 @@
       -webkit-transition: all 0.3 ease;
       transition: all 0.3 ease;
       cursor: pointer; }
-      .login-page .form button:hover, .login-page .form button:active, .login-page .form button:focus {
+      .signup-page .form button:hover, .signup-page .form button:active, .signup-page .form button:focus {
         background: #43a047; }
-    .login-page .form .message {
+    .signup-page .form .message {
       margin: 15px 0 0;
       color: #b3b3b3;
       font-size: 12px; }
-      .login-page .form .message a {
+      .signup-page .form .message a {
         color: #4caf50;
         text-decoration: none; }
 

@@ -2,8 +2,6 @@
 import React, { useContext, useState } from 'react';
 
 import UsersProvider, { UsersContext } from './UsersProvider/UsersProvider';
-import { users } from '../../dummyData/Users';
-import GridWithPagination from '../shared/Grid/GridWithPagination/GridWithPagination';
 import Grid from '../shared/Grid/Grid';
 import GridColumn from '../shared/Grid/GridColumn/GridColumn';
 import AvatarCircle from '../shared/AvatarCircle/AvatarCircle';
@@ -29,7 +27,7 @@ export default function Users(props) {
 
 function UsersContent(props: { match: RouterMatch }) {
     const context = useContext(UsersContext);
-    const { user } = useContext(FirebaseContext);
+    const { user, updateToAdmin, updateToApprover, updateToUser } = useContext(FirebaseContext);
     return (
         <div className="user-list">
             <h3>Users</h3>
@@ -40,15 +38,14 @@ function UsersContent(props: { match: RouterMatch }) {
                     minCards: null,
                     minPacks: null,
                     minSubjects: null,
-                    admins: false,
-                    approvers: false,
+                    admins: true,
+                    approvers: true,
                     users: true,
                     tags: [],
                 }}
                 sort={{
                     options: sortOptions(),
                 }}
-                isLoading={context.isLoading}
             >
                 {({ values, handleChange, handleBlur }: FilterProps<Filters>) => (
                     <div className="filters">
@@ -149,20 +146,21 @@ function UsersContent(props: { match: RouterMatch }) {
                         headerConfig={[
                             { label: 'picture', flex: 1 },
                             { label: 'personal data', flex: 3 },
-                            { label: 'status', flex: 1 },
+                            { label: 'tags', flex: 2 },
                             { label: 'data', flex: 2 },
                             { label: 'actions', flex: 2 },
                         ]}
                         createRow={(rowData: {
-                            id: number,
-                            name: string,
-                            profilePicture?: string,
+                            id: string,
                             email: string,
+                            name: string,
                             birthDate: string,
-                            status: string,
                             subjects: number,
                             packages: number,
-                            words: number,
+                            cards: number,
+                            role: string,
+                            profilePicture: string,
+                            tags: string[],
                             requested: boolean,
                         }) => {
                             const [sent, setSent] = useState(rowData.requested);
@@ -191,11 +189,24 @@ function UsersContent(props: { match: RouterMatch }) {
                                                 <GridColumn label="Birth">
                                                     <p className="birth">{rowData.birthDate}</p>
                                                 </GridColumn>
+                                                <GridColumn label="status">
+                                                    <p>{rowData.role}</p>
+                                                </GridColumn>
                                             </GridColumn>
                                         </GridColumn>
 
-                                        <GridColumn className="status" label="status">
-                                            <p>{rowData.role}</p>
+                                        <GridColumn className="tags" label="tags">
+                                            {rowData.tags.map(tag => {
+                                                return (
+                                                    <FormTags
+                                                        key={tag}
+                                                        name="tags"
+                                                        tags={[{ id: tag, text: tag }]}
+                                                        handleChange={() => {}}
+                                                        readOnly
+                                                    />
+                                                );
+                                            })}
                                         </GridColumn>
 
                                         <GridColumn className="data">
@@ -214,7 +225,7 @@ function UsersContent(props: { match: RouterMatch }) {
                                                 <h5>Is your friend</h5>
                                             ) : rowData.requested ? (
                                                 <button
-                                                    type="submit"
+                                                    type="button"
                                                     className="btn btn-outline-primary"
                                                     onClick={e => {
                                                         e.preventDefault();
@@ -228,7 +239,7 @@ function UsersContent(props: { match: RouterMatch }) {
                                                 </button>
                                             ) : (
                                                 <button
-                                                    type="submit"
+                                                    type="button"
                                                     className="btn btn-outline-primary"
                                                     onClick={e => {
                                                         e.preventDefault();
@@ -242,26 +253,69 @@ function UsersContent(props: { match: RouterMatch }) {
                                                 </button>
                                             )}
                                             {user.role === 'admin' && (
-                                                <React.Fragment>
-                                                    <button type="button" className="btn btn-outline-secondary">
-                                                        Delete user
+                                                <div className="dropdown">
+                                                    <button
+                                                        className="btn btn-outline-danger dropdown-toggle"
+                                                        type="button"
+                                                        id="dropdownMenuLink"
+                                                        data-toggle="dropdown"
+                                                        aria-haspopup="true"
+                                                        aria-expanded="false"
+                                                        onClick={e => {
+                                                            e.preventDefault();
+                                                        }}
+                                                    >
+                                                        Admin actions
                                                     </button>
-                                                    {rowData.role !== 'approver' && (
-                                                        <button type="button" className="btn btn-outline-secondary">
-                                                            Create approver
+
+                                                    <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                        <button
+                                                            type="button"
+                                                            className="dropdown-item"
+                                                            onClick={e => {
+                                                                e.preventDefault();
+                                                            }}
+                                                        >
+                                                            Delete user
                                                         </button>
-                                                    )}
-                                                    {rowData.role !== 'admin' && (
-                                                        <button type="button" className="btn btn-outline-secondary">
-                                                            Create admin
-                                                        </button>
-                                                    )}
-                                                    {rowData.role !== 'user' && (
-                                                        <button type="button" className="btn btn-outline-secondary">
-                                                            Create user
-                                                        </button>
-                                                    )}
-                                                </React.Fragment>
+                                                        {rowData.role !== 'approver' && (
+                                                            <button
+                                                                type="button"
+                                                                className="dropdown-item"
+                                                                onClick={e => {
+                                                                    e.preventDefault();
+                                                                    updateToApprover(rowData.id);
+                                                                }}
+                                                            >
+                                                                Change status to APPROVER
+                                                            </button>
+                                                        )}
+                                                        {rowData.role !== 'admin' && (
+                                                            <button
+                                                                type="button"
+                                                                className="dropdown-item"
+                                                                onClick={e => {
+                                                                    e.preventDefault();
+                                                                    updateToAdmin(rowData.id);
+                                                                }}
+                                                            >
+                                                                Change status to ADMIN
+                                                            </button>
+                                                        )}
+                                                        {rowData.role !== 'user' && (
+                                                            <button
+                                                                type="button"
+                                                                className="dropdown-item"
+                                                                onClick={e => {
+                                                                    e.preventDefault();
+                                                                    updateToUser(rowData.id);
+                                                                }}
+                                                            >
+                                                                Change status to USER
+                                                            </button>
+                                                        )}
+                                                    </div>
+                                                </div>
                                             )}
                                         </GridColumn>
                                     </LinkGridRow>

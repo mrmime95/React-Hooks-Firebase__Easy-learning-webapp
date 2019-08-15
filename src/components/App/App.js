@@ -17,35 +17,47 @@ function App() {
     return (
         <BrowserRouter>
             <FirebaseProvider>
-                <div className="app">
-                    <LeftPanel menu={navigationConfig} />
-                    <div className="right-panel">
-                        <Header />
-                        <div className="main">
-                            <Root>
-                                <React.Fragment>
-                                    <Switch>
-                                        <GuardRoute type="public" path="/login" component={Login} />
-                                        <GuardRoute type="public" path="/signup" component={SignUp} />
-                                        {Object.keys(navigationConfig).map((key, index) => {
-                                            const route = navigationConfig[key].route;
-                                            return (
-                                                <GuardRoute
-                                                    type="private"
-                                                    path={route.path}
-                                                    component={route.Component}
-                                                    key={index}
-                                                />
-                                            );
-                                        })}
-                                        <GuardRoute type="private" path="/user/:id" component={UserDetail} />
-                                        <Redirect from="/" to={navigationConfig.dashboard.route.path} />
-                                    </Switch>
-                                </React.Fragment>
-                            </Root>
-                        </div>
-                    </div>
-                </div>
+                <Root>
+                    <Switch>
+                        <GuardRoute type="public" path="/login" component={Login} />
+                        <GuardRoute type="public" path="/signup" component={SignUp} />
+                        <GuardRoute
+                            type="private"
+                            path="/"
+                            component={() => (
+                                <div className="app">
+                                    <LeftPanel menu={navigationConfig} />
+                                    <div className="right-panel">
+                                        <Header />
+                                        <div className="main">
+                                            <React.Fragment>
+                                                <Switch>
+                                                    {Object.keys(navigationConfig).map((key, index) => {
+                                                        const route = navigationConfig[key].route;
+                                                        return (
+                                                            <GuardRoute
+                                                                type="private"
+                                                                path={route.path}
+                                                                component={route.Component}
+                                                                key={index}
+                                                            />
+                                                        );
+                                                    })}
+                                                    <GuardRoute
+                                                        type="private"
+                                                        path="/user/:id"
+                                                        component={UserDetail}
+                                                    />
+                                                    <Redirect from="/" to={navigationConfig.dashboard.route.path} />
+                                                </Switch>
+                                            </React.Fragment>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        />
+                    </Switch>
+                </Root>
             </FirebaseProvider>
         </BrowserRouter>
     );

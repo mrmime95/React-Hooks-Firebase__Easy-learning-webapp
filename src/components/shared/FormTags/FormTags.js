@@ -5,10 +5,10 @@ import { WithContext as ReactTags } from 'react-tag-input';
 import { FirebaseContext } from '../../Firebase/FirebaseProvider';
 import './FormTags.css';
 
-function FormTags(props: { handleChange: () => void, tags: [sting], readOnly?: boolean }) {
+function FormTags(props: { handleChange: () => void, tags: [sting], readOnly?: boolean, className?: string }) {
     const fireContext = useContext(FirebaseContext);
     return (
-        <div>
+        <div className={props.className}>
             <ReactTags
                 tags={props.tags}
                 suggestions={fireContext.suggestions}

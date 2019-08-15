@@ -2,7 +2,6 @@
 import React, { useContext } from 'react';
 
 import FriendsProvider, { FriendsContext } from './FriendsProvider/FriendsProvider';
-import { users } from '../../dummyData/Users';
 import GridWithPagination from '../shared/Grid/GridWithPagination/GridWithPagination';
 import GridColumn from '../shared/Grid/GridColumn/GridColumn';
 import AvatarCircle from '../shared/AvatarCircle/AvatarCircle';
@@ -17,7 +16,7 @@ import './Friends.css';
 export default function Friends(props) {
     return (
         <div className="list">
-            <FriendsProvider users={users}>
+            <FriendsProvider>
                 <FriendRequestsContent {...props} />
                 <FriendsList {...props} />
             </FriendsProvider>

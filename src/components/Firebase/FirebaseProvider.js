@@ -48,6 +48,10 @@ export default class FirebaseProvider extends Component {
                     deletePackageById: this.deletePackageById,
                     deleteSubjectById: this.deleteSubjectById,
                     getCreatedBy: this.getCreatedBy,
+                    doSendPasswordResetEmail: this.doSendPasswordResetEmail,
+                    updateToAdmin: this.updateToAdmin,
+                    updateToApprover: this.updateToApprover,
+                    updateToUser: this.updateToUser,
                 }}
             >
                 {this.props.children}
@@ -58,7 +62,6 @@ export default class FirebaseProvider extends Component {
         auth.onAuthStateChanged(user => {
             if (user && !user.isAnonymous) {
                 const { uid } = user;
-                console.log(user);
                 this.getCurrentUser(uid);
             } else {
                 this.setState({ authReady: true, isLoggedIn: false, user: null });
@@ -66,6 +69,13 @@ export default class FirebaseProvider extends Component {
         });
     };
 
+    doSendEmailVerification = (email, password) => {
+        return auth.sendEmailVerification(email);
+    };
+
+    doSendPasswordResetEmail = email => {
+        return auth.sendPasswordResetEmail(email);
+    };
     doCreateUserWithEmailAndPassword = (email, password) => {
         return auth.createUserWithEmailAndPassword(email, password);
     };
@@ -271,10 +281,9 @@ export default class FirebaseProvider extends Component {
     createNewTag = (tag: { id: string, text: string }) => {
         if (!this.state.suggestions.find(suggest => suggest.id === tag.id)) {
             db.collection(`tags`)
-                .doc(tag.id)
+                .doc(tag.id.toUpperCase())
                 .set({ ...tag })
                 .then(() => {
-                    console.log('Tag Created');
                     const suggestions = this.state.suggestions;
                     suggestions.push({ ...tag });
                     this.setState({ suggestions });
@@ -392,5 +401,33 @@ export default class FirebaseProvider extends Component {
             .collection('subjects')
             .doc(subjectId)
             .delete();
+    };
+    /* --------------update------------ */
+
+    updateToAdmin = userId => {
+        const batch = db.batch();
+        const userRef = db.collection('users').doc(userId);
+
+        batch.update(userRef, {
+            role: 'admin',
+        });
+        batch.commit();
+    };
+    updateToApprover = userId => {
+        const batch = db.batch();
+        const userRef = db.collection('users').doc(userId);
+        batch.update(userRef, {
+            role: 'approver',
+        });
+        batch.commit();
+    };
+    updateToUser = userId => {
+        const batch = db.batch();
+        const userRef = db.collection('users').doc(userId);
+
+        batch.update(userRef, {
+            role: 'user',
+        });
+        batch.commit();
     };
 }

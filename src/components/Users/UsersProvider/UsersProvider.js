@@ -16,6 +16,15 @@ type Users = {
     lastActivity: string,
     id: number,
 };
+const defaultFilters = {
+    order: ['name', 'asc'],
+    searchTerm: '',
+    minCards: 0,
+    minPacks: 0,
+    minSubjects: 0,
+    roles: [],
+    tags: [],
+};
 
 export default function UsersProvider(props) {
     const [state, setState] = useState({
@@ -29,19 +38,25 @@ export default function UsersProvider(props) {
         users: [],
         isLoading: false,
     });
+    const [filters, setFilters] = useState(defaultFilters);
     const fireContext = useContext(FirebaseContext);
     useEffect(() => {
         fireContext.refreshFriends();
     }, []);
 
+    useEffect(() => {
+        getFilteredUsers();
+    }, [filters]);
+
     return (
-        <UsersContext.Provider value={{ ...state, onSearch, createFriendReques, deleteFriendReques }}>
+        <UsersContext.Provider value={{ ...state, onSearch, createFriendReques, refreshUserAtId, deleteFriendReques }}>
             {props.children}
         </UsersContext.Provider>
     );
 
-    async function getFilteredUsers(filteredUsersRef) {
-        const filteredUsers = await filteredUsersRef.get();
+    async function getFilteredUsers() {
+        let usersCollectionRef = fireContext.db.collection(`users`);
+        const filteredUsers = await usersCollectionRef.get();
         const returnableUsers = await Promise.all(
             filteredUsers.docs.map(async doc => {
                 const friendRequest = await fireContext.db
@@ -58,6 +73,7 @@ export default function UsersProvider(props) {
                     cards: doc.data().cardsNumber,
                     role: doc.data().role,
                     profilePicture: doc.data().profilePicture,
+                    tags: doc.data().tags,
                     requested: friendRequest.data()
                         ? friendRequest.data().requesters
                             ? friendRequest.data().requesters.find(element => element === fireContext.user.id)
@@ -66,7 +82,15 @@ export default function UsersProvider(props) {
                 };
             })
         );
-        return returnableUsers;
+        const users = (returnableUsers || [])
+            .filter(filterByUserNameFn(filters.searchTerm))
+            .filter(filterByMinCardsFn(filters.minCards))
+            .filter(filterByMinPacksFn(filters.minPacks))
+            .filter(filterByMinSubjectsFn(filters.minSubjects))
+            .filter(filterByRoles(filters.roles))
+            .filter(filterByTags(filters.tags))
+            .sort(sortFn(filters.order[0], filters.order[1]));
+        setState({ ...state, users: users });
     }
 
     async function createFriendReques(requestedId: string) {
@@ -91,6 +115,8 @@ export default function UsersProvider(props) {
         batch.commit();
     }
 
+    function refreshUserAtId() {}
+
     async function deleteFriendReques(requestedId: string) {
         const friendRequestNumberRef = fireContext.db.doc(`friendRequestNumber/${requestedId}`);
         const friendRequestNumber = await friendRequestNumberRef.get();
@@ -104,31 +130,27 @@ export default function UsersProvider(props) {
     }
 
     async function onSearch(data: SearchData) {
-        setState({ ...state, isLoading: true, users: [] });
-        let usersCollectionRef = fireContext.db.collection(`users`);
-        const ordBy = getOrder(data.sort.value);
-        let adminRolesCollection = [];
-        if (data.admins) {
-            adminRolesCollection = await getFilteredUsers(usersCollectionRef.where('role', '==', 'admin'));
-        }
-        let userRolesCollection = [];
-        if (data.users) {
-            userRolesCollection = await getFilteredUsers(usersCollectionRef.where('role', '==', 'user'));
-        }
-        let approverRolesCollection = [];
-        if (data.approvers) {
-            approverRolesCollection = await getFilteredUsers(usersCollectionRef.where('role', '==', 'approver'));
-        }
+        setState({ ...state, users: [] });
 
-        const users = [...adminRolesCollection, ...userRolesCollection, ...approverRolesCollection]
-            .sort(sortFn(ordBy[0], ordBy[1]))
-            .filter(filterByMinCardsFn(data.minCards))
-            .filter(filterByMinPacksFn(data.minPacks))
-            .filter(filterByMinSubjectsFn(data.minSubjects));
-        setState({
-            ...state,
-            users,
-            isLoading: false,
+        const ordBy = getOrder(data.sort.value);
+        const roles = [];
+        if (data.users) {
+            roles.push('user');
+        }
+        if (data.approvers) {
+            roles.push('approver');
+        }
+        if (data.admins) {
+            roles.push('admin');
+        }
+        setFilters({
+            order: ordBy,
+            searchTerm: data.searchTerm || '',
+            minCards: data.minCards || 0,
+            minPacks: data.minPacks || 0,
+            minSubjects: data.minSubjects || 0,
+            roles,
+            tags: data.tags.map(tag => tag.text) || [],
         });
     }
 
@@ -160,9 +182,27 @@ export default function UsersProvider(props) {
     }
 }
 
+function filterByUserNameFn(name: string) {
+    return user => {
+        return user.name.toUpperCase().indexOf(name.toUpperCase()) >= 0;
+    };
+}
+
 function filterByMinCardsFn(minCardsNumber: number) {
     return user => {
         return user.cards >= minCardsNumber;
+    };
+}
+
+function filterByRoles(roles: string[]) {
+    return user => {
+        return roles.includes(user.role);
+    };
+}
+
+function filterByTags(tags: string[]) {
+    return user => {
+        return tags.every(tag => user.tags.includes(tag));
     };
 }
 function filterByMinPacksFn(minPacksNumber: number) {

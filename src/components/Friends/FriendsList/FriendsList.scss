@@ -56,9 +56,9 @@
                 }
 
                 @include breakpoint-large() {
-                    &.status {
+                    &.tags {
                         padding: 0 23px;
-                        flex: 1;
+                        flex: 2;
                     }
                     &.name-content {
                         .with-label {

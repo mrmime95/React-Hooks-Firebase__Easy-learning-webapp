@@ -25,12 +25,12 @@ export default function FriendsList(props: { match: RouterMatch }) {
             <SearchArea
                 onSubmit={context.onSearch}
                 initialValues={{
-                    sort: { value: 'created-at_desc', label: `created at-desc` },
+                    sort: sortOptions()[0],
                     minCards: null,
                     minPacks: null,
                     minSubjects: null,
-                    admins: false,
-                    approvers: false,
+                    admins: true,
+                    approvers: true,
                     users: true,
                     tags: [],
                 }}
@@ -136,20 +136,21 @@ export default function FriendsList(props: { match: RouterMatch }) {
                     headerConfig={[
                         { label: 'picture', flex: 1 },
                         { label: 'personal data', flex: 3 },
-                        { label: 'status', flex: 1 },
+                        { label: 'tags', flex: 2 },
                         { label: 'data', flex: 2 },
                         { label: 'actions', flex: 2 },
                     ]}
                     createRow={(rowData: {
-                        id: number,
-                        name: string,
-                        profilePicture?: string,
+                        id: string,
                         email: string,
+                        name: string,
                         birthDate: string,
-                        status: string,
                         subjects: number,
                         packages: number,
-                        words: number,
+                        cards: number,
+                        role: string,
+                        profilePicture: string,
+                        tags: string[],
                         requested: boolean,
                     }) => {
                         if (rowData.id !== user.id) {
@@ -173,11 +174,24 @@ export default function FriendsList(props: { match: RouterMatch }) {
                                             <GridColumn label="Birth">
                                                 <p className="birth">{rowData.birthDate}</p>
                                             </GridColumn>
+                                            <GridColumn label="status">
+                                                <p>{rowData.role}</p>
+                                            </GridColumn>
                                         </GridColumn>
                                     </GridColumn>
 
-                                    <GridColumn className="status" label="status">
-                                        <p>{rowData.role}</p>
+                                    <GridColumn className="tags" label="tags">
+                                        {rowData.tags.map(tag => {
+                                            return (
+                                                <FormTags
+                                                    key={tag}
+                                                    name="tags"
+                                                    tags={[{ id: tag, text: tag }]}
+                                                    handleChange={() => {}}
+                                                    readOnly
+                                                />
+                                            );
+                                        })}
                                     </GridColumn>
 
                                     <GridColumn className="data">
