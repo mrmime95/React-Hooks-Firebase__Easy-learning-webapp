@@ -49,7 +49,17 @@ export default function UsersProvider(props) {
     }, [filters]);
 
     return (
-        <UsersContext.Provider value={{ ...state, onSearch, createFriendReques, refreshUserAtId, deleteFriendReques }}>
+        <UsersContext.Provider
+            value={{
+                ...state,
+                onSearch,
+                createFriendReques,
+                deleteFriendReques,
+                updateToAdmin,
+                updateToApprover,
+                updateToUser,
+            }}
+        >
             {props.children}
         </UsersContext.Provider>
     );
@@ -113,9 +123,11 @@ export default function UsersProvider(props) {
             });
         }
         batch.commit();
-    }
 
-    function refreshUserAtId() {}
+        const allUsers = state.users;
+        allUsers.find(user => user.id === requestedId).requested = true;
+        setState({ ...state, users: allUsers });
+    }
 
     async function deleteFriendReques(requestedId: string) {
         const friendRequestNumberRef = fireContext.db.doc(`friendRequestNumber/${requestedId}`);
@@ -127,6 +139,9 @@ export default function UsersProvider(props) {
             friendRequestNumberRef.update({ counter: fireContext.decrement, requesters: requesterArray });
         }
         fireContext.refreshFriends();
+        const allUsers = state.users;
+        allUsers.find(user => user.id === requestedId).requested = false;
+        setState({ ...state, users: allUsers });
     }
 
     async function onSearch(data: SearchData) {
@@ -179,6 +194,44 @@ export default function UsersProvider(props) {
         }
 
         return [sortBy, sortArray[1] === 'asc'];
+    }
+
+    /* --------------update------------ */
+
+    function updateToAdmin(userId) {
+        const batch = fireContext.db.batch();
+        const userRef = fireContext.db.collection('users').doc(userId);
+
+        batch.update(userRef, {
+            role: 'admin',
+        });
+        batch.commit();
+        const allUsers = state.users;
+        allUsers.find(user => user.id === userId).role = 'admin';
+        setState({ ...state, users: allUsers });
+    }
+    function updateToApprover(userId) {
+        const batch = fireContext.db.batch();
+        const userRef = fireContext.db.collection('users').doc(userId);
+        batch.update(userRef, {
+            role: 'approver',
+        });
+        batch.commit();
+        const allUsers = state.users;
+        allUsers.find(user => user.id === userId).role = 'approver';
+        setState({ ...state, users: allUsers });
+    }
+    function updateToUser(userId) {
+        const batch = fireContext.db.batch();
+        const userRef = fireContext.db.collection('users').doc(userId);
+
+        batch.update(userRef, {
+            role: 'user',
+        });
+        batch.commit();
+        const allUsers = state.users;
+        allUsers.find(user => user.id === userId).role = 'user';
+        setState({ ...state, users: allUsers });
     }
 }
 

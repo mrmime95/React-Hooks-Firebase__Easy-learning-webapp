@@ -27,7 +27,7 @@ export default function Users(props) {
 
 function UsersContent(props: { match: RouterMatch }) {
     const context = useContext(UsersContext);
-    const { user, updateToAdmin, updateToApprover, updateToUser } = useContext(FirebaseContext);
+    const { user } = useContext(FirebaseContext);
     return (
         <div className="user-list">
             <h3>Users</h3>
@@ -222,35 +222,62 @@ function UsersContent(props: { match: RouterMatch }) {
                                         </GridColumn>
                                         <GridColumn className="buttons">
                                             {user.friends && user.friends.find(friend => friend === rowData.id) ? (
-                                                <h5>Is your friend</h5>
-                                            ) : rowData.requested ? (
-                                                <button
-                                                    type="button"
-                                                    className="btn btn-outline-primary"
-                                                    onClick={e => {
-                                                        e.preventDefault();
-                                                        setDeleted(true);
-                                                        setSent(false);
-                                                        context.deleteFriendReques(rowData.id);
-                                                    }}
-                                                    disabled={deleted}
-                                                >
-                                                    Delete friend request
-                                                </button>
+                                                <Checkbox
+                                                    handleChange={() => {}}
+                                                    name="approvers"
+                                                    id="approvers"
+                                                    checked={true}
+                                                    label="Friend"
+                                                    readOnly
+                                                />
                                             ) : (
-                                                <button
-                                                    type="button"
-                                                    className="btn btn-outline-primary"
-                                                    onClick={e => {
-                                                        e.preventDefault();
-                                                        setSent(true);
-                                                        setDeleted(false);
-                                                        context.createFriendReques(rowData.id);
-                                                    }}
-                                                    disabled={sent}
-                                                >
-                                                    Send friend request
-                                                </button>
+                                                <div className="dropdown">
+                                                    <button
+                                                        className="btn btn-outline-success dropdown-toggle"
+                                                        type="button"
+                                                        id="dropdownMenuLink"
+                                                        data-toggle="dropdown"
+                                                        aria-haspopup="true"
+                                                        aria-expanded="false"
+                                                        onClick={e => {
+                                                            e.preventDefault();
+                                                        }}
+                                                    >
+                                                        {rowData.requested ? 'Friend request sent' : 'Friend request'}
+                                                    </button>
+
+                                                    <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                        {rowData.requested ? (
+                                                            <button
+                                                                type="button"
+                                                                className="dropdown-item"
+                                                                onClick={e => {
+                                                                    e.preventDefault();
+                                                                    setDeleted(true);
+                                                                    setSent(false);
+                                                                    context.deleteFriendReques(rowData.id);
+                                                                }}
+                                                                disabled={deleted}
+                                                            >
+                                                                Delete friend request
+                                                            </button>
+                                                        ) : (
+                                                            <button
+                                                                type="button"
+                                                                className="dropdown-item"
+                                                                onClick={e => {
+                                                                    e.preventDefault();
+                                                                    setSent(true);
+                                                                    setDeleted(false);
+                                                                    context.createFriendReques(rowData.id);
+                                                                }}
+                                                                disabled={sent}
+                                                            >
+                                                                Send friend request
+                                                            </button>
+                                                        )}
+                                                    </div>
+                                                </div>
                                             )}
                                             {user.role === 'admin' && (
                                                 <div className="dropdown">
@@ -284,7 +311,7 @@ function UsersContent(props: { match: RouterMatch }) {
                                                                 className="dropdown-item"
                                                                 onClick={e => {
                                                                     e.preventDefault();
-                                                                    updateToApprover(rowData.id);
+                                                                    context.updateToApprover(rowData.id);
                                                                 }}
                                                             >
                                                                 Change status to APPROVER
@@ -296,7 +323,7 @@ function UsersContent(props: { match: RouterMatch }) {
                                                                 className="dropdown-item"
                                                                 onClick={e => {
                                                                     e.preventDefault();
-                                                                    updateToAdmin(rowData.id);
+                                                                    context.updateToAdmin(rowData.id);
                                                                 }}
                                                             >
                                                                 Change status to ADMIN
@@ -308,7 +335,7 @@ function UsersContent(props: { match: RouterMatch }) {
                                                                 className="dropdown-item"
                                                                 onClick={e => {
                                                                     e.preventDefault();
-                                                                    updateToUser(rowData.id);
+                                                                    context.updateToUser(rowData.id);
                                                                 }}
                                                             >
                                                                 Change status to USER

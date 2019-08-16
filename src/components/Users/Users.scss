@@ -101,22 +101,8 @@
                     }
                     &.buttons {
                         flex: 2;
-                        .with-label {
-                            justify-content: space-between;
-                            width: auto;
-                            .label {
-                                padding: 0 15px 0 0;
-                                text-align: right;
-                                width: calc(100% - 120px);
-                                display: block;
-                            }
-                            .date {
-                                padding: 0 0 0 15px;
-                                width: 120px;
-                                text-align: right;
-                                font-weight: normal;
-                                line-height: 1.5;
-                            }
+                        .form-item {
+                            margin-bottom: 0;
                         }
                     }
                 }

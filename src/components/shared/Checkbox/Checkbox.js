@@ -9,7 +9,7 @@ export default function Checkbox({ className, label, name, handleChange, handleB
                 <input
                     type="checkbox"
                     name={name}
-                    onChange={!readOnly ? handleChange : undefined}
+                    onChange={!readOnly ? handleChange : () => {}}
                     onBlur={!readOnly ? handleBlur : undefined}
                     defaultChecked={checked || false}
                 />

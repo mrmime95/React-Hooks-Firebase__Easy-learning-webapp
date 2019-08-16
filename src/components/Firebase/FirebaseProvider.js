@@ -49,9 +49,6 @@ export default class FirebaseProvider extends Component {
                     deleteSubjectById: this.deleteSubjectById,
                     getCreatedBy: this.getCreatedBy,
                     doSendPasswordResetEmail: this.doSendPasswordResetEmail,
-                    updateToAdmin: this.updateToAdmin,
-                    updateToApprover: this.updateToApprover,
-                    updateToUser: this.updateToUser,
                 }}
             >
                 {this.props.children}
@@ -401,33 +398,5 @@ export default class FirebaseProvider extends Component {
             .collection('subjects')
             .doc(subjectId)
             .delete();
-    };
-    /* --------------update------------ */
-
-    updateToAdmin = userId => {
-        const batch = db.batch();
-        const userRef = db.collection('users').doc(userId);
-
-        batch.update(userRef, {
-            role: 'admin',
-        });
-        batch.commit();
-    };
-    updateToApprover = userId => {
-        const batch = db.batch();
-        const userRef = db.collection('users').doc(userId);
-        batch.update(userRef, {
-            role: 'approver',
-        });
-        batch.commit();
-    };
-    updateToUser = userId => {
-        const batch = db.batch();
-        const userRef = db.collection('users').doc(userId);
-
-        batch.update(userRef, {
-            role: 'user',
-        });
-        batch.commit();
     };
 }
