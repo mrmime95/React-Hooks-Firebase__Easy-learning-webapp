@@ -2,74 +2,140 @@ import React, { useContext, useState } from 'react';
 import { GameContext } from '../GameProvider/GameProvider';
 import FlipCard from '../../shared/FlipCard/FlipCard';
 import { Link } from 'react-router-dom';
+import Stepper from 'react-stepper-horizontal';
 
 import './CardGame.scss';
 
 export default function CardGame(props: {}) {
-    const { randomCards, changeKwnowledgeOfCard, setBack, gameStarted } = useContext(GameContext);
+    const { randomCards, changeKwnowledgeOfCard, setBack, gameStarted, inverseGame, cards } = useContext(GameContext);
     const [activeIndex, setActiveIndex] = useState(0);
-    const [inverse, setInverse] = useState(false);
+    const [inverse, setInverse] = useState(inverseGame);
+    const overAGame = activeIndex >= randomCards.length;
+
+    const [newRate, setNewRate] = useState([]);
     return (
         <div className="card-game">
             {gameStarted ? (
                 <div className="game-container">
-                    <div className="informations">
-                        {activeIndex < randomCards.length && (
-                            <p className="per-card">
-                                {activeIndex + 1} out of {randomCards.length}
-                            </p>
-                        )}
-                    </div>
-                    <div className="cards-list">
-                        {randomCards && randomCards.length ? (
-                            activeIndex < randomCards.length ? (
-                                randomCards.map((card, index) => {
-                                    return (
-                                        <div
-                                            className={`card-container ${index === activeIndex && 'active'} `}
-                                            style={{
-                                                transform: `translateX(${
-                                                    activeIndex === index
-                                                        ? index * -100
-                                                        : activeIndex > index
-                                                        ? (index + 1) * -100
-                                                        : 0
-                                                }%)`,
-                                            }}
-                                            key={`flipcard${card.id}`}
-                                        >
-                                            <FlipCard
-                                                workWithFocus
-                                                card={card}
-                                                stars={inverse}
-                                                onClick={() => setInverse(!inverse)}
-                                                interactiveStars
-                                                onClickStars={e => {
-                                                    changeKwnowledgeOfCard(card.id, e.rating);
-                                                    next();
-                                                }}
-                                            />
-                                        </div>
-                                    );
-                                })
-                            ) : (
-                                <div className="finished-card-game">
-                                    <p>Over</p>
-                                    <button className="btn btn-primary" onClick={setBack}>
-                                        Replay
-                                    </button>
-                                    <button className="btn btn-primary" onClick={setBack}>
-                                        Back to game setup
-                                    </button>
-                                    <Link to="/dashboard" className="btn btn-primary">
-                                        Back to dashboard
-                                    </Link>
+                    {overAGame ? (
+                        <div className="finished-card-game">
+                            <div className="stats">
+                                <h4 className="stats-name">Stats:</h4>
+                                <div className="stats-cards-list">
+                                    {randomCards.map((randomCard, index) => {
+                                        return (
+                                            <p key={'randomCard' + index + randomCard.id} className="stats-card">
+                                                {`Card ${index + 1}:  ${'★'.repeat(
+                                                    cards.find(card => card.id === randomCard.id).knowledge
+                                                )} >>> ${'★'.repeat(newRate[index])}`}
+                                            </p>
+                                        );
+                                    })}
                                 </div>
-                            )
-                        ) : (
-                            <div>Loading...</div>
-                        )}
-                    </div>
+                                <div className="summary">
+                                    <p>
+                                        Worsen:{' '}
+                                        {randomCards
+                                            .map((randomCard, index) => {
+                                                if (
+                                                    cards.find(card => card.id === randomCard.id).knowledge >
+                                                    newRate[index]
+                                                ) {
+                                                    return 1;
+                                                }
+                                                return 0;
+                                            })
+                                            .reduce((a, b) => a + b, 0)}
+                                    </p>
+                                    <p>
+                                        No changes:{' '}
+                                        {randomCards
+                                            .map((randomCard, index) => {
+                                                if (
+                                                    cards.find(card => card.id === randomCard.id).knowledge ===
+                                                    newRate[index]
+                                                ) {
+                                                    return 1;
+                                                }
+                                                return 0;
+                                            })
+                                            .reduce((a, b) => a + b, 0)}
+                                    </p>
+                                    <p>
+                                        Better:{' '}
+                                        {randomCards
+                                            .map((randomCard, index) => {
+                                                if (
+                                                    cards.find(card => card.id === randomCard.id).knowledge <
+                                                    newRate[index]
+                                                ) {
+                                                    return 1;
+                                                }
+                                                return 0;
+                                            })
+                                            .reduce((a, b) => a + b, 0)}
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="next-stepp">
+                                <button className="btn btn-primary" onClick={setBack}>
+                                    Replay
+                                </button>
+                                <button className="btn btn-primary" onClick={setBack}>
+                                    Back to game setup
+                                </button>
+                                <Link to="/dashboard" className="btn btn-primary">
+                                    Back to dashboard
+                                </Link>
+                            </div>
+                        </div>
+                    ) : (
+                        <>
+                            <div className="informations">
+                                <Stepper
+                                    steps={randomCards.map((card, index) => ({ title: `Card ${index + 1}` }))}
+                                    activeStep={activeIndex}
+                                />
+                            </div>
+                            <div className="cards-list">
+                                {randomCards && randomCards.length ? (
+                                    randomCards.map((card, index) => {
+                                        return (
+                                            <div
+                                                className={`card-container ${index === activeIndex && 'active'} `}
+                                                style={{
+                                                    transform: `translateX(${
+                                                        activeIndex === index
+                                                            ? index * -100
+                                                            : activeIndex > index
+                                                            ? (index + 1) * -100
+                                                            : 0
+                                                    }%)`,
+                                                }}
+                                                key={`flipcard${card.id}`}
+                                            >
+                                                <FlipCard
+                                                    workWithFocus
+                                                    card={card}
+                                                    stars={inverse}
+                                                    onClick={() => setInverse(!inverse)}
+                                                    interactiveStars
+                                                    onClickStars={e => {
+                                                        changeKwnowledgeOfCard(card.id, e.rating);
+                                                        setNewRate([...newRate, e.rating]);
+                                                        next();
+                                                    }}
+                                                    inverse={inverseGame}
+                                                />
+                                            </div>
+                                        );
+                                    })
+                                ) : (
+                                    <div>Loading...</div>
+                                )}
+                            </div>
+                        </>
+                    )}
                 </div>
             ) : (
                 <div>Please select Options and click on Play button</div>
@@ -81,7 +147,4 @@ export default function CardGame(props: {}) {
         setInverse(!inverse);
         setActiveIndex(activeIndex + 1);
     }
-    /*    function previous() {
-        setActiveIndex(activeIndex - 1 >= 0 ? activeIndex - 1 : 0);
-    } */
 }

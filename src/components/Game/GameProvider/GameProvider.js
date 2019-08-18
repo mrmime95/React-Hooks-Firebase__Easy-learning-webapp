@@ -9,17 +9,19 @@ export default function GameProvider(props: { children: React$Node }) {
     const [cards, setCards] = useState([]);
     const [showingCards, setShowingCards] = useState([]);
     const [randomCards, setRandomCards] = useState([]);
+
     const [selectedElements, setSelectedElements] = useState({
         selectedHardnessIDs: [],
         selectedPackages: [],
         selectedSubjects: [],
+        inverseGame: false,
     });
     const fireContext = useContext(FirebaseContext);
     useEffect(getSubjectsByCurrentUser, []);
     return (
         <GameContext.Provider
             value={{
-                ...selectedElements,
+                selectedElements,
                 subjects,
                 packages,
                 cards,
@@ -63,14 +65,14 @@ export default function GameProvider(props: { children: React$Node }) {
     async function getPackagesOfSubjects(localSubjects: [{ value: string, label: string }]) {
         const listOfResults = await Promise.all(
             localSubjects.map(async subject => {
-                return await getPackagesBySubjectId(subject.value);
+                return await getPackagesBySubjectId(subject.value, subject.label);
             })
         );
         const listOfPackages = [];
         listOfResults.map(value1 => value1.map(value2 => listOfPackages.push(value2)));
         setPackages(listOfPackages);
     }
-    async function getPackagesBySubjectId(subjectId: string) {
+    async function getPackagesBySubjectId(subjectId: string, label: string) {
         const packs = [];
         await fireContext
             .getPackagesBySubjectId(subjectId)
@@ -78,7 +80,7 @@ export default function GameProvider(props: { children: React$Node }) {
                 querySnapshot.forEach(doc => {
                     packs.push({
                         id: doc.id,
-                        title: doc.data().packageName,
+                        title: `${doc.data().packageName} (${label})`,
                     });
                 });
             })
@@ -100,9 +102,11 @@ export default function GameProvider(props: { children: React$Node }) {
     }
 
     async function filterCardsByKnowledge(cardKnowledge: [string]) {
-        if (cardKnowledge.length) {
+        if (cards.length) {
             const listOfShowingCards = cards.filter(card => cardKnowledge.includes(String(card.knowledge)));
             setShowingCards(listOfShowingCards);
+        } else {
+            setShowingCards([]);
         }
     }
 
@@ -127,16 +131,21 @@ export default function GameProvider(props: { children: React$Node }) {
         return cards;
     }
 
-    function onSubmit(data: { hardnessIDs: Array<string>, packages: Array<string>, subjects: Array<string> }) {
+    function onSubmit(data: {
+        selectedHardnessIDs: Array<string>,
+        selectedPackages: Array<string>,
+        selectedSubjects: Array<string>,
+    }) {
         setSelectedElements({
-            selectedHardnessIDs: data.hardnessIDs,
-            selectedPackages: data.packages,
-            selectedSubjects: data.subjects,
+            selectedHardnessIDs: data.selectedHardnessIDs,
+            selectedPackages: data.selectedPackages,
+            selectedSubjects: data.selectedSubjects,
+            inverseGame: data.inverseGame,
         });
     }
     function changeGameStarted() {
         setGameStarted(!gameStarted);
-        getCardsRandomly(showingCards);
+        setRandomCards(getCardsRandomly(showingCards));
     }
 
     function setToDefault() {
@@ -144,15 +153,19 @@ export default function GameProvider(props: { children: React$Node }) {
         setPackages([]);
         setCards([]);
         setShowingCards([]);
+        setRandomCards([]);
+        setSubjects(null);
         setSelectedElements({
             selectedHardnessIDs: [],
             selectedPackages: [],
             selectedSubjects: [],
+            inverseGame: false,
         });
+        getSubjectsByCurrentUser();
     }
 
     function getCardsRandomly(
-        cards: Array<{
+        cardArray: Array<{
             id?: string,
             back: {
                 example: string,
@@ -168,7 +181,7 @@ export default function GameProvider(props: { children: React$Node }) {
             packageId: string,
         }>
     ) {
-        setRandomCards(cards.sort(() => Math.random() - 0.5));
+        return cardArray.slice().sort(() => Math.random() - 0.5);
     }
 
     async function changeKwnowledgeOfCard(cardId: string, value: number) {

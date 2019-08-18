@@ -110,7 +110,7 @@ function CurrentUserSettings() {
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="birthDate" className="col-sm-3 control-label">
-                                        Date of Birth
+                                        Birthday
                                     </label>
                                     <div className="col-sm-9">
                                         <input

@@ -47,7 +47,8 @@ button:focus {
     @media only screen and (min-width: 992px) {
       .user-list .grid .grid-row .column.tags {
         padding: 0 23px;
-        flex: 2; }
+        flex: 2;
+        flex-wrap: wrap; }
       .user-list .grid .grid-row .column.name-content .with-label {
         width: auto; }
         .user-list .grid .grid-row .column.name-content .with-label .label {

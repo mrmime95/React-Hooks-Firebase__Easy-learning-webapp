@@ -47,7 +47,8 @@ button:focus {
     @media only screen and (min-width: 992px) {
       .friends-list .grid .grid-row .column.tags {
         padding: 0 23px;
-        flex: 2; }
+        flex: 2;
+        flex-wrap: wrap; }
       .friends-list .grid .grid-row .column.name-content .with-label {
         width: auto; }
         .friends-list .grid .grid-row .column.name-content .with-label .label {

@@ -1,10 +1,80 @@
 @import '../../../utils.scss';
 .game-settings {
     width: 28%;
-    .checkbox-container {
+    .role-hints-component {
+        position: relative;
+        text-transform: none;
         display: flex;
-        .checkbox-field {
-            padding: 0 20px 0 0;
+        justify-content: flex-end;
+        .opener {
+            background: none;
+            border: none;
+            cursor: pointer;
+            .icon {
+                width: 20px;
+                height: 20px;
+            }
+        }
+        .dropdown {
+            position: absolute;
+            min-width: 300px;
+            box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 0, 0, 0.35);
+            background-color: white;
+            padding: 15px;
+            font-family: 'Lato', sans-serif;
+            z-index: 1;
+            top: -20px;
+            right: 0;
+            transform: translate(100%, 0);
+            &.hide {
+                display: none;
+            }
+            &.show {
+                display: block;
+            }
+            .dropdown-title {
+                margin: 0 0 15px;
+                font-size: 20px;
+                font-weight: 300;
+            }
+            .dropdown-description {
+                .description-title {
+                    font-size: 14px;
+                    font-weight: bold;
+                    line-height: 1.2;
+                    margin: 0 0 8px;
+                }
+                .description-text {
+                    font-size: 14px;
+                    margin: 0 0 16px;
+                    color: #212529;
+                    line-height: 1.2;
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+    .cards-harndess {
+        padding: 15px;
+        border: 2px dashed #979797;
+        .checkbox-container {
+            display: flex;
+            flex-direction: column;
+            .checkbox-field {
+                padding: 0 15px 0 0;
+                .checkbox {
+                    margin-bottom: 0;
+                }
+            }
+        }
+        .selected-cards {
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-end;
+            .selected-cards-info {
+                margin: 0;
+            }
         }
     }
 }

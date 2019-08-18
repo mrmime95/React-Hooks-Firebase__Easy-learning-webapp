@@ -26,7 +26,7 @@ export default function MultiSelect(props: {
                     isMulti
                     onChange={props.onChange}
                     onBlur={props.onBlur && props.onBlur}
-                    defaultValue={props.value}
+                    value={props.value}
                     className={props.className && props.className}
                     placeholder={props.placeholder && props.placeholder}
                     isDisabled={props.isDisabled}
@@ -41,7 +41,7 @@ export default function MultiSelect(props: {
                     isMulti
                     onChange={props.onChange}
                     onBlur={props.onBlur && props.onBlur}
-                    defaultValue={props.value}
+                    value={props.value}
                     className={props.className && props.className}
                     placeholder={props.placeholder && props.placeholder}
                     isDisabled={props.isDisabled}

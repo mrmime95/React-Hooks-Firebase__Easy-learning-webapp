@@ -1,17 +1,11 @@
 @import '../../../utils.scss';
 .card-game {
-    border: 1px solid black;
     width: 70%;
     min-height: calc(100vh - 150px);
     .game-container {
         display: flex;
         flex-direction: column;
         height: 100%;
-        .informations {
-            height: 40px;
-            p {
-            }
-        }
         .cards-list {
             padding: 0;
             overflow: hidden;
@@ -26,8 +20,44 @@
                 transition: transform 0.2s ease;
                 height: 100%;
                 .flip-card {
-                    height: 100%;
                     max-width: unset;
+                    height: 400px;
+                    .knowledge {
+                        padding: 25px;
+                        .react-rater-star {
+                            font-size: 30px;
+                            &.is-active,
+                            &.will-be-active {
+                                color: #f4b02b;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .finished-card-game {
+            .stats {
+                .stats-name {
+                }
+                .stats-cards-list {
+                    text-align: center;
+                    max-height: 200px;
+                    border: 2px #d35a5a dashed;
+                    overflow: scroll;
+                    background-color: white;
+                }
+                .summary {
+                    display: flex;
+                    justify-content: space-between;
+                }
+            }
+            .next-stepp {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                .btn {
+                    margin: 10px;
                 }
             }
         }

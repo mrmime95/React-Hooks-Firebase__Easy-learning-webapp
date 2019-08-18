@@ -5,15 +5,12 @@ button:focus {
   outline: none; }
 
 .card-game {
-  border: 1px solid black;
   width: 70%;
   min-height: calc(100vh - 150px); }
   .card-game .game-container {
     display: flex;
     flex-direction: column;
     height: 100%; }
-    .card-game .game-container .informations {
-      height: 40px; }
     .card-game .game-container .cards-list {
       padding: 0;
       overflow: hidden;
@@ -28,5 +25,27 @@ button:focus {
         transition: transform 0.2s ease;
         height: 100%; }
         .card-game .game-container .cards-list .card-container .flip-card {
-          height: 100%;
-          max-width: unset; }
+          max-width: unset;
+          height: 400px; }
+          .card-game .game-container .cards-list .card-container .flip-card .knowledge {
+            padding: 25px; }
+            .card-game .game-container .cards-list .card-container .flip-card .knowledge .react-rater-star {
+              font-size: 30px; }
+              .card-game .game-container .cards-list .card-container .flip-card .knowledge .react-rater-star.is-active, .card-game .game-container .cards-list .card-container .flip-card .knowledge .react-rater-star.will-be-active {
+                color: #f4b02b; }
+    .card-game .game-container .finished-card-game .stats .stats-cards-list {
+      text-align: center;
+      max-height: 200px;
+      border: 2px #d35a5a dashed;
+      overflow: scroll;
+      background-color: white; }
+    .card-game .game-container .finished-card-game .stats .summary {
+      display: flex;
+      justify-content: space-between; }
+    .card-game .game-container .finished-card-game .next-stepp {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center; }
+      .card-game .game-container .finished-card-game .next-stepp .btn {
+        margin: 10px; }

@@ -107,16 +107,16 @@ export default function FlipCard(props: {
                     />
                 </div>
             )}
-            {props.stars && (
+            
                 <div className="knowledge">
-                    <Rater
+                   {props.stars && ( <Rater
                         total={5}
                         rating={props.card.knowledge}
                         interactive={props.interactiveStars ? true : false}
                         onRate={props.onClickStars}
-                    />
+                    /> )}
                 </div>
-            )}
+           
         </div>
     );
 }

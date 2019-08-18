@@ -33,6 +33,7 @@
                     &.tags {
                         padding: 0 23px;
                         flex: 2;
+                        flex-wrap: wrap;
                     }
                     &.name-content {
                         .with-label {
