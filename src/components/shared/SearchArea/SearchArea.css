@@ -1,6 +1,19 @@
 li {
   list-style-type: none; }
 
+button.button.action {
+  background-color: transparent;
+  border: solid 1px #ff7733;
+  color: #333;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-family: Lato;
+  font-size: 11px;
+  border-radius: 10px;
+  padding: 0px 12px;
+  height: auto;
+  margin-left: 15px; }
+
 button:focus {
   outline: none; }
 
@@ -35,6 +48,8 @@ button:focus {
       opacity: 1;
       visibility: visible;
       height: auto; }
+    .search-area .filter-container .form-tags {
+      margin-top: 25px; }
     .search-area .filter-container.hide {
       opacity: 0;
       visibility: hidden;

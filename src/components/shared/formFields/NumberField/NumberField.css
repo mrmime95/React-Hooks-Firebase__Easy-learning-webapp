@@ -1,0 +1,42 @@
+li {
+  list-style-type: none; }
+
+button.button.action {
+  background-color: transparent;
+  border: solid 1px #ff7733;
+  color: #333;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-family: Lato;
+  font-size: 11px;
+  border-radius: 10px;
+  padding: 0px 12px;
+  height: auto;
+  margin-left: 15px; }
+
+button:focus {
+  outline: none; }
+
+.number-field {
+  height: 35px;
+  margin: 5px 0 10px;
+  font-size: 16px;
+  position: relative; }
+  .number-field .input-container {
+    position: relative; }
+  .number-field input[type='number'] {
+    border: 1px solid #ccc;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px; }
+  .number-field .control-buttons {
+    position: absolute;
+    top: 0;
+    right: 0; }
+    .number-field .control-buttons button.action {
+      margin-left: 0;
+      border-radius: 0;
+      height: 35px; }
+      .number-field .control-buttons button.action.inc {
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-left: 0; }

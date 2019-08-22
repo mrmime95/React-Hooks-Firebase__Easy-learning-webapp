@@ -8,7 +8,7 @@ import './FormTags.css';
 function FormTags(props: { handleChange: () => void, tags: [sting], readOnly?: boolean, className?: string }) {
     const fireContext = useContext(FirebaseContext);
     return (
-        <div className={props.className}>
+        <div className={`form-tags ${props.className}`}>
             <ReactTags
                 tags={props.tags}
                 suggestions={fireContext.suggestions}

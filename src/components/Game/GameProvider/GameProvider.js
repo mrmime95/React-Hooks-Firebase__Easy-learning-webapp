@@ -38,6 +38,7 @@ export default function GameProvider(props: { children: React$Node }) {
                 changeKwnowledgeOfCard,
                 setBack,
                 callHandleChange,
+                replayWith,
             }}
         >
             {props.children}
@@ -216,5 +217,22 @@ export default function GameProvider(props: { children: React$Node }) {
 
     function setBack() {
         setToDefault();
+    }
+
+    function replayWith(minKnowledge: number, newRate: any[]) {
+        const newShowingCards =
+            minKnowledge > 0
+                ? randomCards.reduce((filtered, randomCard, index) => {
+                      if (newRate[index] < minKnowledge) {
+                          var someNewValue = { ...randomCard, knowledge: newRate[index] };
+                          filtered.push(someNewValue);
+                      }
+                      return filtered;
+                  }, [])
+                : randomCards.map((randomCard, index) => ({ ...randomCard, knowledge: newRate[index] }));
+
+        console.log(newShowingCards);
+        setShowingCards(newShowingCards);
+        setRandomCards(getCardsRandomly(newShowingCards));
     }
 }

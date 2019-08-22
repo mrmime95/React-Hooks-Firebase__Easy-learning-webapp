@@ -1,0 +1,30 @@
+@import '../../../../utils.scss';
+.number-field {
+    height: 35px;
+    margin: 5px 0 10px;
+    font-size: 16px;
+    position: relative;
+    .input-container {
+        position: relative;
+    }
+    input[type='number'] {
+        border: 1px solid $color-inactive;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+    .control-buttons {
+        position: absolute;
+        top: 0;
+        right: 0;
+        button.action {
+            margin-left: 0;
+            border-radius: 0;
+            height: 35px;
+            &.inc {
+                border-top-right-radius: 10px;
+                border-bottom-right-radius: 10px;
+                border-left: 0;
+            }
+        }
+    }
+}

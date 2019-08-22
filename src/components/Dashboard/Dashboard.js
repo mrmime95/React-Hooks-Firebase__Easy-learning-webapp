@@ -5,6 +5,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import SearchArea from '../shared/SearchArea/SearchArea';
 import FormTags from '../shared/FormTags/FormTags';
 import Checkbox from '../shared/Checkbox/Checkbox';
+import NumberField from '../shared/formFields/NumberField/NumberField';
 
 import './Dashboard.css';
 
@@ -24,10 +25,10 @@ function DashboardContainer(props) {
                 onSubmit={context.onSearch}
                 initialValues={{
                     sort: { value: 'created-at_desc', label: `created at-desc` },
-                    minCards: null,
-                    minCorrect: null,
+                    minCards: 0,
+                    minCorrect: 0,
                     maxIncorrect: 100,
-                    publicsOnly: null,
+                    publicsOnly: false,
                     tags: [],
                 }}
                 sort={{
@@ -37,43 +38,32 @@ function DashboardContainer(props) {
                 {({ values, handleChange, handleBlur }: FilterProps<Filters>) => (
                     <div className="filters">
                         <div className="filter-line">
-                            <label htmlFor="minCards">minCards:</label>
-                            <input
-                                type="number"
-                                id="minCards"
+                            <NumberField
                                 name="minCards"
-                                min="0"
-                                max="100"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                className="form-control number-field"
+                                value={values.minCards}
+                                maxValue={100}
+                                minValue={0}
+                                label="minimum cards number"
+                                handleChange={handleChange}
                             />
-                            <label htmlFor="minCorrect">minCorrect:</label>
-                            <input
-                                type="number"
-                                id="minCorrect"
+                            <NumberField
                                 name="minCorrect"
-                                min="0"
-                                max="100"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                className="form-control number-field"
+                                value={values.minCorrect}
+                                maxValue={100}
+                                minValue={0}
+                                label="minimum correct"
+                                handleChange={handleChange}
                             />
-                            <label htmlFor="maxIncorrect">maxIncorrect:</label>
-                            <input
-                                type="number"
-                                id="maxIncorrect"
+                            <NumberField
                                 name="maxIncorrect"
-                                min="0"
-                                max="100"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                className="form-control number-field"
+                                value={values.maxIncorrect}
+                                maxValue={100}
+                                minValue={0}
+                                label="maximum incorrect:"
+                                handleChange={handleChange}
                             />
-                            <label htmlFor="maxIncorrect" className="for-checkbox">
-                                Show Publics Only
-                            </label>
                             <Checkbox
+                                label="Show Publics Only"
                                 handleChange={e => {
                                     handleChange({
                                         target: {

@@ -8,11 +8,10 @@ import AvatarCircle from '../../shared/AvatarCircle/AvatarCircle';
 import { LinkGridRow } from '../../shared/Grid/GridRow/GridRow';
 import type { Match as RouterMatch } from 'react-router-dom';
 import { FirebaseContext } from '../../Firebase/FirebaseProvider';
-import { Link } from 'react-router-dom';
 import SearchArea from '../../shared/SearchArea/SearchArea';
 import Checkbox from '../../shared/Checkbox/Checkbox';
 import FormTags from '../../shared/FormTags/FormTags';
-import TextField from '../../shared/formFields/TextField/TextField';
+import NumberField from '../../shared/formFields/NumberField/NumberField';
 
 import './FriendsList.css';
 
@@ -26,9 +25,9 @@ export default function FriendsList(props: { match: RouterMatch }) {
                 onSubmit={context.onSearch}
                 initialValues={{
                     sort: sortOptions()[0],
-                    minCards: null,
-                    minPacks: null,
-                    minSubjects: null,
+                    minCards: 0,
+                    minPacks: 0,
+                    minSubjects: 0,
                     admins: true,
                     approvers: true,
                     users: true,
@@ -42,41 +41,32 @@ export default function FriendsList(props: { match: RouterMatch }) {
                     <div className="filters">
                         <div className="filter-line">
                             <div className="inputs">
-                                <TextField
-                                    label="Minimum cards number"
-                                    className="number-field"
+                                <NumberField
                                     name="minCards"
                                     value={values.minCards}
+                                    maxValue={100}
+                                    minValue={0}
+                                    label="Minimum cards number"
                                     handleChange={handleChange}
-                                    handleBlur={handleBlur}
-                                    type="number"
-                                    min="0"
-                                    max="100"
                                     placeholder="Minimum cards number"
                                 />
-                                <TextField
-                                    label="Minimum packages number"
-                                    className="number-field"
+                                <NumberField
                                     name="minPacks"
                                     value={values.minPacks}
+                                    maxValue={100}
+                                    minValue={0}
+                                    label="Minimum packages number"
                                     handleChange={handleChange}
-                                    handleBlur={handleBlur}
-                                    type="number"
-                                    min="0"
-                                    max="100"
                                     placeholder="Minimum packages number"
                                 />
-                                <TextField
-                                    label="Minimum subjects number"
-                                    className="number-field"
+                                <NumberField
                                     name="minSubjects"
                                     value={values.minSubjects}
-                                    handleChange={handleChange}
-                                    handleBlur={handleBlur}
-                                    type="number"
-                                    min="0"
-                                    max="100"
+                                    maxValue={100}
+                                    minValue={0}
+                                    label="Minimum subjects number"
                                     placeholder="Minimum subjects number"
+                                    handleChange={handleChange}
                                 />
                             </div>
                             <div className="checkboxes">

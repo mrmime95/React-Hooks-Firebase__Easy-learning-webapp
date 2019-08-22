@@ -61,27 +61,15 @@ function Login() {
                             context
                                 .doCreateUserWithGoogle()
                                 .then(async result => {
-                                    var token = result.credential.accessToken;
                                     var user = result.user;
-                                    console.log(new Date());
-                                    const docc = await context.db.collection('users').doc(user.uid).get;
-                                    if (docc.exists)
-                                        context.createNewUser(user.uid, {
-                                            firstName: user.displayName.split(' ')[0],
-                                            lastName: user.displayName.split(' ')[1],
-                                            email: user.email,
-                                        });
-                                    console.log(user, token);
+                                    context.createNewUser(user.uid, {
+                                        firstName: user.displayName.split(' ')[0],
+                                        lastName: user.displayName.split(' ')[1],
+                                        email: user.email,
+                                    });
                                 })
                                 .catch(error => {
-                                    // Handle Errors here.
-                                    var errorCode = error.code;
-                                    var errorMessage = error.message;
-                                    // The email of the user's account used.
-                                    var email = error.email;
-                                    // The firebase.auth.AuthCredential type that was used.
-                                    var credential = error.credential;
-                                    // ...
+                                    alert(error.message);
                                 });
                         }}
                     >

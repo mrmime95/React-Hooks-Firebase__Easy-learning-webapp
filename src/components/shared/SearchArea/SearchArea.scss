@@ -45,7 +45,9 @@
             visibility: visible;
             height: auto;
         }
-
+        .form-tags {
+            margin-top: 25px;
+        }
         &.hide {
             opacity: 0;
             visibility: hidden;

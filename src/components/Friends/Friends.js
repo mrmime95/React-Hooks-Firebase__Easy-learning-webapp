@@ -9,7 +9,6 @@ import { LinkGridRow } from '../shared/Grid/GridRow/GridRow';
 import type { Match as RouterMatch } from 'react-router-dom';
 import { FirebaseContext } from '../Firebase/FirebaseProvider';
 import FriendsList from './FriendsList/FriendsList';
-import { Link } from 'react-router-dom';
 
 import './Friends.css';
 

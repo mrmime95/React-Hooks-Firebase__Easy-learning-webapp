@@ -24,3 +24,12 @@ export function debounce(func: Function, wait: number, immediate?: boolean) {
         if (immediate && !timeout) func.apply(context, args);
     };
 }
+
+export function customInputEvent(inputName: string, value: any): SyntheticInputEvent<any> {
+    return (({
+        target: {
+            name: inputName,
+            value,
+        },
+    }: any): SyntheticInputEvent<any>);
+}

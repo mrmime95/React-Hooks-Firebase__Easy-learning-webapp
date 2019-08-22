@@ -7,7 +7,9 @@ import Stepper from 'react-stepper-horizontal';
 import './CardGame.scss';
 
 export default function CardGame(props: {}) {
-    const { randomCards, changeKwnowledgeOfCard, setBack, gameStarted, inverseGame, cards } = useContext(GameContext);
+    const { randomCards, changeKwnowledgeOfCard, setBack, gameStarted, inverseGame, cards, replayWith } = useContext(
+        GameContext
+    );
     const [activeIndex, setActiveIndex] = useState(0);
     const [inverse, setInverse] = useState(inverseGame);
     const overAGame = activeIndex >= randomCards.length;
@@ -26,7 +28,7 @@ export default function CardGame(props: {}) {
                                         return (
                                             <p key={'randomCard' + index + randomCard.id} className="stats-card">
                                                 {`Card ${index + 1}:  ${'★'.repeat(
-                                                    cards.find(card => card.id === randomCard.id).knowledge
+                                                    randomCard.knowledge
                                                 )} >>> ${'★'.repeat(newRate[index])}`}
                                             </p>
                                         );
@@ -78,11 +80,79 @@ export default function CardGame(props: {}) {
                                 </div>
                             </div>
                             <div className="next-stepp">
+                                <div className="dropdown">
+                                    <button
+                                        className="btn btn-primary dropdown-toggle"
+                                        type="button"
+                                        id="dropdownMenuLink"
+                                        data-toggle="dropdown"
+                                        aria-haspopup="true"
+                                        aria-expanded="false"
+                                        onClick={e => {
+                                            e.preventDefault();
+                                        }}
+                                    >
+                                        Replay if it's under
+                                    </button>
+
+                                    <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                        {newRate.find(r => r < 2) && (
+                                            <button
+                                                type="button"
+                                                className="dropdown-item"
+                                                onClick={() => {
+                                                    replay(2);
+                                                }}
+                                            >
+                                                ★★
+                                            </button>
+                                        )}
+                                        {newRate.find(r => r < 3) && (
+                                            <button
+                                                type="button"
+                                                className="dropdown-item"
+                                                onClick={() => {
+                                                    replay(3);
+                                                }}
+                                            >
+                                                ★★★
+                                            </button>
+                                        )}
+                                        {newRate.find(r => r < 4) && (
+                                            <button
+                                                type="button"
+                                                className="dropdown-item"
+                                                onClick={() => {
+                                                    replay(4);
+                                                }}
+                                            >
+                                                ★★★★
+                                            </button>
+                                        )}
+                                        {newRate.find(r => r < 5) && (
+                                            <button
+                                                type="button"
+                                                className="dropdown-item"
+                                                onClick={() => {
+                                                    replay(5);
+                                                }}
+                                            >
+                                                ★★★★★
+                                            </button>
+                                        )}
+                                        <button
+                                            type="button"
+                                            className="dropdown-item"
+                                            onClick={() => {
+                                                replay();
+                                            }}
+                                        >
+                                            Replay all
+                                        </button>
+                                    </div>
+                                </div>
                                 <button className="btn btn-primary" onClick={setBack}>
-                                    Replay
-                                </button>
-                                <button className="btn btn-primary" onClick={setBack}>
-                                    Back to game setup
+                                    Restart game with new setup
                                 </button>
                                 <Link to="/dashboard" className="btn btn-primary">
                                     Back to dashboard
@@ -134,6 +204,10 @@ export default function CardGame(props: {}) {
                                     <div>Loading...</div>
                                 )}
                             </div>
+
+                            <button type="button" className="dropdown-item" onClick={setBack}>
+                                Exit
+                            </button>
                         </>
                     )}
                 </div>
@@ -146,5 +220,11 @@ export default function CardGame(props: {}) {
     function next() {
         setInverse(!inverse);
         setActiveIndex(activeIndex + 1);
+    }
+
+    function replay(w: number = -1) {
+        replayWith(w, newRate);
+        setNewRate([]);
+        setActiveIndex(0);
     }
 }
