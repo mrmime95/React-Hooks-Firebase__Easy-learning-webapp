@@ -99,7 +99,7 @@ function ListPack(props: {
                                     </label>
                                 </div>
                                 <div className="form-group form-tags">
-                                    <FormTags name="tags" tags={values.tags} handleChange={handleChange} />
+                                    <FormTags creator name="tags" tags={values.tags} handleChange={handleChange} />
                                 </div>
                                 <div className="modal-buttons">
                                     <button type="submit" className="btn btn-primary">

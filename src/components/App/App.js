@@ -10,6 +10,7 @@ import Header from '../Header/Header';
 import SignUp from '../SignUp/SignUp';
 import Login from '../Login/Login';
 import UserDetail from '../UserDetail/UserDetail';
+import FriendsProvider from '../Friends/FriendsProvider/FriendsProvider';
 
 import './App.css';
 
@@ -25,35 +26,38 @@ function App() {
                             type="private"
                             path="/"
                             component={() => (
-                                <div className="app">
-                                    <LeftPanel menu={navigationConfig} />
-                                    <div className="right-panel">
-                                        <Header />
-                                        <div className="main">
-                                            <React.Fragment>
-                                                <Switch>
-                                                    {Object.keys(navigationConfig).map((key, index) => {
-                                                        const route = navigationConfig[key].route;
-                                                        return (
-                                                            <GuardRoute
-                                                                type="private"
-                                                                path={route.path}
-                                                                component={route.Component}
-                                                                key={index}
-                                                            />
-                                                        );
-                                                    })}
-                                                    <GuardRoute
-                                                        type="private"
-                                                        path="/user/:id"
-                                                        component={UserDetail}
-                                                    />
-                                                    <Redirect from="/" to={navigationConfig.dashboard.route.path} />
-                                                </Switch>
-                                            </React.Fragment>
+                                <FriendsProvider>
+                                    <div className="app">
+                                        <LeftPanel menu={navigationConfig} />
+                                        <div className="right-panel">
+                                            <Header />
+                                            <div className="main">
+                                                <React.Fragment>
+                                                    <Switch>
+                                                        {Object.keys(navigationConfig).map((key, index) => {
+                                                            const route = navigationConfig[key].route;
+                                                            return (
+                                                                <GuardRoute
+                                                                    type="private"
+                                                                    path={route.path}
+                                                                    component={route.Component}
+                                                                    key={index}
+                                                                    admin={navigationConfig[key].admin}
+                                                                />
+                                                            );
+                                                        })}
+                                                        <GuardRoute
+                                                            type="private"
+                                                            path="/user/:id"
+                                                            component={UserDetail}
+                                                        />
+                                                        <Redirect from="/" to={navigationConfig.dashboard.route.path} />
+                                                    </Switch>
+                                                </React.Fragment>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                </FriendsProvider>
                             )}
                         />
                     </Switch>

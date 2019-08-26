@@ -178,7 +178,9 @@ function UsersContent(props: { match: RouterMatch }) {
                                                     <p className="email">{rowData.email}</p>
                                                 </GridColumn>
                                                 <GridColumn label="Birth">
-                                                    <p className="birth">{rowData.birthDate}</p>
+                                                    {rowData.birthDate && (
+                                                        <p className="birthday">{rowData.birthDate}</p>
+                                                    )}
                                                 </GridColumn>
                                                 <GridColumn label="status">
                                                     <p>{rowData.role}</p>

@@ -1,0 +1,98 @@
+li {
+  list-style-type: none; }
+
+button.button.action {
+  background-color: transparent;
+  border: solid 1px #00a0d0;
+  color: #333;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-family: Lato;
+  font-size: 11px;
+  border-radius: 10px;
+  padding: 0px 12px;
+  height: auto;
+  margin-left: 15px; }
+
+button:focus {
+  outline: none; }
+
+.friends-requests-dropdown {
+  position: relative;
+  text-transform: none;
+  display: flex;
+  justify-content: flex-end; }
+  .friends-requests-dropdown .opener {
+    background: none;
+    border: none;
+    cursor: pointer; }
+    .friends-requests-dropdown .opener .icon {
+      font-size: 20px; }
+  .friends-requests-dropdown .dropdown {
+    position: absolute;
+    min-width: 300px;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.35);
+    background-color: white;
+    padding: 15px;
+    font-family: 'Lato', sans-serif;
+    z-index: 3;
+    top: 20px;
+    right: 0;
+    transform: translate(100%, 0);
+    max-height: 250px;
+    overflow: scroll; }
+    .friends-requests-dropdown .dropdown.hide {
+      display: none; }
+    .friends-requests-dropdown .dropdown.show {
+      display: block; }
+    .friends-requests-dropdown .dropdown .dropdown-title {
+      margin: 0 0 15px;
+      font-size: 20px;
+      font-weight: 300; }
+    .friends-requests-dropdown .dropdown .dropdown-description .description-title {
+      font-size: 14px;
+      font-weight: bold;
+      line-height: 1.2;
+      margin: 0 0 8px; }
+    .friends-requests-dropdown .dropdown .dropdown-description .description-text {
+      font-size: 14px;
+      margin: 0 0 5px;
+      color: #212529;
+      line-height: 1.2;
+      font-weight: 500; }
+    .friends-requests-dropdown .dropdown .friend-requests-list .grid {
+      font-family: 'Lato', sans-serif;
+      margin-top: 20px; }
+      .friends-requests-dropdown .dropdown .friend-requests-list .grid .grid-row {
+        border-top: 1px solid #dddfe2;
+        display: flex; }
+        .friends-requests-dropdown .dropdown .friend-requests-list .grid .grid-row:hover {
+          background-color: white; }
+        .friends-requests-dropdown .dropdown .friend-requests-list .grid .grid-row .profile-column {
+          display: flex;
+          padding: 0;
+          justify-content: space-between; }
+          .friends-requests-dropdown .dropdown .friend-requests-list .grid .grid-row .profile-column .profile-picture {
+            flex: 1; }
+          .friends-requests-dropdown .dropdown .friend-requests-list .grid .grid-row .profile-column .user {
+            margin: 0 25px; }
+            .friends-requests-dropdown .dropdown .friend-requests-list .grid .grid-row .profile-column .user p {
+              font-family: inherit;
+              font-weight: normal;
+              line-height: 1.5;
+              font-size: 12px; }
+            .friends-requests-dropdown .dropdown .friend-requests-list .grid .grid-row .profile-column .user .user-email {
+              color: #606770; }
+        .friends-requests-dropdown .dropdown .friend-requests-list .grid .grid-row .buttons-column {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 0; }
+          .friends-requests-dropdown .dropdown .friend-requests-list .grid .grid-row .buttons-column .buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: auto; }
+            .friends-requests-dropdown .dropdown .friend-requests-list .grid .grid-row .buttons-column .buttons button.btn {
+              margin: 0 5px; }

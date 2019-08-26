@@ -37,12 +37,15 @@
             font-weight: 100;
             margin-bottom: 0;
             font-family: 'Lato', sans-serif;
+            padding: 5px 0px 15px 0;
         }
         .package-title {
+            padding: 10px;
             h2 {
                 font-size: 25px;
                 font-weight: 100;
                 font-family: 'Lato', sans-serif;
+                margin: 0;
             }
             .package {
                 width: 30px;
@@ -56,6 +59,7 @@
             padding: 0 40px;
             .line {
                 display: flex;
+                flex-wrap: wrap;
                 justify-content: space-between;
                 border-bottom: 1px solid #ccc;
                 padding: 15px 20px 0;
@@ -75,6 +79,12 @@
                     }
                     &.unknown {
                         color: rgb(165, 165, 0);
+                    }
+                }
+                .checkbox-form-correct {
+                    display: flex;
+                    .form-item.checkbox-field {
+                        margin-bottom: 0;
                     }
                 }
                 .__react_component_tooltip.show {

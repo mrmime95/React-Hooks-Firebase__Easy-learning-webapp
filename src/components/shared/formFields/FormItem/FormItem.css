@@ -3,7 +3,7 @@ li {
 
 button.button.action {
   background-color: transparent;
-  border: solid 1px #ff7733;
+  border: solid 1px #00a0d0;
   color: #333;
   text-transform: uppercase;
   font-weight: bold;
@@ -19,7 +19,8 @@ button:focus {
 
 .form-item {
   margin-bottom: 15px;
-  padding: 6px 12px; }
+  padding: 6px 12px;
+  width: 100%; }
   .form-item .label {
     display: block;
     font-family: 'Lato', sans-serif;

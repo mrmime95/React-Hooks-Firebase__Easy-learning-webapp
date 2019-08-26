@@ -162,7 +162,7 @@ export default function FriendsList(props: { match: RouterMatch }) {
                                                 <p className="email">{rowData.email}</p>
                                             </GridColumn>
                                             <GridColumn label="Birth">
-                                                <p className="birth">{rowData.birthDate}</p>
+                                                {rowData.birthDate && <p className="birthday">{rowData.birthDate}</p>}
                                             </GridColumn>
                                             <GridColumn label="status">
                                                 <p>{rowData.role}</p>
@@ -171,17 +171,19 @@ export default function FriendsList(props: { match: RouterMatch }) {
                                     </GridColumn>
 
                                     <GridColumn className="tags" label="tags">
-                                        {rowData.tags.map(tag => {
-                                            return (
-                                                <FormTags
-                                                    key={tag}
-                                                    name="tags"
-                                                    tags={[{ id: tag, text: tag }]}
-                                                    handleChange={() => {}}
-                                                    readOnly
-                                                />
-                                            );
-                                        })}
+                                        {rowData.tags.length
+                                            ? rowData.tags.map(tag => {
+                                                  return (
+                                                      <FormTags
+                                                          key={tag}
+                                                          name="tags"
+                                                          tags={[{ id: tag, text: tag }]}
+                                                          handleChange={() => {}}
+                                                          readOnly
+                                                      />
+                                                  );
+                                              })
+                                            : null}
                                     </GridColumn>
 
                                     <GridColumn className="data">

@@ -5,11 +5,19 @@ import { WithContext as ReactTags } from 'react-tag-input';
 import { FirebaseContext } from '../../Firebase/FirebaseProvider';
 import './FormTags.css';
 
-function FormTags(props: { handleChange: () => void, tags: [sting], readOnly?: boolean, className?: string }) {
+function FormTags(props: {
+    handleChange: () => void,
+    tags: [sting],
+    readOnly?: boolean,
+    className?: string,
+    placeholder?: string,
+    creator?: boolean,
+}) {
     const fireContext = useContext(FirebaseContext);
     return (
         <div className={`form-tags ${props.className}`}>
             <ReactTags
+                placeholder={props.placeholder || 'Add new tag'}
                 tags={props.tags}
                 suggestions={fireContext.suggestions}
                 readOnly={props.readOnly}
@@ -22,7 +30,7 @@ function FormTags(props: { handleChange: () => void, tags: [sting], readOnly?: b
                         },
                     });
                 }}
-                handleAddition={tag => {
+                handleAddition={(tag, e) => {
                     const newTags = [...props.tags, tag];
                     props.handleChange({
                         target: {
@@ -30,8 +38,11 @@ function FormTags(props: { handleChange: () => void, tags: [sting], readOnly?: b
                             value: newTags,
                         },
                     });
-                    fireContext.createNewTag(tag);
+                    if (props.creator) {
+                        fireContext.createNewTag(tag);
+                    }
                 }}
+                autocomplete
                 handleDrag={() => {}}
             />
         </div>

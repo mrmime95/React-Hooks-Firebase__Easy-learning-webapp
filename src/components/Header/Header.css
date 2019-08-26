@@ -3,7 +3,7 @@ li {
 
 button.button.action {
   background-color: transparent;
-  border: solid 1px #ff7733;
+  border: solid 1px #00a0d0;
   color: #333;
   text-transform: uppercase;
   font-weight: bold;
@@ -21,7 +21,7 @@ button:focus {
   padding: 15px 70px;
   display: flex;
   background-color: white;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center; }
   .header .link,
   .header .span-link {

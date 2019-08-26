@@ -3,7 +3,7 @@ li {
 
 button.button.action {
   background-color: transparent;
-  border: solid 1px #ff7733;
+  border: solid 1px #00a0d0;
   color: #333;
   text-transform: uppercase;
   font-weight: bold;
@@ -16,77 +16,3 @@ button.button.action {
 
 button:focus {
   outline: none; }
-
-.friend-requests-list .grid {
-  font-family: 'Lato', sans-serif;
-  margin-top: 20px; }
-  .friend-requests-list .grid .grid-row {
-    border-left: solid 5px #00a0d0; }
-    .friend-requests-list .grid .grid-row.admin {
-      border-left: solid 5px #e3163a; }
-    .friend-requests-list .grid .grid-row.approver {
-      border-left: solid 5px #7cc253; }
-    .friend-requests-list .grid .grid-row .column.profile-picture {
-      flex: 1; }
-    .friend-requests-list .grid .grid-row .column.name {
-      display: flex;
-      justify-content: flex-start;
-      flex: 3; }
-      .friend-requests-list .grid .grid-row .column.name .title {
-        text-transform: uppercase;
-        font-family: 'Lato', sans-serif;
-        font-size: 12px;
-        font-weight: bold;
-        max-width: 66%;
-        padding-left: 20px; }
-    @media only screen and (min-width: 992px) {
-      .friend-requests-list .grid .grid-row .column.tags {
-        padding: 0 23px;
-        flex: 2;
-        flex-wrap: wrap; }
-      .friend-requests-list .grid .grid-row .column.name-content .with-label {
-        width: auto; }
-        .friend-requests-list .grid .grid-row .column.name-content .with-label .label {
-          margin: 0;
-          display: block;
-          line-height: 1.5;
-          font-size: 12px;
-          font-family: 'Lato', sans-serif; }
-        .friend-requests-list .grid .grid-row .column.name-content .with-label p {
-          font-family: 'Lato', sans-serif;
-          font-weight: normal;
-          line-height: 1.5;
-          font-size: 12px; }
-      .friend-requests-list .grid .grid-row .column.data {
-        flex: 2; }
-        .friend-requests-list .grid .grid-row .column.data .with-label {
-          width: auto; }
-          .friend-requests-list .grid .grid-row .column.data .with-label .label {
-            margin: 0;
-            width: calc(100% - 120px);
-            display: block;
-            line-height: 1.5;
-            font-size: 12px;
-            font-family: 'Lato', sans-serif; }
-          .friend-requests-list .grid .grid-row .column.data .with-label p {
-            font-family: 'Lato', sans-serif;
-            width: 120px;
-            font-weight: normal;
-            line-height: 1.5;
-            font-size: 12px; }
-      .friend-requests-list .grid .grid-row .column.buttons {
-        flex: 2; }
-        .friend-requests-list .grid .grid-row .column.buttons .with-label {
-          justify-content: space-between;
-          width: auto; }
-          .friend-requests-list .grid .grid-row .column.buttons .with-label .label {
-            padding: 0 15px 0 0;
-            text-align: right;
-            width: calc(100% - 120px);
-            display: block; }
-          .friend-requests-list .grid .grid-row .column.buttons .with-label .date {
-            padding: 0 0 0 15px;
-            width: 120px;
-            text-align: right;
-            font-weight: normal;
-            line-height: 1.5; } }

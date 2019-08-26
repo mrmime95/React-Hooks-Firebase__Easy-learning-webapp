@@ -1,0 +1,73 @@
+li {
+  list-style-type: none; }
+
+button.button.action {
+  background-color: transparent;
+  border: solid 1px #00a0d0;
+  color: #333;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-family: Lato;
+  font-size: 11px;
+  border-radius: 10px;
+  padding: 0px 12px;
+  height: auto;
+  margin-left: 15px; }
+
+button:focus {
+  outline: none; }
+
+.account-settings {
+  position: relative; }
+  .account-settings .account-menu {
+    position: absolute;
+    right: 0;
+    margin: 2px 0 0;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    padding: 30px;
+    width: 300px;
+    background-color: #fff;
+    color: #444;
+    text-align: left;
+    box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
+    z-index: 10; }
+    .account-settings .account-menu.hide {
+      display: none; }
+    .account-settings .account-menu.show {
+      display: block; }
+    .account-settings .account-menu .title {
+      font-size: 20px;
+      font-weight: 300;
+      margin: 0;
+      font-family: 'Lato', sans-serif; }
+    .account-settings .account-menu .email {
+      font-size: 11.2px;
+      word-break: break-all; }
+    .account-settings .account-menu .role {
+      font-size: 11.2px;
+      word-break: break-all;
+      margin: 0; }
+    .account-settings .account-menu .settings {
+      padding: 0;
+      margin: 0; }
+      .account-settings .account-menu .settings .button {
+        width: 100%;
+        padding: 4px, 24px;
+        color: #333;
+        text-align: inherit;
+        border: 0;
+        font-family: inherit;
+        font-size: 14px;
+        line-height: 1.5;
+        height: auto;
+        background-color: transparent;
+        text-decoration: none;
+        cursor: pointer; }
+        .account-settings .account-menu .settings .button:hover, .account-settings .account-menu .settings .button:focus {
+          color: #16181b;
+          text-decoration: none;
+          background-color: #bababa; }
+        .account-settings .account-menu .settings .button:active {
+          color: #fff;
+          text-decoration: none;
+          background-color: #767676; }

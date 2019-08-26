@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
 import { FirebaseContext } from '../Firebase/FirebaseProvider';
+import AccountInfo from './AccountInfo/AccountInfo';
+import FriendRequests from '../Friends/FriendRequests/FriendRequests';
 
 import './Header.css';
 
@@ -9,12 +10,19 @@ export default function Header(props) {
     if (context.isLoggedIn) {
         return (
             <div className="header">
-                <Link className="link" to={`/user/${context.user.id}`}>
-                    {context.user.firstName + ' ' + context.user.lastName}
-                </Link>
-                <span className="link" onClick={context.doSignOut}>
-                    Sign Out
-                </span>
+                <div className="friend-request-container">
+                    <FriendRequests />
+                </div>
+                <div className="logo">
+                    <AccountInfo
+                        profilePicture={context.user.profilePicture}
+                        fullName={context.user.firstName + ' ' + context.user.lastName}
+                        email={context.user.email}
+                        role={context.user.role}
+                        linkTo={`/user/${context.user.id}`}
+                        logOut={context.doSignOut}
+                    />
+                </div>
             </div>
         );
     }

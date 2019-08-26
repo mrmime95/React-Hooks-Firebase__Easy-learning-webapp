@@ -3,7 +3,7 @@ li {
 
 button.button.action {
   background-color: transparent;
-  border: solid 1px #ff7733;
+  border: solid 1px #00a0d0;
   color: #333;
   text-transform: uppercase;
   font-weight: bold;
@@ -72,6 +72,12 @@ button:focus {
       color: #00a0d0;
       margin: 0;
       text-align: right; }
+    .custom-user-details .custom-user-details-info .name .connections.just-number,
+    .custom-user-details .current-user-details-info .name .connections.just-number,
+    .current-user-details .custom-user-details-info .name .connections.just-number,
+    .current-user-details .current-user-details-info .name .connections.just-number {
+      display: flex;
+      justify-content: space-between; }
   .custom-user-details .custom-user-details-info .description .element,
   .custom-user-details .current-user-details-info .description .element,
   .current-user-details .custom-user-details-info .description .element,

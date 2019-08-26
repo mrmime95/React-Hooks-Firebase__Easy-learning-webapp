@@ -1,6 +1,6 @@
 import React from 'react';
 import Select from 'react-select';
-
+import './MultiSelect.css';
 export default function MultiSelect(props: {
     value: [{ value: string, label: string }],
     name: string,
@@ -11,13 +11,21 @@ export default function MultiSelect(props: {
     placeholder?: string,
     isDisabled: boolean,
     label: string,
+    withBorder?: boolean,
+    extra?: React$Node,
 }) {
+    const ExtraComponent = props.extra;
     return (
-        <div>
-            {props.label && (
-                <label htmlFor={`${props.name}`} className="group-label">
-                    {props.label}
-                </label>
+        <div className={props.withBorder ? 'select-withborder' : ''}>
+            {(props.label || props.extra) && (
+                <div className="info-in-select">
+                    {props.label && (
+                        <label htmlFor={`${props.name}`} className="group-label">
+                            {props.label}
+                        </label>
+                    )}
+                    {props.extra && <ExtraComponent />}
+                </div>
             )}
             {props.options ? (
                 <Select

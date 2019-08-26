@@ -21,6 +21,7 @@ import './UserDetail.css';
 
 function UserDetail(props: { match: RouterMatch }) {
     const fireContext = useContext(FirebaseContext);
+    console.log('ittkinnn');
     if (fireContext.user.id === props.match.params.id) {
         return (
             <CurrentUserDetailProvider>
@@ -61,25 +62,25 @@ function CurrentUserDetailsInfo() {
                             <p className="value">{context.user.email}</p>
                         </div>
                     </div>
-                    <div className="connections">
+                    <div className="connections just-number">
                         <p className="label">Friends number</p>
                         <div className="values">
                             <p className="value">{context.user.friendCounter}</p>
                         </div>
                     </div>
-                    <div className="connections">
+                    <div className="connections just-number">
                         <p className="label">Subjects number</p>
                         <div className="values">
                             <p className="value">{context.user.subjectsNumber}</p>
                         </div>
                     </div>
-                    <div className="connections">
+                    <div className="connections just-number">
                         <p className="label">Packages number</p>
                         <div className="values">
                             <p className="value">{context.user.packagesNumber}</p>
                         </div>
                     </div>
-                    <div className="connections">
+                    <div className="connections just-number">
                         <p className="label">Cards number</p>
                         <div className="values">
                             <p className="value">{context.user.cardsNumber}</p>
@@ -119,25 +120,25 @@ function CustomUserDetailsInfo() {
                                 <p className="value">{context.customUser.email}</p>
                             </div>
                         </div>
-                        <div className="connections">
+                        <div className="connections just-number">
                             <p className="label">Friends number</p>
                             <div className="values">
                                 <p className="value">{context.customUser.friendCounter}</p>
                             </div>
                         </div>
-                        <div className="connections">
+                        <div className="connections just-number">
                             <p className="label">Subjects number</p>
                             <div className="values">
                                 <p className="value">{context.customUser.subjectsNumber}</p>
                             </div>
                         </div>
-                        <div className="connections">
+                        <div className="connections just-number">
                             <p className="label">Packages number</p>
                             <div className="values">
                                 <p className="value">{context.customUser.packagesNumber}</p>
                             </div>
                         </div>
-                        <div className="connections">
+                        <div className="connections just-number">
                             <p className="label">Cards number</p>
                             <div className="values">
                                 <p className="value">{context.customUser.cardsNumber}</p>

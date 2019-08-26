@@ -3,7 +3,7 @@ li {
 
 button.button.action {
   background-color: transparent;
-  border: solid 1px #ff7733;
+  border: solid 1px #00a0d0;
   color: #333;
   text-transform: uppercase;
   font-weight: bold;
@@ -16,3 +16,6 @@ button.button.action {
 
 button:focus {
   outline: none; }
+
+.full-name {
+  display: flex; }

@@ -1,0 +1,70 @@
+@import '../../../utils.scss';
+.account-settings {
+    position: relative;
+
+    .account-menu {
+        position: absolute;
+        right: (0);
+        margin: (2px 0 0);
+        border: (1px solid rgba(0, 0, 0, 0.15));
+        padding: (30px);
+        width: 300px;
+        background-color: #fff;
+        color: $color-user-menu-text;
+        text-align: (left);
+        box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
+        z-index: 10;
+        &.hide {
+            display: none;
+        }
+        &.show {
+            display: block;
+        }
+
+        .title {
+            font-size: 20px;
+            font-weight: 300;
+            margin: (0);
+            font-family: 'Lato', sans-serif;
+        }
+        .email {
+            font-size: 11.2px;
+            word-break: break-all;
+        }
+        .role {
+            font-size: 11.2px;
+            word-break: break-all;
+            margin: 0;
+        }
+
+        .settings {
+            padding: (0);
+            margin: (0);
+            .button {
+                width: 100%;
+                padding: (4px, 24px);
+                color: #333;
+                text-align: (inherit);
+                border: (0);
+                font-family: inherit;
+                font-size: 14px;
+                line-height: 1.5;
+                height: auto;
+                background-color: transparent;
+                text-decoration: none;
+                cursor: pointer;
+                &:hover,
+                &:focus {
+                    color: $color-user-menu-button-text-focus;
+                    text-decoration: none;
+                    background-color: #bababa;
+                }
+                &:active {
+                    color: #fff;
+                    text-decoration: none;
+                    background-color: #767676;
+                }
+            }
+        }
+    }
+}

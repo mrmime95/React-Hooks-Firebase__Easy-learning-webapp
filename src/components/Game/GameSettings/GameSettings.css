@@ -3,7 +3,7 @@ li {
 
 button.button.action {
   background-color: transparent;
-  border: solid 1px #ff7733;
+  border: solid 1px #00a0d0;
   color: #333;
   text-transform: uppercase;
   font-weight: bold;
@@ -58,10 +58,13 @@ button:focus {
         margin: 0 0 8px; }
       .game-settings .role-hints-component .dropdown .dropdown-description .description-text {
         font-size: 14px;
-        margin: 0 0 16px;
+        margin: 0 0 5px;
         color: #212529;
         line-height: 1.2;
         font-weight: 500; }
+  .game-settings .select-withborder {
+    padding: 15px;
+    border: 2px dashed #979797; }
   .game-settings .cards-harndess {
     padding: 15px;
     border: 2px dashed #979797; }

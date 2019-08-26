@@ -94,9 +94,10 @@ export default function CustomUserDetailProvider(props: { loadSize: number, user
                                 };
                             })
                         );
+                        const createdBy = await fireContext.getCreatedBy(doc.data().createdBy.id);
                         return {
                             package: { ...doc.data(), id: doc.id, words },
-                            user: { ...customUser, ...doc.data().createdBy, link: '/user/' + customUser.id },
+                            user: createdBy, //{ ...customUser, ...doc.data().createdBy, link: '/user/' + customUser.id },
                         };
                     })
             );
@@ -148,9 +149,10 @@ export default function CustomUserDetailProvider(props: { loadSize: number, user
                                 };
                             })
                         );
+                        const createdBy = await fireContext.getCreatedBy(doc.data().createdBy.id);
                         return {
                             package: { ...doc.data(), id: doc.id, words },
-                            user: { ...customUser, ...doc.data().createdBy, link: '/user/' + customUser.id },
+                            user: createdBy, //{ ...customUser, ...doc.data().createdBy, link: '/user/' + customUser.id },
                         };
                     })
             );
@@ -197,9 +199,10 @@ export default function CustomUserDetailProvider(props: { loadSize: number, user
                                 };
                             })
                         );
+                        const createdBy = await fireContext.getCreatedBy(doc.data().createdBy.id);
                         return {
                             package: { ...doc.data(), id: doc.id, words },
-                            user: { ...customUser, ...doc.data().createdBy, link: '/user/' + customUser.id },
+                            user: createdBy, // { ...customUser, ...doc.data().createdBy, link: '/user/' + customUser.id },
                         };
                     })
             );
@@ -249,9 +252,10 @@ export default function CustomUserDetailProvider(props: { loadSize: number, user
                                 };
                             })
                         );
+                        const createdBy = await fireContext.getCreatedBy(doc.data().createdBy.id);
                         return {
                             package: { ...doc.data(), id: doc.id, words },
-                            user: { ...customUser, ...doc.data().createdBy, link: '/user/' + customUser.id },
+                            user: createdBy, //{ ...customUser, ...doc.data().createdBy, link: '/user/' + customUser.id },
                         };
                     })
             );

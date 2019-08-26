@@ -44,6 +44,10 @@
                         text-align: right;
                     }
                 }
+                &.just-number {
+                    display: flex;
+                    justify-content: space-between;
+                }
             }
         }
 

@@ -15,9 +15,11 @@ export default function TextField({
     placeholder,
     min,
     max,
+    AddExtra,
+    autoFocus,
 }) {
     return (
-        <FormItem className={`form-item text-field ${className || ''} ${required ? 'required' : ''}`} label={label}>
+        <FormItem className={` text-field ${className || ''} ${required ? 'required' : ''}`} label={label}>
             <input
                 placeholder={placeholder}
                 type={type}
@@ -26,9 +28,11 @@ export default function TextField({
                 onChange={handleChange}
                 onBlur={handleBlur}
                 required={required}
+                autoFocus={autoFocus}
                 min={min ? min : undefined}
                 max={max ? max : undefined}
             />
+            {AddExtra && <AddExtra />}
         </FormItem>
     );
 }

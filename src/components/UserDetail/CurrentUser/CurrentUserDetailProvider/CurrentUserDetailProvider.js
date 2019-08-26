@@ -4,9 +4,8 @@ import { FirebaseContext } from '../../../Firebase/FirebaseProvider';
 export const CurrentUserDetailContext = React.createContext();
 
 function CurrentUserDetailProvider(props: { children: React$Node }) {
-    const [user, setUser] = useState(undefined);
+    const [user, setUser] = useState({ firstName: '', lastName: '', tags: [] });
     const [tags, setTags] = useState(null);
-    const [loading, setLoading] = useState(true);
     const fireContext = useContext(FirebaseContext);
 
     useEffect(() => {
@@ -19,7 +18,6 @@ function CurrentUserDetailProvider(props: { children: React$Node }) {
             value={{
                 tags,
                 user,
-                loading,
                 updateCurrentUser,
             }}
         >
@@ -28,7 +26,6 @@ function CurrentUserDetailProvider(props: { children: React$Node }) {
     );
 
     function getUserData() {
-        setLoading(true);
         fireContext.db
             .doc(`users/${fireContext.user.id}`)
             .get()
@@ -39,8 +36,6 @@ function CurrentUserDetailProvider(props: { children: React$Node }) {
                         id: props.userId,
                     });
                 }
-
-                setLoading(false);
             })
             .catch(function(error) {
                 console.log('Error getting user document: ', error);

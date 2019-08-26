@@ -1,9 +1,11 @@
 @import '../../../utils.scss';
 
 .picure-uploader {
+    input[type='text'] {
+        width: calc(100% - 120px);
+    }
     .upload-btn-wrapper {
         position: relative;
-        overflow: hidden;
         display: inline-block;
         cursor: pointer;
         .upload-btn {

@@ -2,7 +2,6 @@
 import React, { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import Octicon from '@githubprimer/octicons-react';
-import IconWithBadge from '../../shared/IconWithBadge/IconWithBadge';
 import { FirebaseContext } from '../../Firebase/FirebaseProvider';
 import './Menu.css';
 
@@ -22,18 +21,11 @@ function MenuItem(props) {
     const { item } = props;
 
     const fireContext = useContext(FirebaseContext);
-    if (item.withBadge) fireContext.getFriendRequestNumber();
-
+    if (item.admin && fireContext.user.role !== 'admin') return null;
     return (
         <li className="menu-item">
             <NavLink to={item.route.path} activeClassName="active">
-                {item.withBadge ? (
-                    <IconWithBadge badgeValue={fireContext.requestNumber}>
-                        <Octicon icon={item.Icon} className="icon" />
-                    </IconWithBadge>
-                ) : (
-                    <Octicon icon={item.Icon} className="icon" />
-                )}
+                <Octicon icon={item.Icon} className="icon" />
                 <span className="text">{item.title}</span>
                 <div className="tooltip">{item.title}</div>
             </NavLink>

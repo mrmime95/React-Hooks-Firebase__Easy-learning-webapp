@@ -30,14 +30,17 @@
       font-size: 20px;
       font-weight: 100;
       margin-bottom: 0;
-      font-family: 'Lato', sans-serif; }
+      font-family: 'Lato', sans-serif;
+      padding: 5px 0px 15px 0; }
     .new-shared-package .content .package-title {
+      padding: 10px;
       display: flex;
       justify-content: center; }
       .new-shared-package .content .package-title h2 {
         font-size: 25px;
         font-weight: 100;
-        font-family: 'Lato', sans-serif; }
+        font-family: 'Lato', sans-serif;
+        margin: 0; }
       .new-shared-package .content .package-title .package {
         width: 30px;
         height: 30px;
@@ -46,6 +49,7 @@
       padding: 0 40px; }
       .new-shared-package .content .words .line {
         display: flex;
+        flex-wrap: wrap;
         justify-content: space-between;
         border-bottom: 1px solid #ccc;
         padding: 15px 20px 0;
@@ -62,6 +66,10 @@
             color: red; }
           .new-shared-package .content .words .line .correct.unknown {
             color: #a5a500; }
+        .new-shared-package .content .words .line .checkbox-form-correct {
+          display: flex; }
+          .new-shared-package .content .words .line .checkbox-form-correct .form-item.checkbox-field {
+            margin-bottom: 0; }
         .new-shared-package .content .words .line .__react_component_tooltip.show {
           opacity: 1; }
           .new-shared-package .content .words .line .__react_component_tooltip.show .preview {

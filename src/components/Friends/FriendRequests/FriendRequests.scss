@@ -1,0 +1,108 @@
+@import '../../../utils.scss';
+.friends-requests-dropdown {
+    position: relative;
+    text-transform: none;
+    display: flex;
+    justify-content: flex-end;
+    .opener {
+        background: none;
+        border: none;
+        cursor: pointer;
+        .icon {
+            font-size: 20px;
+        }
+    }
+    .dropdown {
+        position: absolute;
+        min-width: 300px;
+        box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(0, 0, 0, 0.35);
+        background-color: white;
+        padding: 15px;
+        font-family: 'Lato', sans-serif;
+        z-index: 3;
+        top: 20px;
+        right: 0;
+        transform: translate(100%, 0);
+        max-height: 250px;
+        overflow: scroll;
+        &.hide {
+            display: none;
+        }
+        &.show {
+            display: block;
+        }
+        .dropdown-title {
+            margin: 0 0 15px;
+            font-size: 20px;
+            font-weight: 300;
+        }
+        .dropdown-description {
+            .description-title {
+                font-size: 14px;
+                font-weight: bold;
+                line-height: 1.2;
+                margin: 0 0 8px;
+            }
+            .description-text {
+                font-size: 14px;
+                margin: 0 0 5px;
+                color: #212529;
+                line-height: 1.2;
+                font-weight: 500;
+            }
+        }
+        .friend-requests-list {
+            .grid {
+                font-family: 'Lato', sans-serif;
+                margin-top: 20px;
+                .grid-row {
+                    border-top: 1px solid #dddfe2;
+                    display: flex;
+                    &:hover {
+                        background-color: white;
+                    }
+
+                    .profile-column {
+                        display: flex;
+                        padding: 0;
+                        justify-content: space-between;
+
+                        .profile-picture {
+                            flex: 1;
+                        }
+                        .user {
+                            margin: 0 25px;
+                            p {
+                                font-family: inherit;
+                                font-weight: normal;
+                                line-height: 1.5;
+                                font-size: 12px;
+                            }
+                            .user-name-text {
+                            }
+                            .user-email {
+                                color: #606770;
+                            }
+                        }
+                    }
+                    .buttons-column {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        padding: 0;
+                        .buttons {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            width: auto;
+                            button.btn {
+                                margin: 0 5px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

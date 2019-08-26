@@ -47,13 +47,17 @@
                 }
                 .description-text {
                     font-size: 14px;
-                    margin: 0 0 16px;
+                    margin: 0 0 5px;
                     color: #212529;
                     line-height: 1.2;
                     font-weight: 500;
                 }
             }
         }
+    }
+    .select-withborder {
+        padding: 15px;
+        border: 2px dashed #979797;
     }
     .cards-harndess {
         padding: 15px;

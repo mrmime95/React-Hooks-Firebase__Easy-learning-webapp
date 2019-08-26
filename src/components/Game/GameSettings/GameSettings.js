@@ -38,7 +38,6 @@ export default function GameSettings(props: {}) {
                 {({ handleChange, handleBlur, values, setFieldValue, setFieldTouched, errors, touched }, FormRow) => {
                     return (
                         <React.Fragment>
-                            <RoleHints />
                             <MultiSelect
                                 label="Selected subjects:"
                                 value={values.selectedSubjects}
@@ -56,6 +55,8 @@ export default function GameSettings(props: {}) {
                                 }
                                 isDisabled={values.selectedPackages.length !== 0}
                                 placeholder="Select subjects"
+                                extra={RoleHints}
+                                withBorder
                             />
                             <MultiSelect
                                 label="Selected packages:"
@@ -66,6 +67,7 @@ export default function GameSettings(props: {}) {
                                     setFieldValue('selectedPackages', value);
                                     getCardsOfPackages(value);
                                 }}
+                                withBorder
                                 options={
                                     packages &&
                                     packages.map(pack => {
@@ -87,7 +89,7 @@ export default function GameSettings(props: {}) {
                                                 { label: `★★★★ (${cardsAtKnowledge(4)} card)`, id: '4' },
                                                 { label: `★★★★★ (${cardsAtKnowledge(5)} card)`, id: '5' },
                                             ]}
-                                            label="Hardnesses: "
+                                            label="Knowledges: "
                                             checked={values.selectedHardnessIDs}
                                             readOnly={gameStarted}
                                             onChange={(id, checked) => {
@@ -118,10 +120,11 @@ export default function GameSettings(props: {}) {
                                 checked={values.inverseGame}
                                 label="play with inverse cards"
                                 readOnly={gameStarted}
+                                className="select-withborder"
                             />
                             {!gameStarted && showingCards.length !== 0 && (
                                 <button type="submit" className="btn btn-success">
-                                    Play!
+                                    PLAY!
                                 </button>
                             )}
                         </React.Fragment>
@@ -149,22 +152,33 @@ const RoleHints = props => {
                     <Octicon className="icon" icon={Question} />
                 </button>
                 <div className={'dropdown ' + (menuIsVisible ? 'show' : 'hide')}>
-                    <h2 className="dropdown-title">{'user-create.user.role-hints.title'}</h2>
+                    <h2 className="dropdown-title">How to play?</h2>
                     <div className="dropdown-description">
-                        <h3 className="description-title">{'user-create.user.role-hints.advisor.title'}:</h3>
-                        <p className="description-text">{'user-create.user.role-hints.advisor.description'}:</p>
-                    </div>
-                    <div className="dropdown-description">
-                        <h3 className="description-title">{'user-create.user.role-hints.coach.title'}:</h3>
-                        <p className="description-text">{'user-create.user.role-hints.coach.description'}</p>
-                    </div>
-                    <div className="dropdown-description">
-                        <h3 className="description-title">
-                            {'user-create.user.role-hints.organisation-manager.title'}:
-                        </h3>
+                        <h3 className="description-title">Add game settings:</h3>
+                        <p className="description-text">Select subjects</p>
+                        <p className="description-text">Select packages</p>
                         <p className="description-text">
-                            {'user-create.user.role-hints.organisation-manager.description'}
+                            Select knowledges and check if you want to play with reverse cards
                         </p>
+                        <p className="description-text">Click on "PLAY!"" button</p>
+                    </div>
+                    <div className="dropdown-description">
+                        <h3 className="description-title">The game:</h3>
+                        <p className="description-text">You will see cards in random order.</p>
+                        <p className="description-text">
+                            If you think you know wath is on the card's back, click on the card.
+                        </p>
+                        <p className="description-text">
+                            Rate yourself with stars form 1 to 5, and then you will get the next card.
+                        </p>
+                        <p className="description-text">You can Exit from game by clickin on "Exit" button.</p>
+                    </div>
+                    <div className="dropdown-description">
+                        <h3 className="description-title">The end of the game:</h3>
+                        <p className="description-text">You can check stats of your game.</p>
+                        <p className="description-text">You can replay with cards if they hasn't enought Stars.</p>
+                        <p className="description-text">You can start a new game, with new setup.</p>
+                        <p className="description-text">You can go back to the "Dashborad".</p>
                     </div>
                 </div>
             </div>

@@ -117,7 +117,7 @@ function NewSharedPackageContent(props) {
                                             FormRow
                                         ) => {
                                             return (
-                                                <div>
+                                                <div className="checkbox-form-correct">
                                                     <Checkbox
                                                         handleChange={() => {
                                                             handleChange({

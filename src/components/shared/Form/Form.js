@@ -13,7 +13,15 @@ export default function Form({ initialValues, onSubmit, children, enableReinitia
                     <form onSubmit={handleSubmit} className={`form ${className}`}>
                         {children &&
                             children(
-                                { handleChange, handleBlur, setFieldValue, setFieldTouched, values, errors, dirty },
+                                {
+                                    handleChange,
+                                    handleBlur,
+                                    setFieldValue,
+                                    setFieldTouched,
+                                    values,
+                                    errors,
+                                    dirty,
+                                },
                                 FormRow
                             )}
                     </form>
