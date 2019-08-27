@@ -4,12 +4,14 @@ import React, { useContext } from 'react';
 import Form from '../../../shared/Form/Form';
 import { CurrentUserDetailContext } from './../CurrentUserDetailProvider/CurrentUserDetailProvider';
 import PicureUploader from '../../../shared/PicureUploader/PicureUploader';
-import MultiSelect from '../../../shared/MultiSelect/MultiSelect';
 import TextField from '../../../shared/formFields/TextField/TextField';
+import { FirebaseContext } from '../../../Firebase/FirebaseProvider';
+import FormTags from '../../../shared/FormTags/FormTags';
 import './CurrentUserSettings.css';
 
-function CurrentUserSettings() {
+function CurrentUserSettings(props) {
     const context = useContext(CurrentUserDetailContext);
+    const { createNewApproverRequest } = useContext(FirebaseContext);
     return (
         <div className="tasks-tab">
             <Form
@@ -18,7 +20,7 @@ function CurrentUserSettings() {
                     lastName: context.user.lastName,
                     birthDate: context.user.birthDate,
                     tags: context.user.tags.map(tag => {
-                        return { value: tag, label: tag };
+                        return { id: tag, text: tag };
                     }),
                     profilePictureUrl: context.user.profilePicture || '',
                     profilePicture: null,
@@ -102,40 +104,28 @@ function CurrentUserSettings() {
                                     handleBlur={handleBlur}
                                 />
                             </div>
-                            <MultiSelect
+                            <FormTags
                                 label="Your tags:"
-                                value={values.tags}
+                                creator
                                 name="tags"
-                                className="tags-select"
-                                onChange={value => {
-                                    handleChange({
-                                        target: {
-                                            name: 'tags',
-                                            value,
-                                        },
-                                    });
-                                }}
-                                options={
-                                    context.tags &&
-                                    context.tags.map(tag => {
-                                        return { value: tag.text, label: tag.text };
-                                    })
-                                }
-                                placeholder="Select your tags"
+                                tags={values.tags}
+                                handleChange={handleChange}
+                                placeholder="Add your strength"
                             />
 
                             <div className="buttons">
                                 <button className="btn btn-primary btn-block" type="submit">
                                     Update Profile
                                 </button>
-
-                                <button
-                                    className="btn btn-primary btn-block"
-                                    type="button"
-                                    onClick={() => console.log('request sending')}
-                                >
-                                    Become an approver for this tags
-                                </button>
+                                {values.tags.length !== 0 && (
+                                    <button
+                                        className="btn btn-primary btn-block"
+                                        type="button"
+                                        onClick={() => createNewApproverRequest(values.tags)}
+                                    >
+                                        Become an approver for this tags
+                                    </button>
+                                )}
                             </div>
                         </React.Fragment>
                     );

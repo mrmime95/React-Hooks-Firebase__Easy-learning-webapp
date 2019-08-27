@@ -34,7 +34,7 @@ export default function NewSharedPackage(props: {
                 back: { example: string, image: string, imageUrl: string, word: string },
                 correct?: boolean,
                 cardId: string,
-            },
+            }
         ],
     },
 }) {
@@ -100,7 +100,7 @@ function NewSharedPackageContent(props) {
                             <li key={`li${word.cardId}`} className="line" data-for={`li${word.cardId}`} data-tip>
                                 <p className="word">{`${word.front.word}-${word.back.word}`}</p>
                                 {user.role === 'admin' ||
-                                (user.role === 'approver' && compareArrays(user.tags, props.package.tags)) ? (
+                                (user.role === 'approver' && compareArrays(user.approverAt, props.package.tags)) ? (
                                     <Form
                                         initialValues={{
                                             correct: word.correct ? word.correct : 'unknow',

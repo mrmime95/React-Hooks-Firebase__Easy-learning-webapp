@@ -102,7 +102,7 @@ export default function FriendsProvider(props: { users: [Users] }) {
                         cards: friendData.data().cardsNumber,
                         role: friendData.data().role,
                         profilePicture: friendData.data().profilePicture,
-                        tags: friendData.data().tags,
+                        tags: [...new Set([...friendData.data().tags, ...friendData.data().approverAt])],
                     };
                 })
             );

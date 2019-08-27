@@ -83,7 +83,7 @@ export default function UsersProvider(props) {
                     cards: doc.data().cardsNumber,
                     role: doc.data().role,
                     profilePicture: doc.data().profilePicture,
-                    tags: doc.data().tags,
+                    tags: [...new Set([...doc.data().tags, ...doc.data().approverAt])],
                     requested: friendRequest.data()
                         ? friendRequest.data().requesters
                             ? friendRequest.data().requesters.find(element => element === fireContext.user.id)

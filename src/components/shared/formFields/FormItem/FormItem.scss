@@ -4,6 +4,9 @@
     margin-bottom: 15px;
     padding: 6px 12px;
     width: 100%;
+    &.checkbox-field {
+        width: auto;
+    }
     .label {
         display: block;
         font-family: 'Lato', sans-serif;

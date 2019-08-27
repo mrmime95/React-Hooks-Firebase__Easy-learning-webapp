@@ -59,9 +59,13 @@ button:focus {
         padding-left: 20px; }
     @media only screen and (min-width: 992px) {
       .user-list .grid .grid-row .column.tags {
-        padding: 0 23px;
+        padding: 0 5px;
         flex: 2;
-        flex-wrap: wrap; }
+        align-items: center;
+        overflow: scroll;
+        margin: 0 10px;
+        border: 1px #ffaaaa dashed;
+        display: flex; }
       .user-list .grid .grid-row .column.name-content .with-label {
         width: auto; }
         .user-list .grid .grid-row .column.name-content .with-label .label {

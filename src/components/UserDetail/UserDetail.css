@@ -53,7 +53,8 @@ button:focus {
   .custom-user-details .current-user-details-info .name .connections,
   .current-user-details .custom-user-details-info .name .connections,
   .current-user-details .current-user-details-info .name .connections {
-    margin-top: 10px; }
+    margin-top: 10px;
+    border-bottom: 1px solid #aeaeae; }
     .custom-user-details .custom-user-details-info .name .connections .label,
     .custom-user-details .current-user-details-info .name .connections .label,
     .current-user-details .custom-user-details-info .name .connections .label,
@@ -72,6 +73,17 @@ button:focus {
       color: #00a0d0;
       margin: 0;
       text-align: right; }
+    .custom-user-details .custom-user-details-info .name .connections .values.tag-values,
+    .custom-user-details .current-user-details-info .name .connections .values.tag-values,
+    .current-user-details .custom-user-details-info .name .connections .values.tag-values,
+    .current-user-details .current-user-details-info .name .connections .values.tag-values {
+      display: flex; }
+      .custom-user-details .custom-user-details-info .name .connections .values.tag-values .form-tags,
+      .custom-user-details .current-user-details-info .name .connections .values.tag-values .form-tags,
+      .current-user-details .custom-user-details-info .name .connections .values.tag-values .form-tags,
+      .current-user-details .current-user-details-info .name .connections .values.tag-values .form-tags {
+        padding: 0;
+        width: auto; }
     .custom-user-details .custom-user-details-info .name .connections.just-number,
     .custom-user-details .current-user-details-info .name .connections.just-number,
     .current-user-details .custom-user-details-info .name .connections.just-number,
@@ -121,6 +133,49 @@ button:focus {
   .current-user-details .current-user-details-info .row-label .value {
     text-align: right;
     font-size: 11px; }
+
+.current-user-container,
+.custom-user-container {
+  display: flex;
+  flex-wrap: wrap; }
+  .current-user-container .info,
+  .custom-user-container .info {
+    width: 100%; }
+    .current-user-container .info .type,
+    .custom-user-container .info .type {
+      margin: 0;
+      font-size: 16px;
+      font-weight: normal;
+      padding-bottom: 5px;
+      color: #00a0d0;
+      font-weight: bold; }
+  .current-user-container .tabs,
+  .custom-user-container .tabs {
+    width: 100%;
+    position: relative;
+    background-color: white; }
+    .current-user-container .tabs .tab-content,
+    .custom-user-container .tabs .tab-content {
+      padding: 25px 0 0; }
+      .current-user-container .tabs .tab-content > div,
+      .custom-user-container .tabs .tab-content > div {
+        position: relative; }
+  @media only screen and (min-width: 700px) {
+    .current-user-container,
+    .custom-user-container {
+      flex-wrap: nowrap; }
+      .current-user-container .info,
+      .custom-user-container .info {
+        width: 300px;
+        padding-right: 15px; }
+      .current-user-container .tabs,
+      .custom-user-container .tabs {
+        padding: 20px 5px 20px 35px;
+        border-left: 1px solid rgba(0, 0, 0, 0.2);
+        box-shadow: -5px 0 9px -3px rgba(0, 0, 0, 0.15); }
+        .current-user-container .tabs .tab-content,
+        .custom-user-container .tabs .tab-content {
+          padding: 20px 15px 0; } }
 
 .tabs .filters {
   display: flex;

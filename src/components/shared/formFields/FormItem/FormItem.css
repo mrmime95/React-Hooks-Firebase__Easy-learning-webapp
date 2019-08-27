@@ -21,6 +21,8 @@ button:focus {
   margin-bottom: 15px;
   padding: 6px 12px;
   width: 100%; }
+  .form-item.checkbox-field {
+    width: auto; }
   .form-item .label {
     display: block;
     font-family: 'Lato', sans-serif;

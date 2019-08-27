@@ -71,7 +71,7 @@ export default function FriendRequests(props) {
                                                             <div className="buttons">
                                                                 <button
                                                                     type="button"
-                                                                    className="btn btn-secondary"
+                                                                    className="btn btn-sm btn-secondary"
                                                                     onClick={e => {
                                                                         e.preventDefault();
                                                                         context.acceptFriend(rowData.id);
@@ -81,7 +81,7 @@ export default function FriendRequests(props) {
                                                                 </button>
                                                                 <button
                                                                     type="button"
-                                                                    className="btn btn-outline-dark"
+                                                                    className="btn btn-sm  btn-outline-dark"
                                                                     onClick={e => {
                                                                         e.preventDefault();
                                                                         context.deleteFriendReques(rowData.id);

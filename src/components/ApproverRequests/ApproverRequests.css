@@ -1,0 +1,104 @@
+li {
+  list-style-type: none; }
+
+button.button.action {
+  background-color: transparent;
+  border: solid 1px #00a0d0;
+  color: #333;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-family: Lato;
+  font-size: 11px;
+  border-radius: 10px;
+  padding: 0px 12px;
+  height: auto;
+  margin-left: 15px; }
+
+button:focus {
+  outline: none; }
+
+.grid {
+  font-family: 'Lato', sans-serif;
+  margin-top: 20px; }
+  .grid .grid-row {
+    border-left: solid 5px #00a0d0;
+    position: relative; }
+    .grid .grid-row.admin {
+      border-left: solid 5px #e3163a; }
+    .grid .grid-row.approver {
+      border-left: solid 5px #7cc253; }
+    .grid .grid-row .column.profile-picture {
+      flex: 1; }
+    .grid .grid-row .column.name {
+      display: flex;
+      justify-content: flex-start;
+      flex: 3; }
+      .grid .grid-row .column.name .title {
+        text-transform: uppercase;
+        font-family: 'Lato', sans-serif;
+        font-size: 12px;
+        font-weight: bold;
+        max-width: 66%;
+        padding-left: 20px; }
+    @media only screen and (min-width: 992px) {
+      .grid .grid-row .column.tags {
+        padding: 0 5px;
+        flex: 2;
+        align-items: center;
+        overflow: scroll;
+        margin: 0 10px;
+        border: 1px #ffaaaa dashed;
+        display: flex; }
+      .grid .grid-row .column.name-content .with-label {
+        width: auto; }
+        .grid .grid-row .column.name-content .with-label .label {
+          margin: 0;
+          display: block;
+          line-height: 1.5;
+          font-size: 12px;
+          font-family: 'Lato', sans-serif; }
+        .grid .grid-row .column.name-content .with-label p {
+          font-family: 'Lato', sans-serif;
+          font-weight: normal;
+          line-height: 1.5;
+          font-size: 12px; }
+      .grid .grid-row .column.data {
+        flex: 2; }
+        .grid .grid-row .column.data .with-label {
+          width: auto; }
+          .grid .grid-row .column.data .with-label .label {
+            margin: 0;
+            width: calc(100% - 120px);
+            display: block;
+            line-height: 1.5;
+            font-size: 12px;
+            font-family: 'Lato', sans-serif; }
+          .grid .grid-row .column.data .with-label p {
+            font-family: 'Lato', sans-serif;
+            width: 120px;
+            font-weight: normal;
+            line-height: 1.5;
+            font-size: 12px; }
+      .grid .grid-row .column.buttons-column {
+        flex: 2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0; }
+        .grid .grid-row .column.buttons-column .buttons {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: auto; }
+          .grid .grid-row .column.buttons-column .buttons button.btn {
+            margin: 0 5px; } }
+    .grid .grid-row .created-at {
+      position: absolute;
+      right: 5px;
+      top: -5px; }
+      .grid .grid-row .created-at span {
+        color: #999;
+        text-transform: uppercase;
+        font-size: 13px;
+        white-space: nowrap;
+        font-weight: 500; }

@@ -122,7 +122,7 @@ export default function CustomUserDetailProvider(props: { loadSize: number, user
                     .filter(doc => {
                         if (
                             fireContext.user.role === 'approver' &&
-                            compareArrays(fireContext.user.tags, doc.data().tags)
+                            compareArrays(fireContext.user.approverAt, doc.data().tags)
                         ) {
                             return true;
                         }
@@ -225,7 +225,7 @@ export default function CustomUserDetailProvider(props: { loadSize: number, user
                     .filter(doc => {
                         if (
                             fireContext.user.role === 'approver' &&
-                            compareArrays(fireContext.user.tags, doc.data().tags)
+                            compareArrays(fireContext.user.approverAt, doc.data().tags)
                         ) {
                             return true;
                         }

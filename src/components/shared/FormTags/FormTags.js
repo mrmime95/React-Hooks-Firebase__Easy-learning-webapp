@@ -32,13 +32,13 @@ function FormTags(props: {
                 }}
                 handleAddition={(tag, e) => {
                     const newTags = [...props.tags, tag];
-                    props.handleChange({
-                        target: {
-                            name: props.name,
-                            value: newTags,
-                        },
-                    });
                     if (props.creator) {
+                        props.handleChange({
+                            target: {
+                                name: props.name,
+                                value: newTags,
+                            },
+                        });
                         fireContext.createNewTag(tag);
                     }
                 }}

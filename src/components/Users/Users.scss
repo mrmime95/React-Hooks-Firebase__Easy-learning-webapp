@@ -57,9 +57,13 @@
 
                 @include breakpoint-large() {
                     &.tags {
-                        padding: 0 23px;
+                        padding: 0 5px;
                         flex: 2;
-                        flex-wrap: wrap;
+                        align-items: center;
+                        overflow: scroll;
+                        margin: 0 10px;
+                        border: 1px #ffaaaa dashed;
+                        display: flex;
                     }
                     &.name-content {
                         .with-label {

@@ -63,7 +63,10 @@ export default function DashboardProvider(props: { loadSize: number, orderBy: [s
 
         const dashboardFlow = first.docs
             .filter(doc => {
-                if (fireContext.user.role === 'approver' && compareArrays(fireContext.user.tags, doc.data().tags)) {
+                if (
+                    fireContext.user.role === 'approver' &&
+                    compareArrays(fireContext.user.approverAt, doc.data().tags)
+                ) {
                     return true;
                 }
                 if (fireContext.user.role === 'admin') {
@@ -117,7 +120,10 @@ export default function DashboardProvider(props: { loadSize: number, orderBy: [s
             const hasMore = next.docs.length === props.loadSize;
             const dashboardFlowNext = next.docs
                 .filter(doc => {
-                    if (fireContext.user.role === 'approver' && compareArrays(fireContext.user.tags, doc.data().tags)) {
+                    if (
+                        fireContext.user.role === 'approver' &&
+                        compareArrays(fireContext.user.approverAt, doc.data().tags)
+                    ) {
                         return true;
                     }
                     if (fireContext.user.role === 'admin') {

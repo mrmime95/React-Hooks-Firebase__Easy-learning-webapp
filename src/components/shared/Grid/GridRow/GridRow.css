@@ -38,6 +38,10 @@ button:focus {
   @media only screen and (min-width: 992px) {
     .grid-row {
       flex-wrap: unset; } }
+  .grid-row .form-tags {
+    margin-bottom: 0;
+    padding: 0;
+    width: auto; }
 
 a.grid-row {
   color: #006584;

@@ -49,6 +49,12 @@ export default class FirebaseProvider extends Component {
                     deleteSubjectById: this.deleteSubjectById,
                     getCreatedBy: this.getCreatedBy,
                     doSendPasswordResetEmail: this.doSendPasswordResetEmail,
+                    createNewApproverRequest: this.createNewApproverRequest,
+                    getApproverRequestsByCurrentUser: this.getApproverRequestsByCurrentUser,
+                    getNewApproverRequests: this.getNewApproverRequests,
+                    approvingApproverRequest: this.approvingApproverRequest,
+                    declideApproverRequest: this.declideApproverRequest,
+                    getCurrentUser: this.getCurrentUser,
                 }}
             >
                 {this.props.children}
@@ -115,6 +121,7 @@ export default class FirebaseProvider extends Component {
                 packagesNumber: 0,
                 role: 'user',
                 subjectsNumber: 0,
+                approverAt: [],
                 tags: values.tags ? values.tags.map(tag => tag.id) : [],
             })
             .then(() => {
@@ -398,5 +405,56 @@ export default class FirebaseProvider extends Component {
             .collection('subjects')
             .doc(subjectId)
             .delete();
+    };
+
+    createNewApproverRequest = tags => {
+        const batch = db.batch();
+        const approverRequestsRef = db.collection('approverRequests').doc();
+        batch.set(approverRequestsRef, {
+            tags: tags.map(tag => tag.id),
+            userId: this.state.user.id,
+            approved: 'requested',
+            createdAt: this.getDateTime(),
+        });
+        const userRef = db.collection('users').doc(this.state.user.id);
+        batch.update(userRef, { tags: tags.map(tag => tag.id) });
+        batch.commit();
+        alert('Approver request created!');
+    };
+
+    getNewApproverRequests = () => {
+        const ref = db.collection('approverRequests');
+        return ref
+            .where('approved', '==', 'requested')
+            .orderBy('createdAt', 'desc')
+            .get();
+    };
+
+    getApproverRequestsByCurrentUser = () => {
+        const ref = db.collection('approverRequests');
+        return ref.where('userId', '==', this.state.user.id).get();
+    };
+
+    approvingApproverRequest = (requId, userId, tags, approverAt) => {
+        const batch = db.batch();
+        const approverRequestsRef = db.collection('approverRequests').doc(requId);
+        batch.update(approverRequestsRef, {
+            approved: 'yes',
+            createdAt: this.getDateTime(),
+        });
+        const userRef = db.collection('users').doc(userId);
+        batch.update(userRef, { role: 'approver', tags: [], approverAt: [...new Set([...tags, ...approverAt])] });
+        batch.commit();
+    };
+
+    declideApproverRequest = (requId, userId, tags, approverAt) => {
+        const batch = db.batch();
+        const approverRequestsRef = db.collection('approverRequests').doc(requId);
+
+        batch.update(approverRequestsRef, {
+            approved: 'no',
+            createdAt: this.getDateTime(),
+        });
+        batch.commit();
     };
 }

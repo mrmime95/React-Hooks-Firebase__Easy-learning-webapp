@@ -14,28 +14,41 @@ import CustomUserDashboard from './CustomUser/CustomUserDashboard/CustomUserDash
 
 import AvatarCircle from '../shared/AvatarCircle/AvatarCircle';
 
-import InfoTabs from '../shared/InfoTabs/InfoTabs';
 import InfoBlock from '../shared/InfoBlock/InfoBlock';
+import FormTags from '../shared/FormTags/FormTags';
 
 import './UserDetail.css';
 
 function UserDetail(props: { match: RouterMatch }) {
     const fireContext = useContext(FirebaseContext);
-    console.log('ittkinnn');
     if (fireContext.user.id === props.match.params.id) {
         return (
             <CurrentUserDetailProvider>
-                <InfoTabs className="current-user-details" component={CurrentUserSettings} {...props}>
-                    <CurrentUserDetailsInfo />
-                </InfoTabs>
+                <div className="current-user-container">
+                    <div className="info current-user-details">
+                        <CurrentUserDetailsInfo />
+                    </div>
+                    <div className="tabs">
+                        <div className="tab-content">
+                            <CurrentUserSettings></CurrentUserSettings>
+                        </div>
+                    </div>
+                </div>
             </CurrentUserDetailProvider>
         );
     }
     return (
         <CustomUserDetailProvider loadSize={5} userId={props.match.params.id} orderBy={['createdBy.createdAt', 'desc']}>
-            <InfoTabs className="custom-user-details" component={CustomUserDashboard} {...props}>
-                <CustomUserDetailsInfo />
-            </InfoTabs>
+            <div className="custom-user-container">
+                <div className="info custom-user-details">
+                    <CustomUserDetailsInfo />
+                </div>
+                <div className="tabs">
+                    <div className="tab-content">
+                        <CustomUserDashboard></CustomUserDashboard>
+                    </div>
+                </div>
+            </div>
         </CustomUserDetailProvider>
     );
 }
@@ -50,18 +63,6 @@ function CurrentUserDetailsInfo() {
                         fullName={context.user.firstName + ' ' + context.user.lastName}
                         profilePicture={context.user.profilePicture}
                     />
-                    <div className="connections">
-                        <p className="label">Role</p>
-                        <div className="values">
-                            <p className="value">{context.user.role}</p>
-                        </div>
-                    </div>
-                    <div className="connections">
-                        <p className="label">Email</p>
-                        <div className="values">
-                            <p className="value">{context.user.email}</p>
-                        </div>
-                    </div>
                     <div className="connections just-number">
                         <p className="label">Friends number</p>
                         <div className="values">
@@ -86,6 +87,54 @@ function CurrentUserDetailsInfo() {
                             <p className="value">{context.user.cardsNumber}</p>
                         </div>
                     </div>
+                    <div className="connections">
+                        <p className="label">Email</p>
+                        <div className="values">
+                            <p className="value">{context.user.email}</p>
+                        </div>
+                    </div>
+                    {context.user.birthday && (
+                        <div className="connections">
+                            <p className="label">birthday</p>
+                            <div className="values">
+                                <p className="value">{context.user.birthday}</p>
+                            </div>
+                        </div>
+                    )}
+                    {context.user.tags.length !== 0 && (
+                        <div className="connections">
+                            <p className="label">Strengths:</p>
+                            <div className="values tag-values">
+                                {context.user.tags.map(tag => {
+                                    return (
+                                        <FormTags
+                                            key={'strengths' + tag}
+                                            name="tags"
+                                            tags={[{ id: tag, text: tag }]}
+                                            handleChange={() => {}}
+                                            readOnly
+                                        />
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    )}
+                    <div className="connections">
+                        <p className="label">Approver at:</p>
+                        <div className="values tag-values">
+                            {context.user.approverAt.map(tag => {
+                                return (
+                                    <FormTags
+                                        key={tag}
+                                        name="tags"
+                                        tags={[{ id: tag, text: tag }]}
+                                        handleChange={() => {}}
+                                        readOnly
+                                    />
+                                );
+                            })}
+                        </div>
+                    </div>
                 </InfoBlock>
             ) : (
                 <div>Loading...</div>
@@ -108,18 +157,6 @@ function CustomUserDetailsInfo() {
                             fullName={context.customUser.firstName + ' ' + context.customUser.lastName}
                             profilePicture={context.customUser.profilePicture}
                         />
-                        <div className="connections">
-                            <p className="label">Role</p>
-                            <div className="values">
-                                <p className="value">{context.customUser.role}</p>
-                            </div>
-                        </div>
-                        <div className="connections">
-                            <p className="label">Email</p>
-                            <div className="values">
-                                <p className="value">{context.customUser.email}</p>
-                            </div>
-                        </div>
                         <div className="connections just-number">
                             <p className="label">Friends number</p>
                             <div className="values">
@@ -142,6 +179,54 @@ function CustomUserDetailsInfo() {
                             <p className="label">Cards number</p>
                             <div className="values">
                                 <p className="value">{context.customUser.cardsNumber}</p>
+                            </div>
+                        </div>
+                        <div className="connections">
+                            <p className="label">Email</p>
+                            <div className="values">
+                                <p className="value">{context.customUser.email}</p>
+                            </div>
+                        </div>
+                        {context.customUser.birthday && (
+                            <div className="connections">
+                                <p className="label">birthday</p>
+                                <div className="values">
+                                    <p className="value">{context.customUser.birthday}</p>
+                                </div>
+                            </div>
+                        )}
+                        {context.customUser.tags.length !== 0 && (
+                            <div className="connections">
+                                <p className="label">Strengths:</p>
+                                <div className="values tag-values">
+                                    {context.customUser.tags.map(tag => {
+                                        return (
+                                            <FormTags
+                                                key={'strengths' + tag}
+                                                name="tags"
+                                                tags={[{ id: tag, text: tag }]}
+                                                handleChange={() => {}}
+                                                readOnly
+                                            />
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        )}
+                        <div className="connections">
+                            <p className="label">Approver at:</p>
+                            <div className="values tag-values">
+                                {context.customUser.approverAt.map(tag => {
+                                    return (
+                                        <FormTags
+                                            key={tag}
+                                            name="tags"
+                                            tags={[{ id: tag, text: tag }]}
+                                            handleChange={() => {}}
+                                            readOnly
+                                        />
+                                    );
+                                })}
                             </div>
                         </div>
                     </InfoBlock>

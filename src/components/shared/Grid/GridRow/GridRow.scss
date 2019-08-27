@@ -26,6 +26,11 @@
     @include breakpoint-large() {
         flex-wrap: unset;
     }
+    .form-tags {
+        margin-bottom: 0;
+        padding: 0;
+        width: auto;
+    }
 }
 a.grid-row {
     color: $color-grid-column-active-hover;

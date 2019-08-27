@@ -59,9 +59,12 @@ button:focus {
         padding-left: 20px; }
     @media only screen and (min-width: 992px) {
       .friends-list .grid .grid-row .column.tags {
-        padding: 0 23px;
+        padding: 0 5px;
         flex: 2;
-        flex-wrap: wrap; }
+        align-items: center;
+        overflow: scroll;
+        border: 1px #ffaaaa dashed;
+        display: flex; }
       .friends-list .grid .grid-row .column.name-content .with-label {
         width: auto; }
         .friends-list .grid .grid-row .column.name-content .with-label .label {

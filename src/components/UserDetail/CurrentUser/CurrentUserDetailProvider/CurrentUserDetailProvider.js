@@ -4,7 +4,7 @@ import { FirebaseContext } from '../../../Firebase/FirebaseProvider';
 export const CurrentUserDetailContext = React.createContext();
 
 function CurrentUserDetailProvider(props: { children: React$Node }) {
-    const [user, setUser] = useState({ firstName: '', lastName: '', tags: [] });
+    const [user, setUser] = useState({ firstName: '', lastName: '', tags: [], approverAt: [] });
     const [tags, setTags] = useState(null);
     const fireContext = useContext(FirebaseContext);
 
@@ -66,12 +66,13 @@ function CurrentUserDetailProvider(props: { children: React$Node }) {
             firstName: data.firstName,
             lastName: data.lastName,
             birthDate: data.birthDate,
-            tags: data.tags.map(tag => tag.value),
+            tags: data.tags.map(tag => tag.id),
             profilePicture: profilePictureUrl,
         });
         batch.commit();
 
         getUserData();
+        fireContext.getCurrentUser(fireContext.user.id);
     }
 
     async function uploadImage(side) {
