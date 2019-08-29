@@ -141,16 +141,14 @@ export default function DashboardProvider(props: { loadSize: number, orderBy: [s
             const savableDashboardFlow = await Promise.all(
                 dashboardFlowNext.map(async doc => {
                     const cards = await fireContext.getCardsByPackageId(doc.id);
-                    const words = await Promise.all(
-                        cards.docs.map(async (card, index) => {
-                            return {
-                                front: card.data().front,
-                                back: card.data().back,
-                                correct: card.data().correct,
-                                cardId: card.id,
-                            };
-                        })
-                    );
+                    const words = cards.docs.map((card, index) => {
+                        return {
+                            front: card.data().front,
+                            back: card.data().back,
+                            correct: card.data().correct,
+                            cardId: card.id,
+                        };
+                    });
                     const createdBy = await fireContext.getCreatedBy(doc.data().createdBy.id);
                     return { package: { ...doc.data(), id: doc.id, words }, user: createdBy };
                 })
@@ -209,7 +207,7 @@ export default function DashboardProvider(props: { loadSize: number, orderBy: [s
         if (usersTags.length && packagesTags.length) {
             return usersTags.filter(x => packagesTags.includes(x)).length !== 0;
         }
-        return true;
+        return false;
     }
 }
 

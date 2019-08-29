@@ -51,7 +51,7 @@ function ListPack(props: {
                     <i className="fas fa-file-download" />
                 </button>
             </div>
-            <Modal isOpen={state.editPackageModalOpen} handleClickOutside={closeModal} className="one-line-modal">
+            <Modal isOpen={state.editPackageModalOpen} handleClickOutside={closeModal}>
                 <div className="modal-title">Edit {pack.packageName} package</div>
                 <Form
                     initialValues={{

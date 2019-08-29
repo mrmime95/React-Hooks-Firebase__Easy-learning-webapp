@@ -91,7 +91,6 @@ function NewSharedPackageContent(props) {
                 <ul className="words">
                     {props.package.words.map((word, index) => {
                         const submit: (data: SearchData<Filters>) => void = debounce(data => {
-                            console.log(props.package);
                             if (word.cardId) {
                                 changeCorrectOfCard(word.cardId, data.correct, props.package.id);
                             }
@@ -310,6 +309,6 @@ function NewSharedPackageContent(props) {
         if (usersTags.length && packagesTags.length) {
             return usersTags.filter(x => packagesTags.includes(x)).length !== 0;
         }
-        return true;
+        return false;
     }
 }

@@ -311,7 +311,7 @@ export default function CustomUserDetailProvider(props: { loadSize: number, user
         if (usersTags.length && packagesTags.length) {
             return usersTags.filter(x => packagesTags.includes(x)).length !== 0;
         }
-        return true;
+        return false;
     }
 }
 

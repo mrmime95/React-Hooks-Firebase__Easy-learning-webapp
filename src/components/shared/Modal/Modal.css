@@ -45,7 +45,6 @@ button:focus {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: auto;
     height: auto;
     padding: 20px; }
     .modal-container .modal-content .modal-form {

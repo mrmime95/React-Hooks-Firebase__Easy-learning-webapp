@@ -75,7 +75,7 @@ export default function ListSubject(props: {
                 )}
             </div>
 
-            <Modal isOpen={state.newPackageModalOpen} handleClickOutside={closeModal} className="one-line-modal">
+            <Modal isOpen={state.newPackageModalOpen} handleClickOutside={closeModal}>
                 <div className="modal-title">New package</div>
                 <Form
                     initialValues={{
