@@ -289,7 +289,7 @@ function UsersContent(props: { match: RouterMatch }) {
                                                     </button>
 
                                                     <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                        <button
+                                                        {/* <button
                                                             type="button"
                                                             className="dropdown-item"
                                                             onClick={e => {
@@ -297,7 +297,7 @@ function UsersContent(props: { match: RouterMatch }) {
                                                             }}
                                                         >
                                                             Delete user
-                                                        </button>
+                                                        </button> */}
                                                         {rowData.role !== 'approver' && (
                                                             <button
                                                                 type="button"

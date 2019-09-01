@@ -23,6 +23,8 @@ button:focus {
   background-color: white;
   justify-content: space-between;
   align-items: center; }
+  .header .friend-request-container {
+    display: flex; }
   .header .link,
   .header .span-link {
     padding: 10px 15px; }

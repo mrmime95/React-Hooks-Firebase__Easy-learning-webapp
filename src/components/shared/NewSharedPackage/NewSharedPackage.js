@@ -76,13 +76,8 @@ function NewSharedPackageContent(props) {
                         </p>
                     )}
                     <p className="cards-number">cards number: {props.package.cardsNumber}</p>
-                    <p className="correction">
-                        correct: {+((props.package.correctsNumber * 100) / props.package.cardsNumber || 0).toFixed(2)}%
-                    </p>
-                    <p className="incorrection">
-                        incorrect:{' '}
-                        {+((props.package.incorrectsNumber * 100) / props.package.cardsNumber || 0).toFixed(2)}%
-                    </p>
+                    <p className="correction">correct: {props.package.correctsNumber}</p>
+                    <p className="incorrection">incorrect: {props.package.incorrectsNumber}</p>
                 </div>
                 <div className="package-title">
                     <Octicon className="package" icon={Package} />

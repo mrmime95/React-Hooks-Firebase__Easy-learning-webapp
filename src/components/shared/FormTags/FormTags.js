@@ -31,8 +31,10 @@ function FormTags(props: {
                     });
                 }}
                 handleAddition={(tag, e) => {
-                    const newTags = [...props.tags, tag];
-                    if (props.creator) {
+                    const show = props.creator || fireContext.suggestions.find(suggest => suggest.id === tag.id);
+                    console.log(show);
+                    if (show) {
+                        const newTags = [...props.tags, tag];
                         props.handleChange({
                             target: {
                                 name: props.name,
@@ -40,6 +42,8 @@ function FormTags(props: {
                             },
                         });
                         fireContext.createNewTag(tag);
+                    } else {
+                        alert("Here, you can't create new tags");
                     }
                 }}
                 autocomplete

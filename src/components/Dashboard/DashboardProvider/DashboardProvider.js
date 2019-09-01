@@ -161,6 +161,8 @@ export default function DashboardProvider(props: { loadSize: number, orderBy: [s
 
     function onSearch(data) {
         const ordBy = getOrder(data.sort.value);
+
+        console.log(data);
         setState({ dashboardFlow: [], lastVisible: null, hasMore: false });
         if (orderBy[0] !== ordBy[0] || orderBy[1] !== ordBy[1]) {
             setOrderBy([ordBy[0], ordBy[1]]);
@@ -171,7 +173,7 @@ export default function DashboardProvider(props: { loadSize: number, orderBy: [s
                 minCorrect: data.minCorrect || 0,
                 maxIncorrect: data.maxIncorrect || Number.POSITIVE_INFINITY,
                 publicsOnly: data.publicsOnly || false,
-                tags: data.tags.map(tag => tag.text) || [],
+                tags: data.tags.map(tag => tag.id) || [],
             });
         }
     }

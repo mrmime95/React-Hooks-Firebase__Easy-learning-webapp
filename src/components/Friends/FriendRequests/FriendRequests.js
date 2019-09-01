@@ -45,10 +45,13 @@ export default function FriendRequests(props) {
                                     }) => {
                                         if (rowData.id !== user.id) {
                                             return (
-                                                <div className="friend-request-row" onClick={toggle}>
+                                                <div
+                                                    className="friend-request-row"
+                                                    onClick={toggle}
+                                                    key={`LinkGridRow${rowData.id}`}
+                                                >
                                                     <LinkGridRow
                                                         linkTo={`/user/${rowData.id}`}
-                                                        key={`LinkGridRow${rowData.id}`}
                                                         className={`${rowData.role}`}
                                                     >
                                                         <GridColumn className="profile-column">

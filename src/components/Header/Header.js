@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { FirebaseContext } from '../Firebase/FirebaseProvider';
 import AccountInfo from './AccountInfo/AccountInfo';
 import FriendRequests from '../Friends/FriendRequests/FriendRequests';
+import ApproverRequest from './ApproverRequest/ApproverRequest';
 
 import './Header.css';
 
@@ -12,6 +13,7 @@ export default function Header(props) {
             <div className="header">
                 <div className="friend-request-container">
                     <FriendRequests />
+                    <ApproverRequest />
                 </div>
                 <div className="logo">
                     <AccountInfo

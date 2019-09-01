@@ -3,7 +3,7 @@ import { FirebaseContext } from '../../Firebase/FirebaseProvider';
 export const GameContext = React.createContext();
 
 export default function GameProvider(props: { children: React$Node }) {
-    const [subjects, setSubjects] = useState(null);
+    const [subjects, setSubjects] = useState([]);
     const [gameStarted, setGameStarted] = useState(false);
     const [packages, setPackages] = useState([]);
     const [cards, setCards] = useState([]);
@@ -46,8 +46,9 @@ export default function GameProvider(props: { children: React$Node }) {
     );
 
     function getSubjectsByCurrentUser() {
-        fireContext
-            .getSubjectsByCurrentUser()
+        const ref = fireContext.db.collection('subjects');
+        ref.where('userId', '==', fireContext.user.id)
+            .get()
             .then(querySnapshot => {
                 const subjects = [];
                 querySnapshot.forEach(doc => {
@@ -58,7 +59,7 @@ export default function GameProvider(props: { children: React$Node }) {
                 });
                 setSubjects(subjects);
             })
-            .catch(function(error) {
+            .catch(error => {
                 alert('Error getting documents: ', error);
             });
     }
@@ -185,7 +186,7 @@ export default function GameProvider(props: { children: React$Node }) {
         return cardArray.slice().sort(() => Math.random() - 0.5);
     }
 
-    async function changeKwnowledgeOfCard(cardId: string, value: number) {
+    function changeKwnowledgeOfCard(cardId: string, value: number) {
         const currentCardRef = fireContext.db.doc(`cards/${cardId}`);
         const batch = fireContext.db.batch();
         batch.update(currentCardRef, {

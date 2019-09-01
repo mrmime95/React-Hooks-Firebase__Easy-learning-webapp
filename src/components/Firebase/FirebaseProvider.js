@@ -55,6 +55,8 @@ export default class FirebaseProvider extends Component {
                     approvingApproverRequest: this.approvingApproverRequest,
                     declideApproverRequest: this.declideApproverRequest,
                     getCurrentUser: this.getCurrentUser,
+                    getMyApprooverRequests: this.getMyApprooverRequests,
+                    setApprooverRequestToSeen: this.setApprooverRequestToSeen,
                 }}
             >
                 {this.props.children}
@@ -429,6 +431,22 @@ export default class FirebaseProvider extends Component {
             .orderBy('createdAt', 'desc')
             .get();
     };
+    getMyApprooverRequests = () => {
+        const ref = db.collection('approverRequests');
+        return ref
+            .where('userId', '==', this.state.user.id)
+            .orderBy('createdAt', 'desc')
+            .get();
+    };
+
+    setApprooverRequestToSeen = requId => {
+        const batch = db.batch();
+        const approverRequestsRef = db.collection('approverRequests').doc(requId);
+        batch.update(approverRequestsRef, {
+            approved: 'seen',
+        });
+        batch.commit();
+    };
 
     getApproverRequestsByCurrentUser = () => {
         const ref = db.collection('approverRequests');
@@ -440,7 +458,6 @@ export default class FirebaseProvider extends Component {
         const approverRequestsRef = db.collection('approverRequests').doc(requId);
         batch.update(approverRequestsRef, {
             approved: 'yes',
-            createdAt: this.getDateTime(),
         });
         const userRef = db.collection('users').doc(userId);
         batch.update(userRef, { role: 'approver', tags: [], approverAt: [...new Set([...tags, ...approverAt])] });
@@ -453,7 +470,6 @@ export default class FirebaseProvider extends Component {
 
         batch.update(approverRequestsRef, {
             approved: 'no',
-            createdAt: this.getDateTime(),
         });
         batch.commit();
     };

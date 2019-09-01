@@ -106,7 +106,6 @@ function CurrentUserSettings(props) {
                             </div>
                             <FormTags
                                 label="Your tags:"
-                                creator
                                 name="tags"
                                 tags={values.tags}
                                 handleChange={handleChange}

@@ -6,6 +6,9 @@
     background-color: white;
     justify-content: space-between;
     align-items: center;
+    .friend-request-container {
+        display: flex;
+    }
     .link,
     .span-link {
         padding: 10px 15px;

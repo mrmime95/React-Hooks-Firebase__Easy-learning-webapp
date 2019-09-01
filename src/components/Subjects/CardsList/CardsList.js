@@ -26,12 +26,8 @@ export default function CardsList() {
                             </p>
                         )}
                         <p className="cards-number">cards number: {cardsNumber}</p>
-                        <p className="correction">
-                            correct: {+((correctsNumber * 100) / cardsNumber || 0).toFixed(2)}%
-                        </p>
-                        <p className="incorrection">
-                            incorrect: {+((incorrectsNumber * 100) / cardsNumber || 0).toFixed(2)}%
-                        </p>
+                        <p className="correction">correct: {correctsNumber}</p>
+                        <p className="incorrection">incorrect: {incorrectsNumber}</p>
                     </div>
 
                     <div className="package-tags">
