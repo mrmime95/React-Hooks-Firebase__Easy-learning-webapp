@@ -3,6 +3,7 @@ import React, { useContext, useState } from 'react';
 
 import UsersProvider, { UsersContext } from './UsersProvider/UsersProvider';
 import Grid from '../shared/Grid/Grid';
+import GridWithPagination from '../shared/Grid/GridWithPagination/GridWithPagination';
 import GridColumn from '../shared/Grid/GridColumn/GridColumn';
 import AvatarCircle from '../shared/AvatarCircle/AvatarCircle';
 import { LinkGridRow } from '../shared/Grid/GridRow/GridRow';
@@ -26,6 +27,8 @@ export default function Users(props) {
 }
 
 function UsersContent(props: { match: RouterMatch }) {
+    const [sent, setSent] = useState([]);
+    const [deleted, setDeleted] = useState([]);
     const context = useContext(UsersContext);
     const { user } = useContext(FirebaseContext);
     return (
@@ -133,7 +136,7 @@ function UsersContent(props: { match: RouterMatch }) {
             </SearchArea>
             <div className="grid-area">
                 {context.users.length !== 0 ? (
-                    <Grid
+                    <GridWithPagination
                         headerConfig={[
                             { label: 'picture', flex: 1 },
                             { label: 'personal data', flex: 3 },
@@ -154,142 +157,148 @@ function UsersContent(props: { match: RouterMatch }) {
                             tags: string[],
                             requested: boolean,
                         }) => {
-                            const [sent, setSent] = useState(rowData.requested);
-                            const [deleted, setDeleted] = useState(!rowData.requested);
-                            if (rowData.id !== user.id) {
-                                return (
-                                    <LinkGridRow
-                                        linkTo={`/user/${rowData.id}`}
-                                        key={`LinkGridRow${rowData.id}`}
-                                        className={`${rowData.role}`}
-                                    >
-                                        <GridColumn className="profile-picture">
-                                            <AvatarCircle
-                                                profilePicture={rowData.profilePicture}
-                                                fullName={rowData.name}
-                                            />
-                                        </GridColumn>
-                                        <GridColumn className="name">
-                                            <GridColumn className="name-content">
-                                                <GridColumn label="Name">
-                                                    <p className="name-text">{rowData.name}</p>
-                                                </GridColumn>
-                                                <GridColumn label="E-mail">
-                                                    <p className="email">{rowData.email}</p>
-                                                </GridColumn>
-                                                <GridColumn label="Birth">
-                                                    {rowData.birthDate && (
-                                                        <p className="birthday">{rowData.birthDate}</p>
-                                                    )}
-                                                </GridColumn>
-                                                <GridColumn label="status">
-                                                    <p>{rowData.role}</p>
-                                                </GridColumn>
+                            return (
+                                <LinkGridRow
+                                    linkTo={`/user/${rowData.id}`}
+                                    key={`LinkGridRow${rowData.id}`}
+                                    className={`${rowData.role}`}
+                                >
+                                    <GridColumn className="profile-picture">
+                                        <AvatarCircle profilePicture={rowData.profilePicture} fullName={rowData.name} />
+                                    </GridColumn>
+                                    <GridColumn className="name">
+                                        <GridColumn className="name-content">
+                                            <GridColumn label="Name">
+                                                <p className="name-text">{rowData.name}</p>
+                                            </GridColumn>
+                                            <GridColumn label="E-mail">
+                                                <p className="email">{rowData.email}</p>
+                                            </GridColumn>
+                                            <GridColumn label="Birth">
+                                                {rowData.birthDate && <p className="birthday">{rowData.birthDate}</p>}
+                                            </GridColumn>
+                                            <GridColumn label="status">
+                                                <p>{rowData.role}</p>
                                             </GridColumn>
                                         </GridColumn>
+                                    </GridColumn>
 
-                                        <GridColumn className="tags" label="tags">
-                                            {rowData.tags.map(tag => {
-                                                return (
-                                                    <FormTags
-                                                        key={tag}
-                                                        name="tags"
-                                                        tags={[{ id: tag, text: tag }]}
-                                                        handleChange={() => {}}
-                                                        readOnly
-                                                    />
-                                                );
-                                            })}
-                                        </GridColumn>
-
-                                        <GridColumn className="data">
-                                            <GridColumn label="subjects">
-                                                <p className="subjects">{rowData.subjects}</p>
-                                            </GridColumn>
-                                            <GridColumn label="packages">
-                                                <p className="packages">{rowData.packages}</p>
-                                            </GridColumn>
-                                            <GridColumn label="words">
-                                                <p className="words">{rowData.cards}</p>
-                                            </GridColumn>
-                                        </GridColumn>
-                                        <GridColumn className="buttons">
-                                            {user.friends && user.friends.find(friend => friend === rowData.id) ? (
-                                                <Checkbox
+                                    <GridColumn className="tags" label="tags">
+                                        {rowData.tags.map(tag => {
+                                            return (
+                                                <FormTags
+                                                    key={tag}
+                                                    name="tags"
+                                                    tags={[{ id: tag, text: tag }]}
                                                     handleChange={() => {}}
-                                                    name="approvers"
-                                                    id="approvers"
-                                                    checked={true}
-                                                    label="Friend"
                                                     readOnly
                                                 />
-                                            ) : (
-                                                <div className="dropdown">
-                                                    <button
-                                                        className="btn btn-outline-success dropdown-toggle"
-                                                        type="button"
-                                                        id="dropdownMenuLink"
-                                                        data-toggle="dropdown"
-                                                        aria-haspopup="true"
-                                                        aria-expanded="false"
-                                                        onClick={e => {
-                                                            e.preventDefault();
-                                                        }}
-                                                    >
-                                                        {rowData.requested ? 'Friend request sent' : 'Friend request'}
-                                                    </button>
+                                            );
+                                        })}
+                                    </GridColumn>
 
-                                                    <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                        {rowData.requested ? (
-                                                            <button
-                                                                type="button"
-                                                                className="dropdown-item"
-                                                                onClick={e => {
-                                                                    e.preventDefault();
-                                                                    setDeleted(true);
-                                                                    setSent(false);
-                                                                    context.deleteFriendReques(rowData.id);
-                                                                }}
-                                                                disabled={deleted}
-                                                            >
-                                                                Delete friend request
-                                                            </button>
-                                                        ) : (
-                                                            <button
-                                                                type="button"
-                                                                className="dropdown-item"
-                                                                onClick={e => {
-                                                                    e.preventDefault();
-                                                                    setSent(true);
-                                                                    setDeleted(false);
-                                                                    context.createFriendReques(rowData.id);
-                                                                }}
-                                                                disabled={sent}
-                                                            >
-                                                                Send friend request
-                                                            </button>
-                                                        )}
-                                                    </div>
+                                    <GridColumn className="data">
+                                        <GridColumn label="subjects">
+                                            <p className="subjects">{rowData.subjects}</p>
+                                        </GridColumn>
+                                        <GridColumn label="packages">
+                                            <p className="packages">{rowData.packages}</p>
+                                        </GridColumn>
+                                        <GridColumn label="words">
+                                            <p className="words">{rowData.cards}</p>
+                                        </GridColumn>
+                                    </GridColumn>
+                                    <GridColumn className="buttons">
+                                        {user.friends && user.friends.find(friend => friend === rowData.id) ? (
+                                            <Checkbox
+                                                handleChange={() => {}}
+                                                name="approvers"
+                                                id="approvers"
+                                                checked={true}
+                                                label="Friend"
+                                                readOnly
+                                            />
+                                        ) : (
+                                            <div className="dropdown">
+                                                <button
+                                                    className="btn btn-outline-success dropdown-toggle"
+                                                    type="button"
+                                                    id="dropdownMenuLink"
+                                                    data-toggle="dropdown"
+                                                    aria-haspopup="true"
+                                                    aria-expanded="false"
+                                                    onClick={e => {
+                                                        e.preventDefault();
+                                                    }}
+                                                >
+                                                    {rowData.requested ? 'Friend request sent' : 'Friend request'}
+                                                </button>
+
+                                                <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                    {rowData.requested ? (
+                                                        <button
+                                                            type="button"
+                                                            className="dropdown-item"
+                                                            onClick={e => {
+                                                                e.preventDefault();
+
+                                                                const localSent = sent;
+                                                                localSent.filter(se => rowData.id !== se);
+
+                                                                const localDeleted = deleted;
+                                                                localDeleted.push(rowData.id);
+
+                                                                setSent(localSent);
+                                                                setDeleted(localDeleted);
+
+                                                                context.deleteFriendReques(rowData.id);
+                                                            }}
+                                                            disabled={deleted.find(del => del === rowData.id)}
+                                                        >
+                                                            Delete friend request
+                                                        </button>
+                                                    ) : (
+                                                        <button
+                                                            type="button"
+                                                            className="dropdown-item"
+                                                            onClick={e => {
+                                                                e.preventDefault();
+                                                                const localSent = sent;
+                                                                localSent.push(rowData.id);
+
+                                                                const localDeleted = deleted;
+                                                                localDeleted.filter(del => rowData.id !== del);
+
+                                                                setSent(localSent);
+                                                                setDeleted(localDeleted);
+                                                                context.createFriendReques(rowData.id);
+                                                            }}
+                                                            disabled={sent.find(se => se === rowData.id)}
+                                                        >
+                                                            Send friend request
+                                                        </button>
+                                                    )}
                                                 </div>
-                                            )}
-                                            {user.role === 'admin' && (
-                                                <div className="dropdown">
-                                                    <button
-                                                        className="btn btn-outline-danger dropdown-toggle"
-                                                        type="button"
-                                                        id="dropdownMenuLink"
-                                                        data-toggle="dropdown"
-                                                        aria-haspopup="true"
-                                                        aria-expanded="false"
-                                                        onClick={e => {
-                                                            e.preventDefault();
-                                                        }}
-                                                    >
-                                                        Admin actions
-                                                    </button>
+                                            </div>
+                                        )}
+                                        {user.role === 'admin' && (
+                                            <div className="dropdown">
+                                                <button
+                                                    className="btn btn-outline-danger dropdown-toggle"
+                                                    type="button"
+                                                    id="dropdownMenuLink"
+                                                    data-toggle="dropdown"
+                                                    aria-haspopup="true"
+                                                    aria-expanded="false"
+                                                    onClick={e => {
+                                                        e.preventDefault();
+                                                    }}
+                                                >
+                                                    Admin actions
+                                                </button>
 
-                                                    <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                        {/* <button
+                                                <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                    {/* <button
                                                             type="button"
                                                             className="dropdown-item"
                                                             onClick={e => {
@@ -298,52 +307,50 @@ function UsersContent(props: { match: RouterMatch }) {
                                                         >
                                                             Delete user
                                                         </button> */}
-                                                        {rowData.role !== 'approver' && (
-                                                            <button
-                                                                type="button"
-                                                                className="dropdown-item"
-                                                                onClick={e => {
-                                                                    e.preventDefault();
-                                                                    context.updateToApprover(rowData.id);
-                                                                }}
-                                                            >
-                                                                Change status to APPROVER
-                                                            </button>
-                                                        )}
-                                                        {rowData.role !== 'admin' && (
-                                                            <button
-                                                                type="button"
-                                                                className="dropdown-item"
-                                                                onClick={e => {
-                                                                    e.preventDefault();
-                                                                    context.updateToAdmin(rowData.id);
-                                                                }}
-                                                            >
-                                                                Change status to ADMIN
-                                                            </button>
-                                                        )}
-                                                        {rowData.role !== 'user' && (
-                                                            <button
-                                                                type="button"
-                                                                className="dropdown-item"
-                                                                onClick={e => {
-                                                                    e.preventDefault();
-                                                                    context.updateToUser(rowData.id);
-                                                                }}
-                                                            >
-                                                                Change status to USER
-                                                            </button>
-                                                        )}
-                                                    </div>
+                                                    {rowData.role !== 'approver' && (
+                                                        <button
+                                                            type="button"
+                                                            className="dropdown-item"
+                                                            onClick={e => {
+                                                                e.preventDefault();
+                                                                context.updateToApprover(rowData.id);
+                                                            }}
+                                                        >
+                                                            Change status to APPROVER
+                                                        </button>
+                                                    )}
+                                                    {rowData.role !== 'admin' && (
+                                                        <button
+                                                            type="button"
+                                                            className="dropdown-item"
+                                                            onClick={e => {
+                                                                e.preventDefault();
+                                                                context.updateToAdmin(rowData.id);
+                                                            }}
+                                                        >
+                                                            Change status to ADMIN
+                                                        </button>
+                                                    )}
+                                                    {rowData.role !== 'user' && (
+                                                        <button
+                                                            type="button"
+                                                            className="dropdown-item"
+                                                            onClick={e => {
+                                                                e.preventDefault();
+                                                                context.updateToUser(rowData.id);
+                                                            }}
+                                                        >
+                                                            Change status to USER
+                                                        </button>
+                                                    )}
                                                 </div>
-                                            )}
-                                        </GridColumn>
-                                    </LinkGridRow>
-                                );
-                            }
-                            return null;
+                                            </div>
+                                        )}
+                                    </GridColumn>
+                                </LinkGridRow>
+                            );
                         }}
-                        data={context.users}
+                        data={context.users.filter(otherUser => otherUser.id !== user.id)}
                     />
                 ) : (
                     <div>No user to show...</div>

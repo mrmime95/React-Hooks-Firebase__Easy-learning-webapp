@@ -143,76 +143,73 @@ export default function FriendsList(props: { match: RouterMatch }) {
                         tags: string[],
                         requested: boolean,
                     }) => {
-                        if (rowData.id !== user.id) {
-                            return (
-                                <LinkGridRow
-                                    linkTo={`/user/${rowData.id}`}
-                                    key={`LinkGridRow${rowData.id}`}
-                                    className={`${rowData.role}`}
-                                >
-                                    <GridColumn className="profile-picture">
-                                        <AvatarCircle profilePicture={rowData.profilePicture} fullName={rowData.name} />
-                                    </GridColumn>
-                                    <GridColumn className="name">
-                                        <GridColumn className="name-content">
-                                            <GridColumn label="Name">
-                                                <p className="name-text">{rowData.name}</p>
-                                            </GridColumn>
-                                            <GridColumn label="E-mail">
-                                                <p className="email">{rowData.email}</p>
-                                            </GridColumn>
-                                            <GridColumn label="Birth">
-                                                {rowData.birthDate && <p className="birthday">{rowData.birthDate}</p>}
-                                            </GridColumn>
-                                            <GridColumn label="status">
-                                                <p>{rowData.role}</p>
-                                            </GridColumn>
+                        return (
+                            <LinkGridRow
+                                linkTo={`/user/${rowData.id}`}
+                                key={`LinkGridRow${rowData.id}`}
+                                className={`${rowData.role}`}
+                            >
+                                <GridColumn className="profile-picture">
+                                    <AvatarCircle profilePicture={rowData.profilePicture} fullName={rowData.name} />
+                                </GridColumn>
+                                <GridColumn className="name">
+                                    <GridColumn className="name-content">
+                                        <GridColumn label="Name">
+                                            <p className="name-text">{rowData.name}</p>
+                                        </GridColumn>
+                                        <GridColumn label="E-mail">
+                                            <p className="email">{rowData.email}</p>
+                                        </GridColumn>
+                                        <GridColumn label="Birth">
+                                            {rowData.birthDate && <p className="birthday">{rowData.birthDate}</p>}
+                                        </GridColumn>
+                                        <GridColumn label="status">
+                                            <p>{rowData.role}</p>
                                         </GridColumn>
                                     </GridColumn>
+                                </GridColumn>
 
-                                    <GridColumn className="tags" label="tags">
-                                        {rowData.tags.length
-                                            ? rowData.tags.map(tag => {
-                                                  return (
-                                                      <FormTags
-                                                          key={tag}
-                                                          name="tags"
-                                                          tags={[{ id: tag, text: tag }]}
-                                                          handleChange={() => {}}
-                                                          readOnly
-                                                      />
-                                                  );
-                                              })
-                                            : null}
-                                    </GridColumn>
+                                <GridColumn className="tags" label="tags">
+                                    {rowData.tags.length
+                                        ? rowData.tags.map(tag => {
+                                              return (
+                                                  <FormTags
+                                                      key={tag}
+                                                      name="tags"
+                                                      tags={[{ id: tag, text: tag }]}
+                                                      handleChange={() => {}}
+                                                      readOnly
+                                                  />
+                                              );
+                                          })
+                                        : null}
+                                </GridColumn>
 
-                                    <GridColumn className="data">
-                                        <GridColumn label="subjects">
-                                            <p className="subjects">{rowData.subjects}</p>
-                                        </GridColumn>
-                                        <GridColumn label="packages">
-                                            <p className="packages">{rowData.packages}</p>
-                                        </GridColumn>
-                                        <GridColumn label="words">
-                                            <p className="words">{rowData.cards}</p>
-                                        </GridColumn>
+                                <GridColumn className="data">
+                                    <GridColumn label="subjects">
+                                        <p className="subjects">{rowData.subjects}</p>
                                     </GridColumn>
-                                    <GridColumn className="buttons">
-                                        <button
-                                            type="button"
-                                            className="btn btn-outline-primary"
-                                            onClick={e => {
-                                                e.preventDefault();
-                                                context.deleteFriend(rowData.id);
-                                            }}
-                                        >
-                                            Delete friend
-                                        </button>
+                                    <GridColumn label="packages">
+                                        <p className="packages">{rowData.packages}</p>
                                     </GridColumn>
-                                </LinkGridRow>
-                            );
-                        }
-                        return null;
+                                    <GridColumn label="words">
+                                        <p className="words">{rowData.cards}</p>
+                                    </GridColumn>
+                                </GridColumn>
+                                <GridColumn className="buttons">
+                                    <button
+                                        type="button"
+                                        className="btn btn-outline-primary"
+                                        onClick={e => {
+                                            e.preventDefault();
+                                            context.deleteFriend(rowData.id);
+                                        }}
+                                    >
+                                        Delete friend
+                                    </button>
+                                </GridColumn>
+                            </LinkGridRow>
+                        );
                     }}
                     data={context.friends}
                 />

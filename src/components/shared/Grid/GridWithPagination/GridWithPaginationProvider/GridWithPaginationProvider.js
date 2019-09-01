@@ -8,7 +8,7 @@ function GridWithPaginationProvider(props: {
     children: React$Node,
 }) {
     const activePage = props.activePage ? props.activePage : 1;
-    const pageSize = props.pageSize ? props.pageSize : 10;
+    const pageSize = props.pageSize ? props.pageSize : 5;
 
     const [state, setState] = useState({
         activePage,
