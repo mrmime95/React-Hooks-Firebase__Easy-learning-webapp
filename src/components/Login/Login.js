@@ -60,12 +60,16 @@ function Login() {
                         onClick={() => {
                             context
                                 .doCreateUserWithGoogle()
-                                .then(async result => {
+                                .then(result => {
                                     var user = result.user;
-                                    context.createNewUser(user.uid, {
-                                        firstName: user.displayName.split(' ')[0],
-                                        lastName: user.displayName.split(' ')[1],
-                                        email: user.email,
+                                    context.userExists(user.uid).then(exists => {
+                                        if (!exists) {
+                                            context.createNewUser(user.uid, {
+                                                firstName: user.displayName.split(' ')[0],
+                                                lastName: user.displayName.split(' ')[1],
+                                                email: user.email,
+                                            });
+                                        }
                                     });
                                 })
                                 .catch(error => {

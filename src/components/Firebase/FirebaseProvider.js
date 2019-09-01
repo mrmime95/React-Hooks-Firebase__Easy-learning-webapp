@@ -57,6 +57,7 @@ export default class FirebaseProvider extends Component {
                     getCurrentUser: this.getCurrentUser,
                     getMyApprooverRequests: this.getMyApprooverRequests,
                     setApprooverRequestToSeen: this.setApprooverRequestToSeen,
+                    userExists: this.userExists,
                 }}
             >
                 {this.props.children}
@@ -95,6 +96,14 @@ export default class FirebaseProvider extends Component {
 
     doSignOut = () => {
         return auth.signOut();
+    };
+
+    userExists = uid => {
+        return db
+            .collection('users')
+            .doc(uid)
+            .get()
+            .then(resp => resp.exists);
     };
 
     createNewUser = (
