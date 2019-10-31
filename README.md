@@ -23,3 +23,6 @@ The back-end uses the **database as a service** arhitecture with the help of Goo
 Project uses Firebase services Authentication, Clud firestore (the database), Cloud storage (soring pictures) and Hosting.
 
 ![Firebase Services](/assets/UsedServices.png)
+
+
+You can find my app hosted [here](https://react-firebase-authentic-aa7be.firebaseapp.com/).
